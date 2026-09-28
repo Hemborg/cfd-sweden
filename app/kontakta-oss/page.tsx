@@ -13,8 +13,8 @@ export default function ContactPage() {
           <h2>E-post</h2>
           <p>
             Skicka ett mejl till{" "}
-            <a className="text-link" href="mailto:info@cfdsweden.se">
-              info@cfdsweden.se
+            <a className="text-link" href="mailto:cfdsweden@proton.me">
+              cfdsweden@proton.me
             </a>
             . Skriv gärna kort vem du är, var du finns och vad ärendet gäller.
           </p>
