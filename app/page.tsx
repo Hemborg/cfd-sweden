@@ -54,7 +54,8 @@ export default function Home() {
               Engagera dig i
               <span>vår rörelse</span>
             </h2>
-            <form action="mailto:info@cfdsweden.se" method="post" encType="text/plain">
+            <form action="https://formsubmit.co/cfdsweden@proton.me" method="POST">
+              <input type="hidden" name="_subject" value="Ny intresseanmälan – CFD Sweden" />
               <div className="field-row">
                 {fields.slice(0, 2).map((field) => (
                   <label className="field full" key={field.name}>
