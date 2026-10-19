@@ -55,7 +55,14 @@ export default function Home() {
               <span>vår rörelse</span>
             </h2>
             <form action="https://formsubmit.co/cfdsweden@proton.me" method="POST">
+              {/* formsubmit.co: redirect after submission */}
+              <input type="hidden" name="_next" value="https://cfdsweden.se/tack" />
               <input type="hidden" name="_subject" value="Ny intresseanmälan – CFD Sweden" />
+              {/* honeypot spam protection */}
+              <input type="text" name="_honey" style={{ display: "none" }} />
+              {/* disable formsubmit captcha */}
+              <input type="hidden" name="_captcha" value="false" />
+
               <div className="field-row">
                 {fields.slice(0, 2).map((field) => (
                   <label className="field full" key={field.name}>
