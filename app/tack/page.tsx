@@ -1,4 +1,5 @@
 import { PageLayout } from "@/components/PageLayout";
+import Link from "next/link";
 
 export default function TackPage() {
   return (
@@ -12,9 +13,9 @@ export default function TackPage() {
         <article className="large-copy">
           <p>
             Välkommen till rörelsen.{" "}
-            <a className="text-link" href="/">
+            <Link className="text-link" href="/">
               Gå tillbaka till startsidan
-            </a>
+            </Link>
             .
           </p>
         </article>
