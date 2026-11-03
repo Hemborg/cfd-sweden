@@ -216,4 +216,3 @@ filrepo under pågående verksamhet utan att säkra ny databaspublicerad data.
 
 Det senaste uppdragets hostade driftprocess finns i [production-operations.md](production-operations.md).
 Följ dess produktionsgrind och [verifieringsstatus](production-status.md). Nedanstående lokala testprocess behåller sina anslutningsspärrar.
-

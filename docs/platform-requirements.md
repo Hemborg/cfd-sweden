@@ -120,4 +120,3 @@ kvarvarande beroenderisk att följa, inte en ren audit.
 # Senare produktionsuppdrag
 
 Den separata databaslanseringens omfattning och kvarvarande externa steg finns i [production-status.md](production-status.md) och [production-operations.md](production-operations.md). Historiken nedan beskriver föregående leverans.
-
