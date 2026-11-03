@@ -1,68 +1,53 @@
-/** Reviewed content migration. Default prints counts; never connects remotely. */
-import { getAllPosts } from "../lib/content/posts";
+/**
+ * Generates a reviewable, idempotent content-import artifact. It only connects
+ * when --apply-local is given, and that mode rejects every non-test database.
+ */
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { getEvents } from "../lib/content/events";
-import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
-import { z } from "zod";
+import { getAllPosts } from "../lib/content/posts";
+import { contentImportSql, createContentImportManifest } from "../lib/editorial/content-import";
 import pg from "pg";
+import { z } from "zod";
 
-const posts = getAllPosts(),
-  events = getEvents();
-console.log(
-  `Content inventory: ${posts.length} articles, ${events.length} events. Existing database rows are never overwritten.`,
-);
-const mode = process.argv[2];
-if (mode && !["--sql", "--apply-local"].includes(mode))
-  throw new Error("Use --sql or --apply-local.");
-if (mode) {
-  let owner = process.env.CFD_CONTENT_IMPORT_OWNER;
-  if (mode === "--apply-local") {
-    const accounts = JSON.parse(
-      readFileSync(
-        new URL("../.test-platform/accounts.json", import.meta.url),
-        "utf8",
-      ),
-    ) as { role: string; id: string }[];
-    owner = accounts.find((entry) => entry.role === "editor")?.id;
-  }
-  const ownerId = z.uuid().parse(owner);
-  const literal = (value: string | null | undefined) =>
-    value == null ? "null" : `'${value.replaceAll("'", "''")}'`;
-  const statements = [
-    "begin;",
-    ...posts.map(
-      (post) =>
-        `insert into public.articles(slug,title,excerpt,body,tags,status,published_at,seo_title,seo_description,author_id,author_name) values(${[post.slug, post.title, post.excerpt, post.content].map(literal).join(",")},ARRAY[${post.tags.map(literal).join(",")}]::text[],${literal(post.published ? "published" : "draft")},${literal(post.published ? `${post.date}T00:00:00Z` : null)},${literal(post.seoTitle)},${literal(post.seoDescription)},${literal(ownerId)}::uuid,${literal(post.author)}) on conflict(slug) do nothing;`,
-    ),
-    ...events.map(
-      (event) =>
-        `insert into public.events(slug,title,description,starts_at,location,organiser,published,registration_open,external_url,created_by) values(${[event.slug, event.title, event.description, event.date, event.location, event.organiser].map(literal).join(",")},true,${event.registrationOpen},${literal(event.externalUrl)},${literal(ownerId)}::uuid) on conflict(slug) do nothing;`,
-    ),
-    "commit;",
-  ];
-  const sql = statements.join("\n");
-  if (mode === "--sql") {
-    mkdirSync(".test-platform", { recursive: true });
-    writeFileSync(".test-platform/content-import.sql", sql);
-    console.log(
-      "Review .test-platform/content-import.sql. No database was contacted.",
-    );
-  } else {
-    const url = new URL(process.env.CFD_TEST_DATABASE_URL ?? "");
-    if (
-      url.hostname !== "127.0.0.1" ||
-      url.port !== "54322" ||
-      url.pathname !== "/cfd_platform_test"
-    )
-      throw new Error("Refusing non-test database.");
-    const db = new pg.Client({ connectionString: url.toString() });
-    await db.connect();
-    try {
-      await db.query(sql);
-      console.log(
-        "Imported existing content into isolated local test database.",
-      );
-    } finally {
-      await db.end();
-    }
-  }
+const mode = process.argv[2] ?? "--preview";
+if (!["--preview", "--sql", "--apply-local"].includes(mode)) {
+  throw new Error("Use --preview, --sql or --apply-local.");
+}
+
+const manifest = createContentImportManifest(getAllPosts(), getEvents());
+console.log(`Content inventory: ${manifest.source.articles} articles, ${manifest.source.events} events.`);
+console.log(`Manifest SHA-256: ${manifest.sha256}`);
+if (manifest.warnings.length) console.log(`Warnings: ${manifest.warnings.length} draft date(s) are preserved only in the manifest.`);
+if (mode === "--preview") {
+  console.log("Preview only. No database was contacted and no files were written.");
+  process.exit(0);
+}
+
+function writeArtifacts(ownerId: string) {
+  mkdirSync(".test-platform", { recursive: true });
+  writeFileSync(".test-platform/content-import.manifest.json", `${JSON.stringify(manifest, null, 2)}\n`);
+  writeFileSync(".test-platform/content-import.sql", contentImportSql(manifest, ownerId));
+}
+
+if (mode === "--sql") {
+  const ownerId = z.uuid().parse(process.env.CFD_CONTENT_IMPORT_OWNER);
+  writeArtifacts(ownerId);
+  console.log("Wrote .test-platform/content-import.manifest.json and .test-platform/content-import.sql for review. No database was contacted.");
+  process.exit(0);
+}
+
+const testUrl = new URL(process.env.CFD_TEST_DATABASE_URL ?? "");
+if (testUrl.hostname !== "127.0.0.1" || testUrl.port !== "54322" || testUrl.pathname !== "/cfd_platform_test") {
+  throw new Error("Refusing non-test database.");
+}
+const accounts = JSON.parse(readFileSync(new URL("../.test-platform/accounts.json", import.meta.url), "utf8")) as { role: string; id: string }[];
+const ownerId = z.uuid().parse(accounts.find((entry) => entry.role === "editor")?.id);
+writeArtifacts(ownerId);
+const db = new pg.Client({ connectionString: testUrl.toString() });
+await db.connect();
+try {
+  await db.query(contentImportSql(manifest, ownerId));
+  console.log("Imported into the isolated local test database after source-to-row verification.");
+} finally {
+  await db.end();
 }
