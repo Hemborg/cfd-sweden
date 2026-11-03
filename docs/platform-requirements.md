@@ -5,6 +5,15 @@ PR #3, `9c40781450c2e7802afae75c2ec8949e8df968bf`. Leveransen ligger på
 `codex/cfd-association-platform-20261103` och lämnas i en separat PR mot main.
 Ingen produktionsmiljö, DNS, produktionsdatabas eller extern tjänst har aktiverats.
 
+Releaseuppföljning för den publika sajten: se [releasechecklistan](public-release-checklist.md).
+Plattformen avstängd är nu uttryckligen verifierad med 47 enhetstester,
+13 publika webbläsartester och 4 innehålls-/releaseprov. Det inkluderar ett öppet
+filbaserat evenemang utan anmälningsformulär och direkta inaktiva kontolänkar.
+Produktionsbygget passerar utan Supabase-, Resend- eller Stripe-konfiguration;
+den lokala tjänstestacken var stoppad under dessa prov. Den fullständiga CI-körningen
+för aktuell commit länkas från PR #4. De externa grindarna för själva
+föreningsplattformen nedan gäller fortsatt.
+
 **Definitioner:** Implementerad avser fungerande kod, migration och användarflöde.
 Lokalt verifierad avser riktig PostgreSQL, Auth/PostgREST, SMTP/Mailpit eller
 webbläsare. SDK-signerade webhooktester kontaktar inte Stripe/Resend. Ingen rad

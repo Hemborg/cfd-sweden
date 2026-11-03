@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSessionClient, createServiceClient } from "@/lib/platform/db";
-import { platformConfig } from "@/lib/platform/config";
+import { platformConfig, platformEnabled } from "@/lib/platform/config";
 import {
   assertSameOrigin,
   rateLimit,
@@ -12,6 +12,7 @@ import { queueMail } from "@/lib/communications/queue";
 import { createHash } from "node:crypto";
 
 export async function login(form: FormData) {
+  if (!platformEnabled()) redirect("/logga-in");
   await assertSameOrigin();
   await rateLimitSource("login", 60, 900);
   const input = z
@@ -25,12 +26,14 @@ export async function login(form: FormData) {
   redirect("/medlem");
 }
 export async function logout() {
+  if (!platformEnabled()) redirect("/logga-in");
   await assertSameOrigin();
   const client = await createSessionClient();
   await client.auth.signOut();
   redirect("/logga-in");
 }
 export async function requestRecovery(form: FormData) {
+  if (!platformEnabled()) redirect("/logga-in");
   await assertSameOrigin();
   await rateLimitSource("recovery", 10, 3600);
   const email = z.email().max(254).parse(form.get("email"));

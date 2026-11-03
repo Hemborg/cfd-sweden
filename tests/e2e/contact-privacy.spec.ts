@@ -10,6 +10,8 @@ test("contact and join validate email and keep distinct purposes", async ({ page
   for (const path of ["/kontakta-oss", "/ga-med", "/"]) {
     await page.goto(path);
     const form = page.locator("form");
+    await expect(form).toHaveAttribute("action", "https://formsubmit.co/cfdsweden@proton.me");
+    await expect(form).toHaveAttribute("method", /post/i);
     const email = page.getByLabel("E-post", { exact: true });
     await expect(email).toHaveAttribute("required", "");
     await expect(email).toHaveAttribute("maxlength", "254");

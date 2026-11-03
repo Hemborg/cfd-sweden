@@ -7,11 +7,12 @@ import {
   createPasswordProof,
   passwordProofCookie,
 } from "@/lib/platform/password-proof";
-import { platformConfig } from "@/lib/platform/config";
+import { platformConfig, platformEnabled } from "@/lib/platform/config";
 
 export const metadata = { robots: { index: false, follow: false } };
 async function accept(form: FormData) {
   "use server";
+  if (!platformEnabled()) redirect("/logga-in");
   await assertSameOrigin();
   const token_hash = z.string().min(32).max(512).parse(form.get("token_hash"));
   const type = z.enum(["invite", "recovery"]).parse(form.get("type"));
@@ -37,6 +38,13 @@ export default async function Confirm({
   searchParams: Promise<{ token_hash?: string; type?: string }>;
 }) {
   const query = await searchParams;
+  if (!platformEnabled())
+    return (
+      <main className="subpage-section portal-narrow">
+        <h1>Medlemsportalen är inte öppen ännu</h1>
+        <p>Kontolänkar kan inte användas på webbplatsen just nu.</p>
+      </main>
+    );
   return (
     <main className="subpage-section portal-narrow">
       <h1>Bekräfta din kontolänk</h1>

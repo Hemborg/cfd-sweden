@@ -6,6 +6,6 @@ export default defineConfig({
   webServer: {
     command: "npm run start -- --hostname 127.0.0.1 --port 3401",
     url: "http://127.0.0.1:3401", reuseExistingServer: false, timeout: 60_000,
-    env: { CFD_FORM_DEMO_ENABLED: "false", NEXT_TELEMETRY_DISABLED: "1" },
+    env: { CFD_PLATFORM_ENABLED: "false", CFD_CONTACT_BACKEND: "", CFD_FORM_DEMO_ENABLED: "false", NEXT_TELEMETRY_DISABLED: "1" },
   },
 });

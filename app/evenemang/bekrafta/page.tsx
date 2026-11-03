@@ -1,5 +1,6 @@
 import { ConfirmFreeEventRegistration } from "./ConfirmFreeEventRegistration";
 import { PageLayout } from "@/components/PageLayout";
+import { platformEnabled } from "@/lib/platform/config";
 
 type Props = { searchParams: Promise<{ token?: string }> };
 export const metadata = {
@@ -9,6 +10,7 @@ export const metadata = {
 
 export default async function ConfirmFreeEventPage({ searchParams }: Props) {
   const { token } = await searchParams;
+  const enabled = platformEnabled();
   const valid = token && /^[A-Za-z0-9_-]{32,128}$/.test(token);
   return (
     <PageLayout
@@ -18,7 +20,9 @@ export default async function ConfirmFreeEventPage({ searchParams }: Props) {
       intro="Bekräfta din e-post innan en plats eller väntelisteplats reserveras."
     >
       <section className="subpage-section portal-narrow">
-        {valid ? (
+        {!enabled ? (
+          <p>Anmälan till evenemang är inte öppen ännu.</p>
+        ) : valid ? (
           <ConfirmFreeEventRegistration token={token} />
         ) : (
           <p>Länken saknas eller är inte längre giltig.</p>

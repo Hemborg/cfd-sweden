@@ -1,5 +1,6 @@
 import { NewsletterLayout } from "@/components/communications/newsletter-layout";
 import { unsubscribeNewsletterAction } from "../actions";
+import { platformEnabled } from "@/lib/platform/config";
 type Props = { searchParams: Promise<{ token?: string; status?: string }> };
 export const metadata = {
   title: "Avregistrera nyhetsbrev | CFD Sweden",
@@ -9,6 +10,12 @@ export default async function UnsubscribeNewsletterPage({
   searchParams,
 }: Props) {
   const { token, status } = await searchParams;
+  if (!platformEnabled() || status === "unavailable")
+    return (
+      <NewsletterLayout title="Nyhetsbrevet är inte öppet ännu">
+        <p>Det finns inget aktivt nyhetsbrev att ändra just nu.</p>
+      </NewsletterLayout>
+    );
   if (status === "withdrawn")
     return (
       <NewsletterLayout title="Du är avregistrerad">
