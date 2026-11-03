@@ -1,14 +1,16 @@
 # Produktionsberedskap 2026-11-03
 
-**Produktionsgrund är installerad och kontrollerad, men domänen är ännu inte
-omkopplad till plattformsversionen.** Ett separat produktionsprojekt finns i
-Stockholm (`eu-north-1`), medan staging är pausad enligt vald gratisplanslösning.
-Produktionsinloggning och MFA behöver ännu verifieras i den verkliga domänversionen.
+**Plattformsversionen är live på `https://cfdsweden.se`.** Den verifierade
+produktionsdeploymenten `dpl_3ctGTeYZ83nxoJ9U4ZBD14sPKXpa` kopplades till domänen kl. 15:04
+UTC i befintligt Vercel-projekt, utan DNS-ändring. Ett separat produktionsprojekt
+finns i Stockholm (`eu-north-1`), medan staging är pausad enligt vald gratisplanslösning.
+Produktionsinloggning och MFA behöver ännu verifieras med kontoägaren.
 
-Den godkända koden är `89e9706c4d146958c1ac52d212f9e3ae9b5f66e0` och dess
-[fullständiga CI med 128 tester är grön](https://github.com/Hemborg/cfd-sweden/actions/runs/41653185888).
-En produktionskonfigurerad, men domänfrikopplad, Vercel-deployment är
-[klar för kontroll](https://vercel.com/hemborg-5741s-projects/cfd-sweden/3ctGTeYZ83nxoJ9U4ZBD14sPKXpa).
+Den godkända koden är `89e9706c4d146958c1ac52d212f9e3ae9b5f66e0` och den
+senaste dokumentations-CI:n med 128 tester är [grön](https://github.com/Hemborg/cfd-sweden/actions/runs/41659358406).
+Den exakta Vercel-deploymenten är [Ready](https://vercel.com/hemborg-5741s-projects/cfd-sweden/3ctGTeYZ83nxoJ9U4ZBD14sPKXpa).
+Se även [PR #5](https://github.com/Hemborg/cfd-sweden/pull/5) för granskningsunderlag
+och slutlig merge-SHA när den är dokumenterad där.
 
 ## Implementerat och lokalt verifierat
 
@@ -43,6 +45,16 @@ En produktionskonfigurerad, men domänfrikopplad, Vercel-deployment är
 - Källinventeringen innehåller 0 artiklar och 0 evenemang. Ingen produktionsimport
   kördes och databasen är tom på redaktionellt innehåll; inga syntetiska
   stagingposter har förts över.
+- Före promotion kontrollerades den exakta, Vercel-skyddade
+  produktionsdeploymenten i webbläsare: 13 publika rutter fungerar på 390 och
+  1440 px utan overflow, felvy eller saknad H1. Efter promotion passerar 32 HTTP-
+  kontroller mot `cfdsweden.se`: 14 publika sidor med 200, 3 privata rutter med
+  inloggningsredirect, 11 avstängda API:er med 404/503, RSS och sitemap med 200
+  samt båda tackvyerna noindex. 13 klientbundlar saknar produktionshemligheter
+  och stagingreferens.
+- Kontakta oss och Gå med använder fortfarande FormSubmit, med obligatorisk e-post
+  och kontaktmeddelande där det krävs. Inga verkliga inskick, betalningar eller utskick
+  har gjorts under releasekontrollen.
 
 ## Konfiguration och beroenden
 
@@ -109,21 +121,20 @@ lokal SMTP eller verifierade mockar. Lokal Postgres är inte hostad staging.
 Utförda hostade kontroller och begränsningar redovisas separat i
 [stagingrapporten](hosted-staging.md).
 
-## Återstår för att slutföra releasen
+## Återstår efter domänsläpp
 
-1. Slå ihop den godkända koden och kontrollera den Vercel-deployment som kopplas
-   till `cfdsweden.se`. Verifiera sedan publika URL:er, FormSubmit-formulärens
-   action utan testutskick, tomma redaktionella flöden och avstängda API:er på domänen.
-2. Kontoägaren ska logga in, enrolera TOTP i egen autentiseringsapp och verifiera
+1. Kontoägaren ska logga in på den live webbplatsen, enrolera TOTP i egen
+   autentiseringsapp och verifiera
    ett administrativt AAL2-flöde. Ingen lösenordsåterställning eller e-postleverans
    ska användas för detta.
-3. Lokal återställning av applikationsdata och faktiska Auth-konton är verifierad:
+2. Lokal återställning av applikationsdata och faktiska Auth-konton är verifierad:
    31 RLS-tabeller, 45 policyer, 17 migrationsposter, sex lösenord och tre TOTP-faktorer.
    Den krypterade stagingkopian ligger lokalt enligt ägarens beslut, men överlever
    inte datorförlust; extern separat lagring och hostad återställningsövning återstår.
-   En krypterad produktionsbaslinje finns lokalt; en uppdaterad post-release-backup
-   tas först efter domänsläpp. [Backupguide](backup-recovery.md).
-4. Föreningen beslutar personuppgiftsansvar, leverantörsavtal, gallring, roller,
+   En krypterad första produktionsbackup har kontrollerats lokalt efter release,
+   men måste förnyas efter MFA-enrolering. Den är inte ett test av hostad
+   produktionsåterställning. [Backupguide](backup-recovery.md).
+3. Föreningen beslutar personuppgiftsansvar, leverantörsavtal, gallring, roller,
    redaktionellt ansvar och incident-/backupansvar. Superadminbeslutet ersätter inte dessa ansvarsfördelningsbeslut.
 
 ### Återställningsväg

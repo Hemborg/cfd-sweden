@@ -1,13 +1,16 @@
 # CFD Sweden – hostad driftinstruktion
 
-> Status 2026-11-03: Produktionsgrund är installerad efter uttryckligt
-> releasegodkännande, men domänen är inte omkopplad ännu. Staging är pausad enligt
+> Status 2026-11-03: Plattformsversionen är live på `https://cfdsweden.se` via
+> den befintliga Vercel-konfigurationen, utan DNS-ändring. Staging är pausad enligt
 > gratisplansvalet. Se [produktionsstatus](production-status.md) för verifierat
-> läge, kvarstående domän- och MFA-kontroller samt historiska stagingbevis.
+> live-läge, kvarstående MFA- och backupkontroller samt historiska stagingbevis.
 
 ## Nuvarande verifierade läge
 
-- Godkänd kod: `89e9706c4d146958c1ac52d212f9e3ae9b5f66e0`; [CI med 128 tester är grön](https://github.com/Hemborg/cfd-sweden/actions/runs/41653185888).
+- Godkänd kod: `89e9706c4d146958c1ac52d212f9e3ae9b5f66e0`; [senaste CI med 128 tester är grön](https://github.com/Hemborg/cfd-sweden/actions/runs/41659358406).
+- Deployment `dpl_3ctGTeYZ83nxoJ9U4ZBD14sPKXpa` är Ready och kopplades till domänen till
+  `https://cfdsweden.se` kl. 15:04 UTC utan DNS-ändring. [PR #5](https://github.com/Hemborg/cfd-sweden/pull/5)
+  är granskningsrapporten; ange dess slutliga merge-SHA där när den finns.
 - Vercel-projektet `cfd-sweden` i teamet `hemborg-5741s-projects` har 16
   produktionsvariabler. FormSubmit är fortsatt kontaktbackend och alla valfria
   mail-, betalnings-, eventregistrerings-, nyhetsbrevs- och kommentarsfunktioner är avstängda.
@@ -22,6 +25,11 @@
   gratisplansvalet. Den får inte användas som produktionsroll-back eller previewkälla.
 - Källinventeringen innehåller 0 artiklar och 0 evenemang; ingen produktionsimport
   kördes och inga syntetiska stagingposter har förts över.
+- Före promotion kontrollerades den exakta, Vercel-skyddade produktionsdeploymenten:
+  13 publika rutter vid 390 och 1440 px utan overflow eller felvy. Efter promotion
+  passerar 32 HTTP-kontroller mot `cfdsweden.se`, inklusive privata redirects,
+  avstängda API:er, RSS, sitemap och noindex för tackvyer. FormSubmit-formulärens
+  validering och action är kontrollerade utan verkligt formulärinskick.
 
 Supabase Free har två fria projekt per ägare/administratör över organisationer;
 ett fritt projekt kan dessutom pausas vid låg aktivitet. Se [Supabases
@@ -251,15 +259,15 @@ enbart samma tabellantal räcker inte som produktionsbevis.
 Se [verifierad återställning och portabel backup](backup-recovery.md) för den
 utförda lokala konto-/MFA-övningen och kvarstående förvaring utanför datorn.
 
-## Releasekontroll före domänsläpp
+## Genomförd releasekontroll och återstående verifiering
 
 Hostade syntetiska stagingtester har genomförts enligt [rapporten](hosted-staging.md)
-och releasegodkännande gavs därefter. Produktionsmigrering, miljö och första
-superadmin är nu installerade. För att slutföra releasen återstår den verkliga
-inloggningen med TOTP/AAL2, full smoke på den domänkopplade deploymenten och
-en post-release-krypterad backup. Behåll FormSubmit och samtliga avstängda moduler
-oförändrade. Promota endast en deployment som byggts med produktionsmiljön;
-återställ aldrig genom att peka om till den pausade stagingpreviewn.
+och releasegodkännande gavs därefter. Produktionsmigrering, miljö, första
+superadmin och live-domänsmoke är genomförda. Kvar är endast kontoägarens verkliga
+inloggning med TOTP/AAL2 och en backupförnyelse efter MFA-enrolering. Behåll FormSubmit
+och samtliga avstängda moduler oförändrade. Vid rollback: promota endast en tidigare
+deployment som byggts med produktionsmiljön och har kompatibelt schema; peka aldrig
+om till den pausade stagingpreviewn.
 
 ## Redaktionellt ansvar och styrning som återstår
 

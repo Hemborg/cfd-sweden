@@ -68,9 +68,13 @@ Detta är provad lokal SQL-/konto-/MFA-återställning, inte en full hostad
 katastrofåterställning till ett nytt Supabase-projekt. Cloud-konfiguration,
 JWT/API-nycklar, Vault-kryptering och Storage-filer ingår inte i det provet.
 En framtida export med krypterade MFA-faktorer kräver en ny verifierad process.
-Produktionen har en lokalt, DPAPI-skyddad baslinje före migrering. En krypterad
-post-release-backup tas efter att domänsläppet och den verkliga MFA-kontrollen är klara.
-Hostad katastrofåterställning är fortfarande inte provad.
+En första produktionsbackup har efter release skapats av fem SQL-exporter och
+migrationshistorik, paketerats i ett portabelt AES256/OpenPGP-arkiv med separat
+slumpmässig 256-bitars nyckel och verifierats genom dekryptering och SHA-256-
+jämförelse. Tillfälliga okrypterade arkiv och dumpfiler raderades efter kontroll.
+Arkivet ligger endast i redan skyddad lokal lagring och innehåller den skapade
+administratörens lösenordshash. Det ska aldrig publiceras och måste förnyas efter
+MFA-enrolering. Hostad katastrofåterställning är fortfarande inte provad.
 
 [Supabases Auth-migreringsguide](https://supabase.com/kb/troubleshooting/migrating-auth-users-between-projects)
 beskriver bevarande av lösenordshashar och att andra JWT-nycklar ogiltigförklarar
