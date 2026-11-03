@@ -46,7 +46,7 @@ test("content-import-manifestet bevarar källfält, utkast och tidszon", () => {
   assert.match(manifest.sha256, /^[a-f0-9]{64}$/);
   const draft = manifest.items.find((item) => item.kind === "article" && item.slug === "draft-with-date");
   assert.deepEqual(draft, {
-    kind: "article", slug: "draft-with-date", title: "Utkast med planerat datum", excerpt: "Ett utkast som inte får bli publikt.", body: "# Rubrik\n\nMarkdown med **formatering**.", tags: ["UAP", "Sverige"], status: "draft", sourceDate: "2099-12-31", publishedAt: null, seoTitle: "Utkast SEO", seoDescription: "Utkastets metadata bevaras.", authorName: "Redaktionen",
+    kind: "article", slug: "draft-with-date", title: "Utkast med planerat datum", excerpt: "Ett utkast som inte får bli publikt.", body: "# Rubrik\n\nMarkdown med **formatering**.", tags: ["UAP", "Sverige"], status: "draft", sourceDate: "2099-12-31", publishedAt: "2099-12-31T00:00:00.000Z", seoTitle: "Utkast SEO", seoDescription: "Utkastets metadata bevaras.", authorName: "Redaktionen",
   });
   assert.ok(manifest.warnings[0]?.includes("2099-12-31"));
   const event = manifest.items.find((item) => item.kind === "event" && item.slug === "future-event");
@@ -62,6 +62,7 @@ test("import-SQL vägrar konflikter, skriver aldrig över och verifierar källan
   assert.match(sql, /on conflict\(slug\) do nothing/g);
   assert.match(sql, /content_import_source_comparison_failed/);
   assert.match(sql, /Markdown med \*\*formatering\*\*/);
+  assert.doesNotMatch(sql, /scheduled_at/);
   assert.match(sql, /2031-06-01T18:30:00\+02:00/);
 });
 

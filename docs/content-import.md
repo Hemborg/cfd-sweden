@@ -43,7 +43,7 @@ Det finns alltså ingen UPSERT och inga befintliga, avvikande rader skrivs över
 
 ## Utkast och datum
 
-`published: false` importeras som `status = 'draft'` och `published_at = null`. Ett källdatum på ett utkast bevaras i manifestet och flaggas som en varning. Nuvarande `articles`-schema saknar en separat kolumn för planerat publiceringsdatum, så datumet får inte tyst förvandlas till en publicering. En sådan schemaändring kräver ett nytt, uttryckligt migrationsbeslut.
+`published: false` importeras som `status = 'draft'`, men källdatumet bevaras i `published_at` genom den framåtriktade migrationen `202611030040_article_scheduling.sql`. Migrationen släpper endast den gamla begränsningen som krävde `published_at = null` för utkast. Datumet gör inte utkastet publikt: den publika RLS-regeln kräver fortfarande både `status = 'published'` och ett passerat `published_at`.
 
 Ett framtida evenemang behåller sin ISO-tidszon i `starts_at`. `registration_open` behålls från källan; importverktyget aktiverar inte betalning, anmälan eller externa API:er.
 

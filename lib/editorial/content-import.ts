@@ -68,7 +68,7 @@ export function createContentImportManifest(posts: Post[], events: Event[]): Con
       tags: [...post.tags],
       status: post.published ? "published" : "draft",
       sourceDate: post.date,
-      publishedAt: post.published ? `${post.date}T00:00:00.000Z` : null,
+      publishedAt: `${post.date}T00:00:00.000Z`,
       seoTitle: post.seoTitle ?? null,
       seoDescription: post.seoDescription ?? null,
       authorName: post.author,
@@ -88,7 +88,7 @@ export function createContentImportManifest(posts: Post[], events: Event[]): Con
   assertUnique(items);
   const warnings = items
     .filter((item): item is ImportArticle => item.kind === "article" && item.status === "draft")
-    .map((item) => `Utkastet ${item.slug} har källdatum ${item.sourceDate}. Det finns ingen separat planeringskolumn i nuvarande articles-schema; datumet bevaras i manifestet men skrivs inte till published_at.`);
+    .map((item) => `Utkastet ${item.slug} har källdatum ${item.sourceDate}. Det bevaras i published_at men publiceras inte eftersom status är draft.`);
   const draft = { format: 1 as const, source: { articles: posts.length, events: events.length }, items, warnings };
   return { ...draft, sha256: digest(draft) };
 }

@@ -29,6 +29,13 @@ function writeArtifacts(ownerId: string) {
   writeFileSync(".test-platform/content-import.sql", contentImportSql(manifest, ownerId));
 }
 
+function printImportReport(result: unknown) {
+  const resultSets = Array.isArray(result) ? result : [result];
+  const report = resultSets.find((entry) => typeof entry === "object" && entry !== null && "rows" in entry && Array.isArray((entry as { rows: unknown[] }).rows) && (entry as { rows: Record<string, unknown>[] }).rows[0]?.imported !== undefined) as { rows: { kind: string; imported: number; skipped: number; conflicts: number }[] } | undefined;
+  if (!report) throw new Error("Content import completed without its expected verification report.");
+  for (const row of report.rows) console.log(`${row.kind}: imported=${row.imported}, skipped=${row.skipped}, conflicts=${row.conflicts}`);
+}
+
 if (mode === "--sql") {
   const ownerId = z.uuid().parse(process.env.CFD_CONTENT_IMPORT_OWNER);
   writeArtifacts(ownerId);
@@ -46,7 +53,7 @@ writeArtifacts(ownerId);
 const db = new pg.Client({ connectionString: testUrl.toString() });
 await db.connect();
 try {
-  await db.query(contentImportSql(manifest, ownerId));
+  printImportReport(await db.query(contentImportSql(manifest, ownerId)));
   console.log("Imported into the isolated local test database after source-to-row verification.");
 } finally {
   await db.end();
