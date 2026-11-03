@@ -168,6 +168,7 @@ for (const account of byId.values()) {
 const source = new pg.Client({ connectionString: sourceUrl.toString() });
 let databaseCreated = false;
 let containerCreated = false;
+let primaryError;
 try {
   const image = spawnSync("docker", ["inspect", "--format", "{{.Config.Image}}", container], { encoding: "utf8", shell: false });
   if (image.status !== 0 || !image.stdout.trim().startsWith("postgres:17")) throw new Error("Restore drill requires the named local PostgreSQL 17 test container.");
@@ -207,20 +208,27 @@ try {
   } finally { await restored.end(); }
   let mfaVerified = 0;
   for (const account of byId.values()) if (await verifyAccount(account, anonKey)) mfaVerified += 1;
-  const wrong = await fetch(`${authUrl}/token?grant_type=password`, { method: "POST", headers: { apikey: anonKey, "content-type": "application/json" }, body: JSON.stringify({ email: accounts[0].email, password: `${accounts[0].password}!wrong` }) });
+  const wrong = await fetch(`${authUrl}/token?grant_type=password`, { signal: AbortSignal.timeout(10_000), method: "POST", headers: { apikey: anonKey, "content-type": "application/json" }, body: JSON.stringify({ email: accounts[0].email, password: `${accounts[0].password}!wrong` }) });
   if (![400, 422].includes(wrong.status)) throw new Error("Wrong password unexpectedly authenticated.");
   const mfaAccount = [...byId.values()].find((account) => account.mfa);
   if (!mfaAccount) throw new Error("Expected synthetic MFA test account.");
   const login = await request("/token?grant_type=password", { method: "POST", headers: { apikey: anonKey, "content-type": "application/json" }, body: JSON.stringify({ email: mfaAccount.email, password: mfaAccount.password }) });
   const badChallenge = await request(`/factors/${mfaAccount.mfa.factorId}/challenge`, { method: "POST", headers: { apikey: anonKey, authorization: `Bearer ${login.access_token}`, "content-type": "application/json" }, body: "{}" });
-  const invalid = await fetch(`${authUrl}/factors/${mfaAccount.mfa.factorId}/verify`, { method: "POST", headers: { apikey: anonKey, authorization: `Bearer ${login.access_token}`, "content-type": "application/json" }, body: JSON.stringify({ challenge_id: badChallenge.id, code: ((Number(base32Totp(mfaAccount.mfa.secret)) + 1) % 1_000_000).toString().padStart(6, "0") }) });
+  const invalid = await fetch(`${authUrl}/factors/${mfaAccount.mfa.factorId}/verify`, { signal: AbortSignal.timeout(10_000), method: "POST", headers: { apikey: anonKey, authorization: `Bearer ${login.access_token}`, "content-type": "application/json" }, body: JSON.stringify({ challenge_id: badChallenge.id, code: ((Number(base32Totp(mfaAccount.mfa.secret)) + 1) % 1_000_000).toString().padStart(6, "0") }) });
   if (![400, 422].includes(invalid.status)) throw new Error("Invalid TOTP unexpectedly authenticated.");
   console.log(`Hosted Auth restore verified: 6 synthetic bcrypt users, ${exportedFactors.length} TOTP factors, ${mfaVerified} restored MFA challenges, and no restored sessions or refresh tokens.`);
   console.log("LIMITATION: sessions are intentionally invalidated. Storage objects, hosted keys, e-mail delivery, and cloud project configuration are not restored by this local drill.");
+} catch (error) {
+  primaryError = error;
+  throw error;
 } finally {
   const cleanupFailures = [];
   if (containerCreated) { try { docker("rm", "-f", authContainer); } catch { cleanupFailures.push("temporary Auth container"); } }
   if (databaseCreated) { try { await source.query(`drop database ${targetDatabase}`); } catch { cleanupFailures.push("temporary Auth database"); } }
-  await source.end();
-  if (cleanupFailures.length) throw new Error(`Local cleanup failed for ${cleanupFailures.join(", ")}.`);
+  try { await source.end(); } catch { cleanupFailures.push("database connection"); }
+  if (cleanupFailures.length) {
+    const cleanupError = new Error(`Local cleanup failed for ${cleanupFailures.join(", ")}.`);
+    if (primaryError) throw new AggregateError([primaryError, cleanupError], "Restore failed and cleanup was incomplete.");
+    throw cleanupError;
+  }
 }
