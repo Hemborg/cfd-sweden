@@ -1,9 +1,10 @@
+import { paymentConfig } from "@/lib/events/payment-config";
 import { notFound } from "next/navigation";
 import { PageLayout } from "@/components/PageLayout";
 import { site } from "@/content/site";
 import { getEventRepository } from "@/lib/events/repository";
 import { EventRegistrationForm } from "@/components/events/EventRegistrationForm";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 
 export const dynamic = "force-dynamic";
 async function findEvent(params: Promise<{ slug: string }>) {
@@ -50,7 +51,7 @@ export default async function EventPage({
         {event.cancelledAt ? (
           <p role="status">Detta evenemang är inställt. Anmälan är stängd.</p>
         ) : (
-          platformEnabled() && event.registrationOpen && (
+          platformFeatures().eventRegistration && (event.priceOre === 0 || paymentConfig() !== null) && event.registrationOpen && (
             <EventRegistrationForm
               eventSlug={event.slug}
               paid={event.priceOre > 0}

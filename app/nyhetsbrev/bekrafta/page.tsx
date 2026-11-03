@@ -1,6 +1,6 @@
 import { NewsletterLayout } from "@/components/communications/newsletter-layout";
 import { confirmNewsletterAction } from "../actions";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 type Props = { searchParams: Promise<{ token?: string; status?: string }> };
 export const metadata = {
   title: "Bekräfta prenumeration | CFD Sweden",
@@ -8,7 +8,7 @@ export const metadata = {
 };
 export default async function ConfirmNewsletterPage({ searchParams }: Props) {
   const { token, status } = await searchParams;
-  if (!platformEnabled() || status === "unavailable")
+  if (!platformFeatures().newsletters || status === "unavailable")
     return (
       <NewsletterLayout title="Nyhetsbrevet är inte öppet ännu">
         <p>Prenumerationer hanteras inte på webbplatsen just nu.</p>

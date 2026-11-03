@@ -95,6 +95,12 @@ jobs:
       - name: Platform browser and accessibility integration tests
         run: npm exec -- playwright test --config=playwright.platform.config.ts
 
-      - name: Stop the isolated test stack
+      - name: Build database and administration with optional features disabled
+        run: node scripts/platform-command.mjs build-core
+
+      - name: Editorial launch browser, MFA and accessibility regression
+        run: node scripts/platform-command.mjs browser-core
+
+      - name: Stop launch test stack
         if: always()
         run: npm run platform:stop

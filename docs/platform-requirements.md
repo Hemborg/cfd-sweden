@@ -117,3 +117,7 @@ transitiv `minimatch` i ESLint-verktygen och `glob` i React Emails verktygskedja
 Inget publikt formulär accepterar globmönster. npm föreslår inkompatibla större
 nedgraderingar som automatisk fix; dessa har inte genomförts. Detta är en
 kvarvarande beroenderisk att följa, inte en ren audit.
+# Senare produktionsuppdrag
+
+Den separata databaslanseringens omfattning och kvarvarande externa steg finns i [production-status.md](production-status.md) och [production-operations.md](production-operations.md). Historiken nedan beskriver föregående leverans.
+

@@ -2,6 +2,30 @@ export function platformEnabled() {
   return process.env.CFD_PLATFORM_ENABLED === "true";
 }
 
+/** Database/Auth are the launch foundation. Optional workflows fail closed. */
+export function platformFeatures() {
+  const database = platformEnabled();
+  const email = database && process.env.CFD_MAIL_ENABLED === "true" &&
+    ["smtp", "resend"].includes(process.env.CFD_MAIL_TRANSPORT ?? "disabled");
+  const eventRegistration = email && process.env.CFD_EVENT_REGISTRATION_ENABLED === "true";
+  return {
+    database,
+    administration: database,
+    email,
+    newsletters: email && process.env.CFD_NEWSLETTER_ENABLED === "true",
+    eventRegistration,
+    payments: eventRegistration && process.env.CFD_STRIPE_ENABLED === "true",
+    comments: database && process.env.CFD_COMMENTS_ENABLED === "true",
+    contactDatabase: email && process.env.CFD_CONTACT_BACKEND === "database",
+    publicSignup: false,
+  } as const;
+}
+
+export type PlatformFeature = keyof ReturnType<typeof platformFeatures>;
+export function requireFeature(feature: PlatformFeature) {
+  if (!platformFeatures()[feature]) throw new Error("Funktionen är inte aktiverad.");
+}
+
 export function platformConfig() {
   if (!platformEnabled()) throw new Error("Plattformen är inte aktiverad.");
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

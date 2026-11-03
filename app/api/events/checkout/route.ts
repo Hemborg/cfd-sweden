@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
-import { platformConfig, platformEnabled } from "@/lib/platform/config";
+import { platformConfig, platformFeatures } from "@/lib/platform/config";
 import { createServiceClient } from "@/lib/platform/db";
 import {
   parseJson,
@@ -14,7 +14,7 @@ import { paymentConfig } from "@/lib/events/payment-config";
 
 export async function POST(request: Request) {
   const payments = paymentConfig();
-  if (!platformEnabled() || !payments)
+  if (!platformFeatures().payments || !payments)
     return privateJson({ error: "payments_not_enabled" }, 503);
   try {
     const input = await parseJson(request, registrationInputSchema);

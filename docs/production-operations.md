@@ -10,12 +10,12 @@
 - `main` är `50860d9`. PR #3 och PR #4 är öppna; PR #4:s tidigare
   granskningsunderlag är `24f868b`.
 - Vercel-projektet `cfd-sweden` finns i teamet `hemborg-5741s-projects`. Inga
-  miljövariabler är verifierade där.
+  projektmiljövariabler har lagts till där enligt den granskade inställningssidan.
 - Ingen CFD Sweden-databas eller hostad staging-miljö finns verifierad.
-- Det inloggade Supabase-kontot är `Hemborg`, organisation `ufotilluap`. Två
-  fria projekt används redan: `skitfiske` och `vbl`. Gränssnittet blockerar
+- Det inloggade Supabase-kontots två fria projekt används redan för andra
+  ändamål. Gränssnittet blockerar
   nya fria projekt på grund av tvåprojektsgränsen.
-- Ändra, pausa, radera eller flytta aldrig `skitfiske` eller `vbl` för denna
+- Ändra, pausa, radera eller flytta aldrig de andra projekten för denna
   webbplats. Uppgradera inte plan och skapa inte nytt konto utan ett nytt,
   uttryckligt beslut.
 - Det finns för närvarande 0 artiklar och 0 evenemang i både `main` och denna
@@ -121,17 +121,20 @@ prefixet `202611030040`.
    `supabase/migrations/`. Granska och versionshantera den genererade
    `supabase/config.toml` innan användning.
 4. Länka endast staging: `supabase link --project-ref <STAGING_REF>`.
-5. Kör `supabase migration list --remote`. Om projektet inte är tomt eller
+5. Kör `supabase migration list --linked`. Om projektet inte är tomt eller
    historiken avviker: avbryt och dokumentera skillnaden.
-6. Kör stagingdeployen: `supabase db push --remote`.
+6. Granska `supabase db push --linked --dry-run`. Kör sedan stagingdeployen:
+   `supabase db push --linked`, utan seed.
 7. Spara commit-SHA, projektref, migreringslista före/efter och resultat av
    RLS/Auth-smoketester. Processreturkod ensam är inte ett godkännande.
 
-Använd aldrig `supabase db reset --remote`; den är destruktiv och används inte
-mot produktion. `supabase db pull --remote` används endast för att fånga en
+Använd aldrig `supabase db reset --linked` eller reset med extern `--db-url`;
+det är destruktivt. `supabase db pull --linked` används endast för att fånga en
 medveten existerande remote-ändring före fortsatt lokal utveckling, inte för att
 normalisera okända produktionsändringar. [Miljö- och
 migrationsflöde](https://supabase.com/docs/guides/deployment/managing-environments)
+
+Flaggorna är kontrollerade mot [CLI-referensen](https://supabase.com/docs/reference/cli/supabase-db-push).
 
 ### Supabase-specifika förutsättningar
 
@@ -152,6 +155,8 @@ operatör. Ingen publik registrering, inbjudan eller e-postleverans används.
    får en betrodd engångsserver använda
    `auth.admin.createUser({ email, password, email_confirm: true })`.
    Service-/secret-nyckeln får aldrig hamna i browsern.
+   Stäng först av **Allow new users to sign up** och anonym inloggning i Auth.
+   Ange miljöns exakta Site URL och tillåtna callback-URL:er, utan produktionsnycklar i staging.
 2. Kontrollera att triggern `auth_profile_created` skapade rätt profilrad och
    notera UUID:t. Som den utsedda operatören i SQL Editor, och endast efter
    kontroll av UUID:t, aktiveras första superadmin:
@@ -209,9 +214,9 @@ Före varje framtida hostad migrering eller import ska operatören ta en
 CLI-upplägg är separata dumpfiler för roller, schema och data:
 
 ```text
-supabase db dump --remote=<ANSLUTNINGSSTRÄNG> -f roles.sql --role-only
-supabase db dump --remote=<ANSLUTNINGSSTRÄNG> -f schema.sql
-supabase db dump --remote=<ANSLUTNINGSSTRÄNG> -f data.sql --use-copy --data-only
+supabase db dump --linked -f roles.sql --role-only
+supabase db dump --linked -f schema.sql
+supabase db dump --linked -f data.sql --use-copy --data-only
 ```
 
 En backup räknas inte som verifierad förrän filerna finns, är krypterat skyddade
@@ -222,6 +227,13 @@ lösenord sättas om; Storage-objekt ingår inte i databasbackupen. Anpassningar
 ovanpå `auth`/`storage` hanteras särskilt; triggern på `auth.users` kommer från
 migreringarna. [Backupguide](https://supabase.com/docs/guides/platform/backups)
 och [CLI-återställning](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore).
+
+De tre dumpkommandona är inte ensamma ett verifierat komplett Auth-återställningspaket.
+CLI undantar hanterade scheman som `auth` och `storage` som standard. Den hostade
+återställningsövningen måste uttryckligen omfatta Auth-identiteter, profilernas
+foreign keys, TOTP, sessionsåterkallelse och eventuella Storage-filer enligt
+leverantörens återställningsprocess. Kör därefter negativa RLS-tester på målet;
+enbart samma tabellantal räcker inte som produktionsbevis.
 
 ## Stagingacceptans och produktionsgrind
 
@@ -238,7 +250,11 @@ plattformsläge.**
 
 ## Redaktionellt ansvar och styrning som återstår
 
-Elaine ansvarar för redaktionellt innehåll i ett senare aktiverat adminflöde.
+Elaine kan lämna artikeltext, rubrik, ingress, författare, taggar och önskat datum
+till utsedd redaktör, eller använda administrationen om föreningen tilldelar
+henne redaktörsroll. Spara utkast, öppna den privata förhandsgranskningen och välj
+sedan Publicerad. Ett framtida UTC-datum håller artikeln dold tills tiden infaller.
+Ändra Status till Utkast för att avpublicera; URL-sluggen ska behållas vid redigering.
 Statiska webbtexter och marknadssidor är versionsstyrd kod och ändras genom
 normal Git-granskning. Före skarp drift återstår beslut om personuppgiftsansvar,
 retention, integritetstext, incident-/återställningsansvar, redaktionsprocess,

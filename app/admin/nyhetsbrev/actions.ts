@@ -1,4 +1,5 @@
 "use server";
+import { requireFeature } from "@/lib/platform/config";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { assertSameOrigin } from "@/lib/platform/http";
@@ -17,6 +18,7 @@ const campaign = z.object({
     .optional(),
 });
 export async function saveNewsletterCampaignAction(form: FormData) {
+  requireFeature("newsletters");
   await assertSameOrigin();
   const actor = await requireRoles(["administrator"]);
   const input = campaign.parse({
@@ -51,6 +53,7 @@ export async function saveNewsletterCampaignAction(form: FormData) {
   revalidatePath("/admin/nyhetsbrev");
 }
 export async function sendNewsletterCampaignAction(form: FormData) {
+  requireFeature("newsletters");
   await assertSameOrigin();
   const actor = await requireRoles(["administrator"]);
   const id = z.uuid().parse(form.get("id"));
@@ -83,6 +86,7 @@ export async function sendNewsletterCampaignAction(form: FormData) {
   revalidatePath("/admin/nyhetsbrev");
 }
 export async function cancelNewsletterCampaignAction(form: FormData) {
+  requireFeature("newsletters");
   await assertSameOrigin();
   await requireRoles(["administrator"]);
   const id = z.uuid().parse(form.get("id"));

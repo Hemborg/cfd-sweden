@@ -34,7 +34,7 @@ test.describe("lokal föreningsplattform: grupper, uppgifter och moderering", ()
       .getByLabel("E-postadress för inbjudan")
       .fill(account("member").email);
     await groupSection
-      .getByRole("button", { name: "Lägg till och köa inbjudan" })
+      .getByRole("button", { name: /Lägg till (och köa inbjudan|utan e-post)/ })
       .click();
     await expect(
       groupSection.getByRole("listitem").filter({hasText:"Test member · participant"}),

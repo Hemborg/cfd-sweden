@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 import {
   parseJson,
   privateJson,
@@ -10,7 +10,7 @@ import { registrationInputSchema } from "@/lib/events/types";
 import { requestFreeEventConfirmation } from "@/lib/events/free-confirmation";
 
 export async function POST(request: Request) {
-  if (!platformEnabled()) return privateJson({ error: "not_available" }, 503);
+  if (!platformFeatures().eventRegistration) return privateJson({ error: "not_available" }, 503);
   try {
     const input = await parseJson(request, registrationInputSchema);
     await rateLimitSource(

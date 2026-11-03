@@ -159,6 +159,8 @@ export function createPlatformEventRepository(
         .eq("published", true)
         .is("cancelled_at", null)
         .gte("starts_at", now.toISOString())
+        .abortSignal(AbortSignal.timeout(5_000))
+        .retry(false)
         .order("starts_at");
       if (error) throw new Error("Kunde inte hämta evenemang.");
       return (data as EventRow[]).map(event);
@@ -168,6 +170,8 @@ export function createPlatformEventRepository(
         .from("events")
         .select("*")
         .eq("published", true)
+        .abortSignal(AbortSignal.timeout(5_000))
+        .retry(false)
         .order("starts_at");
       if (error) throw new Error("Kunde inte hämta evenemang.");
       return (data as EventRow[]).map(event);
@@ -178,6 +182,8 @@ export function createPlatformEventRepository(
         .select("*")
         .eq("slug", slug)
         .eq("published", true)
+        .abortSignal(AbortSignal.timeout(5_000))
+        .retry(false)
         .maybeSingle();
       if (error) throw new Error("Kunde inte hämta evenemanget.");
       return data ? event(data as EventRow) : null;

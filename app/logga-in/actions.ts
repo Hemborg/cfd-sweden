@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createSessionClient, createServiceClient } from "@/lib/platform/db";
-import { platformConfig, platformEnabled } from "@/lib/platform/config";
+import { platformConfig, platformEnabled, platformFeatures } from "@/lib/platform/config";
 import {
   assertSameOrigin,
   rateLimit,
@@ -33,7 +33,7 @@ export async function logout() {
   redirect("/logga-in");
 }
 export async function requestRecovery(form: FormData) {
-  if (!platformEnabled()) redirect("/logga-in");
+  if (!platformFeatures().email) redirect("/logga-in");
   await assertSameOrigin();
   await rateLimitSource("recovery", 10, 3600);
   const email = z.email().max(254).parse(form.get("email"));

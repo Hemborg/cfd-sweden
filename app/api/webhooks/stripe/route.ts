@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 import { createServiceClient } from "@/lib/platform/db";
 import { ticketCode } from "@/lib/events/service";
 import { paymentConfig } from "@/lib/events/payment-config";
@@ -7,7 +7,7 @@ import { readLimitedBody } from "@/lib/platform/http";
 
 export async function POST(request: Request) {
   const payments = paymentConfig();
-  if (!platformEnabled() || !payments || !process.env.STRIPE_WEBHOOK_SECRET)
+  if (!platformFeatures().payments || !payments || !process.env.STRIPE_WEBHOOK_SECRET)
     return new Response("not available", { status: 503 });
   const signature = request.headers.get("stripe-signature");
   if (!signature) return new Response("missing signature", { status: 400 });

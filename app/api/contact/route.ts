@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 import { createContact } from "@/lib/communications/service";
 import {
   parseJson,
@@ -10,7 +10,7 @@ import {
 import { contactSchema } from "@/lib/forms/validation";
 
 export async function POST(request: Request) {
-  if (!platformEnabled() || process.env.CFD_CONTACT_BACKEND !== "database")
+  if (!platformFeatures().contactDatabase)
     return privateJson({ error: "not_available" }, 503);
   try {
     const input = await parseJson(request, contactSchema);

@@ -212,3 +212,8 @@ dataskydds-/betalpolicy, backup/restoreprov och uttryckligt godkännande. Börja
 med plattformen avstängd om tjänsterna inte verifierats. Återställ vid fel
 föregående applikation och stoppa scheduler; byt inte tillbaka till ett tomt
 filrepo under pågående verksamhet utan att säkra ny databaspublicerad data.
+# Senare produktionsuppdrag
+
+Det senaste uppdragets hostade driftprocess finns i [production-operations.md](production-operations.md).
+Följ dess produktionsgrind och [verifieringsstatus](production-status.md). Nedanstående lokala testprocess behåller sina anslutningsspärrar.
+

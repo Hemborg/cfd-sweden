@@ -1,4 +1,5 @@
 import { requireRoles } from "@/lib/platform/auth";
+import { platformFeatures } from "@/lib/platform/config";
 import { createServiceClient } from "@/lib/platform/db";
 import { resolveUnknownMail, saveRetention } from "./actions";
 export default async function SystemPage() {
@@ -26,8 +27,7 @@ export default async function SystemPage() {
       <h2>Jobb och leverans</h2>
       <p>
         Senaste arbetarsignal:{" "}
-        {heartbeat?.updated_at ??
-          "Ingen registrerad. Kontrollera schemaläggaren."}
+        {!platformFeatures().email ? "Automatiska utskick är avstängda. Kön behandlas inte." : heartbeat?.updated_at ?? "Ingen registrerad. Kontrollera schemaläggaren."}
       </p>
       <p>
         En skickad avisering är inte samma sak som verifierad leverans till

@@ -1,8 +1,10 @@
+import { platformFeatures } from "@/lib/platform/config";
+
 export function paymentConfig() {
   const key = process.env.STRIPE_SECRET_KEY;
   const mode = process.env.CFD_STRIPE_MODE ?? "test";
   if (
-    process.env.CFD_STRIPE_ENABLED !== "true" ||
+    !platformFeatures().payments ||
     process.env.CFD_EXTERNAL_SERVICES_APPROVED !== "true" ||
     !key
   )

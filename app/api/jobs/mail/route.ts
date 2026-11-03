@@ -1,5 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 import { privateJson } from "@/lib/platform/http";
 import { runMailWorker } from "@/lib/communications/dispatch";
 import { createServiceClient } from "@/lib/platform/db";
@@ -18,7 +18,7 @@ function authorised(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (!platformEnabled() || !authorised(request))
+  if (!platformFeatures().email || !authorised(request))
     return new Response(null, {
       status: 404,
       headers: { "Cache-Control": "no-store" },

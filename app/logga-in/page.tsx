@@ -1,6 +1,6 @@
 import { Header } from "@/components/Header";
 import { SiteFooter } from "@/components/SiteFooter";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformEnabled, platformFeatures } from "@/lib/platform/config";
 import { login, requestRecovery } from "./actions";
 
 export const metadata = {
@@ -31,7 +31,7 @@ export default async function LoginPage({
                 igen.
               </p>
             )}
-            {query.skickat && (
+            {query.skickat && platformFeatures().email && (
               <p role="status">
                 Om adressen har ett konto får du instruktioner för
                 återställning.
@@ -60,7 +60,7 @@ export default async function LoginPage({
               </label>
               <button className="submit-button">Logga in</button>
             </form>
-            <details>
+            {platformFeatures().email ? <details>
               <summary>Glömt lösenordet?</summary>
               <form action={requestRecovery}>
                 <label className="field">
@@ -71,7 +71,7 @@ export default async function LoginPage({
                   Skicka återställningslänk
                 </button>
               </form>
-            </details>
+            </details> : <p>Behöver du hjälp med ditt konto? Kontakta föreningens administratör. Återställning via e-post är inte aktiverad.</p>}
             <p>
               Konton skapas genom en inbjudan från föreningen. En
               kontaktförfrågan skapar inget konto.

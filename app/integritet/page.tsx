@@ -1,15 +1,15 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { PageLayout } from "@/components/PageLayout";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 
 export const metadata: Metadata = {
   title: "Personuppgifter och integritet | CFD Sweden",
 };
 
 export default function PrivacyPage() {
-  const databaseContact =
-    platformEnabled() && process.env.CFD_CONTACT_BACKEND === "database";
+  const features = platformFeatures();
+  const databaseContact = features.contactDatabase;
   return (
     <PageLayout
       current="privacy"
@@ -51,28 +51,27 @@ export default function PrivacyPage() {
               leverantörer som medverkar i överföringen.
             </p>
           )}
-          {platformEnabled() && (
+          {features.database && (
             <>
               <h2>Nyhetsbrev, medlemsportal och aktiviteter</h2>
-              <p>
+              {features.newsletters && <p>
                 Nyhetsbrev kräver ett separat samtycke och bekräftelse via
                 e-post. Varje nyhetsbrev innehåller en avregistreringslänk.
                 Samtycke, bekräftelse och avregistrering dokumenteras för att
                 förhindra oönskade utskick.
-              </p>
+              </p>}
               <p>
                 Medlemsportalen använder inloggningscookies för din session.
                 Behöriga föreningsansvariga hanterar konton, gruppmedlemskap och
                 uppgifter. Privata gruppuppgifter visas bara för behöriga
-                deltagare. Kommentarer granskas före publicering och visar inte
-                din e-postadress.
+                deltagare. {features.comments && "Kommentarer granskas före publicering och visar inte din e-postadress."}
               </p>
-              <p>
+              {features.eventRegistration && <p>
                 Vid evenemangsanmälan sparas kontaktuppgifter och
-                bokningsstatus. Vid ett betalt evenemang hanterar Stripe
+                bokningsstatus. {features.payments && <>Vid ett betalt evenemang hanterar Stripe
                 betalningsuppgifterna; föreningen lagrar betalningsreferenser
-                och biljettstatus, inte kortuppgifter.
-              </p>
+                och biljettstatus, inte kortuppgifter.</>}
+              </p>}
             </>
           )}
           <h2>Frågor, rättelse och radering</h2>

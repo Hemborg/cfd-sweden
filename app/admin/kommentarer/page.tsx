@@ -1,4 +1,5 @@
 import { requireRoles } from "@/lib/platform/auth";
+import { platformFeatures } from "@/lib/platform/config";
 import { moderate } from "./actions";
 export default async function CommentsPage({
   searchParams,
@@ -6,6 +7,7 @@ export default async function CommentsPage({
   searchParams: Promise<{ status?: string }>;
 }) {
   const actor = await requireRoles(["moderator"]);
+  if (!platformFeatures().comments) return <section><h1>Kommentarer och moderering</h1><p>Publika kommentarer är inte aktiverade.</p></section>;
   const query = await searchParams;
   let request = actor.client
     .from("article_comments")

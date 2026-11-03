@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 import { confirmFreeEventRegistration } from "@/lib/events/free-confirmation";
 import { parseJson, privateJson, rateLimitSource } from "@/lib/platform/http";
 import { z } from "zod";
@@ -9,7 +9,7 @@ const confirmationInput = z.object({
 });
 
 export async function POST(request: Request) {
-  if (!platformEnabled()) return privateJson({ error: "not_available" }, 503);
+  if (!platformFeatures().eventRegistration) return privateJson({ error: "not_available" }, 503);
   try {
     const input = await parseJson(request, confirmationInput);
     await rateLimitSource("free-event-confirmation", 10, 3600, request);

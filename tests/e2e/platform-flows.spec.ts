@@ -119,6 +119,12 @@ test("publicering och avpublicering uppdaterar detalj, metadata, RSS och sitemap
   expect((await request.get(`/nyheter/${slug}`)).status()).toBe(404);
   const edit = page.locator("details").filter({ hasText: title });
   await edit.locator("summary").click();
+  await edit.getByRole("link", { name: "Förhandsgranska sparat utkast" }).click();
+  await expect(page.getByRole("heading", { name: title })).toBeVisible();
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+  expect((await request.get(`/admin/nyheter/${slug}/forhandsgranska`)).url()).toContain("/logga-in");
+  await page.getByRole("link", { name: "Tillbaka till redaktionen" }).click();
+  await edit.locator("summary").click();
   await edit
     .getByRole("combobox", { name: "Status", exact: true })
     .selectOption("published");
@@ -134,6 +140,10 @@ test("publicering och avpublicering uppdaterar detalj, metadata, RSS och sitemap
   expect(await (await request.get("/sitemap.xml")).text()).toContain(slug);
   await page.goto("/admin/nyheter");
   await edit.locator("summary").click();
+  await edit.getByLabel("Rubrik", { exact: true }).fill(`${title} uppdaterad`);
+  await edit.getByRole("button", { name: "Spara ändring", exact: true }).click();
+  await expect(edit.locator("summary")).toContainText(`${title} uppdaterad`);
+  expect(await (await request.get(`/nyheter/${slug}`)).text()).toContain(`${title} uppdaterad`);
   await edit
     .getByRole("combobox", { name: "Status", exact: true })
     .selectOption("draft");

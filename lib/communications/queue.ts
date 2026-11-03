@@ -1,3 +1,4 @@
+import { requireFeature } from "@/lib/platform/config";
 import "server-only";
 import { randomUUID } from "node:crypto";
 import { createServiceClient } from "@/lib/platform/db";
@@ -10,6 +11,7 @@ import {
 } from "./types";
 
 export async function queueMail(input: QueueMailInput) {
+  requireFeature("email");
   const parsed = queueMailInput.parse(input);
   const template = parsed.template as MailTemplate;
   const data = validateTemplateData(template, parsed.data);
@@ -37,6 +39,7 @@ export type ClaimedMail = {
   consentEpoch: string | null;
 };
 export async function claimQueuedMail(limit = 10): Promise<ClaimedMail[]> {
+  requireFeature("email");
   const worker = randomUUID();
   const { data, error } = await createServiceClient().rpc("claim_queue_mail", {
     worker_token: worker,
@@ -87,6 +90,7 @@ export async function markQueuedMailTransport(
 export async function queueCampaignMail(
   input: QueueMailInput & { campaignId: string; lease: string },
 ) {
+  requireFeature("newsletters");
   const parsed = queueMailInput.parse(input);
   const template = parsed.template as MailTemplate;
   const data = validateTemplateData(template, parsed.data);

@@ -1,11 +1,11 @@
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 import { requireRoles } from "@/lib/platform/auth";
 import { parseJson, privateJson } from "@/lib/platform/http";
 import { checkinInputSchema } from "@/lib/events/types";
 import { createPlatformEventRepository } from "@/lib/events/repository";
 
 export async function POST(request: Request) {
-  if (!platformEnabled()) return privateJson({ error: "not_available" }, 503);
+  if (!platformFeatures().eventRegistration) return privateJson({ error: "not_available" }, 503);
   try {
     const actor = await requireRoles(["administrator"]);
     const input = await parseJson(request, checkinInputSchema);

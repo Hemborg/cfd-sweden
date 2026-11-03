@@ -1,4 +1,5 @@
 import { revalidatePath } from "next/cache";
+import Link from "next/link";
 import { requireRoles } from "@/lib/platform/auth";
 import { createPlatformEditorialRepository } from "@/lib/editorial/platform-repository";
 import { articleInputSchema } from "@/lib/editorial/types";
@@ -28,7 +29,7 @@ export default async function AdminNewsPage() {
         .map((tag) => tag.trim())
         .filter(Boolean),
       status,
-      publishedAt: status === "published" ? new Date().toISOString() : null,
+      publishedAt: text(form, "publishedAt") ? new Date(`${text(form, "publishedAt")}Z`).toISOString() : status === "published" ? new Date().toISOString() : null,
       seoTitle: text(form, "seoTitle") || null,
       seoDescription: text(form, "seoDescription") || null,
     });
@@ -90,6 +91,7 @@ export default async function AdminNewsPage() {
           <summary>
             {article.title} ({article.status})
           </summary>
+          <Link href={`/admin/nyheter/${article.slug}/forhandsgranska`}>Förhandsgranska sparat utkast</Link>
           <form className="formcard" action={save}>
             <input type="hidden" name="slug" value={article.slug} />
             <label>
@@ -129,6 +131,10 @@ export default async function AdminNewsPage() {
                 <option value="draft">Utkast</option>
                 <option value="published">Publicerad</option>
               </select>
+            </label>
+            <label>
+              Publiceringsdatum (UTC)
+              <input type="datetime-local" name="publishedAt" defaultValue={article.publishedAt?.slice(0, 16) ?? ""} />
             </label>
             <button>Spara ändring</button>
           </form>

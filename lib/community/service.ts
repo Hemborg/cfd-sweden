@@ -1,3 +1,4 @@
+import { requireFeature } from "@/lib/platform/config";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   campaignSchema,
@@ -115,6 +116,7 @@ export async function addTaskComment(client: Client, raw: unknown) {
   failure(error);
 }
 export async function addArticleComment(client: Client, raw: unknown) {
+  requireFeature("comments");
   const input = commentSchema.parse(raw);
   const { error } = await client
     .from("article_comments")
@@ -122,6 +124,7 @@ export async function addArticleComment(client: Client, raw: unknown) {
   failure(error);
 }
 export async function reportArticleComment(client: Client, raw: unknown) {
+  requireFeature("comments");
   const input = reportSchema.parse(raw);
   const { error } = await client
     .from("comment_reports")
@@ -134,6 +137,7 @@ export async function moderateArticleComment(
   status: "approved" | "rejected" | "hidden" | "deleted",
   moderatorId: string,
 ) {
+  requireFeature("comments");
   const { error } = await client
     .from("article_comments")
     .update({

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireRoles } from "@/lib/platform/auth";
+import { platformFeatures } from "@/lib/platform/config";
 import {
   createGroup,
   addMember,
@@ -182,7 +183,7 @@ export default async function GroupsPage() {
                       <option value="leader">Gruppansvarig</option>
                     </select>
                   </label>
-                  <button>Lägg till och köa inbjudan</button>
+                  <button>{platformFeatures().email ? "Lägg till och köa inbjudan" : "Lägg till utan e-post"}</button>
                 </form>
                 <form action={publishGroupUpdate}>
                   <h3>Ny gruppuppdatering</h3>

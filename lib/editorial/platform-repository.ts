@@ -53,6 +53,8 @@ export function createPlatformEditorialRepository(
         .select("*")
         .eq("status", "published")
         .lte("published_at", now.toISOString())
+        .abortSignal(AbortSignal.timeout(5_000))
+        .retry(false)
         .order("published_at", { ascending: false });
       if (error) throw new Error("Kunde inte hämta nyheter.");
       return (data as ArticleRow[]).map(article);
@@ -64,6 +66,8 @@ export function createPlatformEditorialRepository(
         .eq("slug", slug)
         .eq("status", "published")
         .lte("published_at", now.toISOString())
+        .abortSignal(AbortSignal.timeout(5_000))
+        .retry(false)
         .maybeSingle();
       if (error) throw new Error("Kunde inte hämta nyheten.");
       return data ? article(data as ArticleRow) : null;
@@ -84,10 +88,7 @@ export function createPlatformEditorialRepository(
         body: input.body,
         tags: input.tags,
         status: input.status,
-        published_at:
-          input.status === "published"
-            ? (input.publishedAt ?? new Date().toISOString())
-            : null,
+        published_at: input.publishedAt ?? (input.status === "published" ? new Date().toISOString() : null),
         seo_title: input.seoTitle ?? null,
         seo_description: input.seoDescription ?? null,
       };
@@ -102,7 +103,7 @@ export function createPlatformEditorialRepository(
   };
 }
 
-/** Database content is opt-in. The established Markdown site remains the safe fallback. */
+/** The selected source is authoritative. Database errors never fall back to stale files. */
 export function getEditorialRepository(): EditorialRepository {
   return platformEnabled()
     ? createPlatformEditorialRepository(createPublicClient())

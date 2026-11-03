@@ -13,6 +13,7 @@ import { renderMail } from "./templates";
 import { validateTemplateData } from "./types";
 import { resolveQueueReference } from "./references";
 import { dispatchDueCampaigns } from "./campaigns";
+import { platformFeatures } from "@/lib/platform/config";
 
 function transport() {
   return process.env.CFD_MAIL_TRANSPORT ?? "disabled";
@@ -53,6 +54,11 @@ async function stillDeliverable(item: ClaimedMail) {
 }
 
 async function send(item: ClaimedMail) {
+  const features = platformFeatures();
+  if (!features.email ||
+    ((item.template.startsWith("newsletter-") || item.template === "campaign-newsletter") && !features.newsletters) ||
+    (item.template.startsWith("event-") && !features.eventRegistration))
+    return { state: "failed" as const, error: "Leveransfunktionen är avstängd." };
   // Only a strict opaque event reference may be plain SQL data. Everything
   // else, particularly any link or token, is an app-created AEAD envelope.
   const data = isEncryptedPayload(item.data)
@@ -142,6 +148,7 @@ async function send(item: ClaimedMail) {
 }
 
 export async function runMailWorker(limit = 10) {
+  if (!platformFeatures().email) return { claimed: 0, completed: 0, disabled: true };
   // A missing configuration must never turn queued messages into a successful
   // no-op. Local integration explicitly uses SMTP/Mailpit.
   const service = createServiceClient();

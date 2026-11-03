@@ -1,5 +1,11 @@
 # CFD Sweden — instruktioner till kodagenter
 
+## Produktionsförberedelse 2026-11-03 (senaste uppdraget)
+
+Arbeta på `codex/cfd-production-foundation-20261103`, byggt ovanpå PR #4. Separata agentuppgifter måste använda egna worktrees/brancher. Se `docs/production-operations.md` och `docs/production-status.md`. Databas, privat Auth och redaktionell administration ska kunna köras med alla valfria publika funktioner avstängda. FormSubmit till `cfdsweden@proton.me` är fortsatt standard även med aktiv Supabase.
+
+Hostad staging är beställd men kräver separata CFD-ägda projekt och verifierad åtkomst. Använd aldrig andra projekts databas eller nycklar. Inga betalda resurser, verkliga utskick eller betalningar. Produktionsmigration, produktionsimport, Vercels produktionsmiljö, merge till main och produktionsdeploy kräver Karls uttryckliga godkännande efter verifierad staging. De äldre förbuden mot all extern staging nedan beskriver tidigare uppdrag. De lokala testskriptens anslutningsspärrar ska behållas.
+
 ## Föreningsplattform 2026-11-03
 
 Det senaste uppdraget utökar PR #3 till alla nio verksamhetsområden A–I på en NY feature-branch och en separat PR. Implementering, projektlokala beroenden, isolerade syntetiska PostgreSQL/Auth/SMTP-testmiljöer, tester, dokumentation och push av feature-branch är godkända. CRM/ERP ingår inte. Se `docs/platform-plan.md` och den nya kravmatrisen för aktuell omfattning. Äldre prototypbegränsningar nedan beskriver historiken, inte en gräns mot den uttryckligen beställda implementationen.

@@ -1,4 +1,5 @@
 import { requireRoles } from "@/lib/platform/auth";
+import { platformFeatures } from "@/lib/platform/config";
 import {
   cancelNewsletterCampaignAction,
   saveNewsletterCampaignAction,
@@ -9,6 +10,7 @@ type Props = {
 };
 export default async function NewsletterAdminPage({ searchParams }: Props) {
   const actor = await requireRoles(["administrator"]);
+  if (!platformFeatures().newsletters) return <section><h1>Nyhetsbrev</h1><p>Nyhetsbrev och utskick är inte aktiverade. Inga prenumerationer tas emot och inga mejl skickas.</p></section>;
   const params = await searchParams;
   const q = (params.q ?? "").replace(/[,%()]/g, "").slice(0, 100);
   const consent = ["pending", "confirmed", "withdrawn"].includes(

@@ -1,3 +1,4 @@
+import { platformFeatures } from "@/lib/platform/config";
 import { z } from "zod";
 import { requireActor } from "@/lib/platform/auth";
 import { parseJson, privateJson, rateLimit } from "@/lib/platform/http";
@@ -6,6 +7,7 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  if (!platformFeatures().comments) return privateJson({ error: "not_available" }, 503);
   try {
     const actor = await requireActor();
     await rateLimit(`report:${actor.user.id}`, 10, 3600);

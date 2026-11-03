@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 import { requestNewsletter } from "@/lib/communications/service";
 import {
   parseJson,
@@ -10,7 +10,7 @@ import {
 import { newsletterSchema } from "@/lib/forms/validation";
 
 export async function POST(request: Request) {
-  if (!platformEnabled()) return privateJson({ error: "not_available" }, 503);
+  if (!platformFeatures().newsletters) return privateJson({ error: "not_available" }, 503);
   try {
     const input = await parseJson(request, newsletterSchema);
     await rateLimitSource("newsletter", 10, 3600, request);

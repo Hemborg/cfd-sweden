@@ -8,7 +8,7 @@ import {
   passwordProofCookie,
   verifyPasswordProof,
 } from "@/lib/platform/password-proof";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformEnabled, platformFeatures } from "@/lib/platform/config";
 export const dynamic = "force-dynamic";
 export const metadata = { robots: { index: false, follow: false } };
 async function save(form: FormData) {
@@ -50,7 +50,7 @@ async function save(form: FormData) {
     .select("approved,suspended")
     .eq("id", user.id)
     .single();
-  if (setup && user.email && profile?.approved && !profile.suspended)
+  if (platformFeatures().email && setup && user.email && profile?.approved && !profile.suspended)
     await queueMail({
       key: `welcome:${user.id}`,
       template: "welcome",

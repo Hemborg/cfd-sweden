@@ -3,7 +3,7 @@ import { requireRoles } from "@/lib/platform/auth";
 import { createPlatformEventRepository } from "@/lib/events/repository";
 import { eventInputSchema } from "@/lib/events/types";
 import { assertSameOrigin } from "@/lib/platform/http";
-import { platformConfig } from "@/lib/platform/config";
+import { platformConfig, platformFeatures, requireFeature } from "@/lib/platform/config";
 import { encryptPayload } from "@/lib/communications/crypto";
 import { createHash, randomUUID } from "node:crypto";
 
@@ -13,7 +13,7 @@ function value(form: FormData, name: string) {
 }
 export default async function AdminEventsPage() {
   const actor = await requireRoles(["administrator", "editor"]);
-  const canManageParticipants = actor.roles.some(
+  const canManageParticipants = platformFeatures().eventRegistration && actor.roles.some(
     (role) => role === "administrator" || role === "superadmin",
   );
   const repository = createPlatformEventRepository(actor.client);
@@ -62,6 +62,7 @@ export default async function AdminEventsPage() {
   }
   async function cancelRegistration(form: FormData) {
     "use server";
+    requireFeature("eventRegistration");
     await assertSameOrigin();
     const actor = await requireRoles(["administrator"]);
     await createPlatformEventRepository(actor.client).cancelRegistration(
@@ -71,6 +72,7 @@ export default async function AdminEventsPage() {
   }
   async function cancelEvent(form: FormData) {
     "use server";
+    requireFeature("eventRegistration");
     await assertSameOrigin();
     const actor = await requireRoles(["administrator"]);
     await createPlatformEventRepository(actor.client).cancelEvent(
@@ -81,6 +83,7 @@ export default async function AdminEventsPage() {
   }
   async function checkIn(form: FormData) {
     "use server";
+    requireFeature("eventRegistration");
     await assertSameOrigin();
     const actor = await requireRoles(["administrator"]);
     const ticketCode = value(form, "ticketCode").trim().toUpperCase();
@@ -91,6 +94,7 @@ export default async function AdminEventsPage() {
   }
   async function sendPracticalInfo(form: FormData) {
     "use server";
+    requireFeature("eventRegistration");
     await assertSameOrigin();
     const actor = await requireRoles(["administrator"]);
     const eventId = value(form, "eventId");
@@ -137,6 +141,7 @@ export default async function AdminEventsPage() {
   return (
     <section>
       <h1>Evenemang</h1>
+      {!platformFeatures().eventRegistration && <p>Evenemang kan redigeras och publiceras. Publik anmälan, biljetter och utskick är avstängda, även om ett evenemang är markerat för öppen anmälan.</p>}
       {canManageParticipants && (
         <>
           <section aria-labelledby="refund-title">

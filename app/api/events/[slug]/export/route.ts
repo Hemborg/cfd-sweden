@@ -1,4 +1,4 @@
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 import { requireRoles } from "@/lib/platform/auth";
 import { csv } from "@/lib/platform/http";
 import { createPlatformEventRepository } from "@/lib/events/repository";
@@ -7,7 +7,7 @@ export async function GET(
   _: Request,
   { params }: { params: Promise<{ slug: string }> },
 ) {
-  if (!platformEnabled()) return new Response("Not available", { status: 503 });
+  if (!platformFeatures().eventRegistration) return new Response("Not available", { status: 503, headers: { "Cache-Control": "private, no-store" } });
   try {
     const actor = await requireRoles(["administrator"]);
     const { slug } = await params;

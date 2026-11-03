@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowIcon } from "@/components/Header";
 import { formContent, homeContent, site } from "@/content/site";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 import { PlatformInquiryForm } from "@/components/communications/platform-inquiry-form";
 
 const fieldOptions: Record<
@@ -17,7 +17,7 @@ const fieldOptions: Record<
 };
 
 export function InquiryForm({ variant }: { variant: "join" | "contact" }) {
-  if (platformEnabled() && process.env.CFD_CONTACT_BACKEND === "database")
+  if (platformFeatures().contactDatabase)
     return <PlatformInquiryForm variant={variant} />;
   const isContact = variant === "contact";
   const id = `${variant}-form`;

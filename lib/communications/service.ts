@@ -1,7 +1,7 @@
 import "server-only";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { createServiceClient } from "@/lib/platform/db";
-import { platformConfig } from "@/lib/platform/config";
+import { platformConfig, requireFeature } from "@/lib/platform/config";
 import { decryptPayload, encryptPayload } from "./crypto";
 import {
   queueMailInput,
@@ -31,6 +31,7 @@ function encryptedMail(
 }
 
 export async function createContact(input: ContactInput) {
+  requireFeature("contactDatabase");
   const id = randomUUID();
   const now = new Date();
   const owner = (process.env.CFD_MAIL_OPERATIONS ?? "cfdsweden@proton.me")
@@ -71,6 +72,7 @@ export async function createContact(input: ContactInput) {
 }
 
 export async function requestNewsletter(input: NewsletterInput) {
+  requireFeature("newsletters");
   const confirmationToken = token();
   const unsubscribeToken = token();
   const config = platformConfig();
@@ -107,6 +109,7 @@ export async function requestNewsletter(input: NewsletterInput) {
 }
 
 export async function confirmNewsletter(rawToken: string) {
+  requireFeature("newsletters");
   const service = createServiceClient();
   const tokenHash = hash(rawToken);
   // The recoverable unsubscribe token is encrypted at rest. It is read only in
@@ -145,6 +148,7 @@ export async function confirmNewsletter(rawToken: string) {
 }
 
 export async function withdrawNewsletter(rawToken: string) {
+  requireFeature("newsletters");
   const { data, error } = await createServiceClient().rpc(
     "withdraw_newsletter_consent",
     { token_hash: hash(rawToken), occurred_at: new Date().toISOString() },

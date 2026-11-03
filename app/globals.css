@@ -69,7 +69,7 @@ h3 { font-size: 1.3rem; font-weight: 600; line-height: 1.25; }
 p { margin: 0 0 1.1em; }
 :focus-visible { outline: 3px solid var(--amber); outline-offset: 4px; }
 .section-wrap, .header-inner, .subpage-hero-inner { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
-.eyebrow, .subpage-eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 20px; color: var(--blue); font-family: var(--font-mono), monospace; font-weight: 500; font-size: .75rem; letter-spacing: .12em; line-height: 1.6; text-transform: uppercase; }
+.eyebrow, .subpage-eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 20px; color: #4b6ba8; font-family: var(--font-mono), monospace; font-weight: 500; font-size: .75rem; letter-spacing: .12em; line-height: 1.6; text-transform: uppercase; }
 .eyebrow::before, .subpage-eyebrow::before { content: ""; flex: 0 0 28px; height: 2px; background: var(--amber); }
 .button-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 32px; }
 .button, .quick-link, .submit-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: fit-content; max-width: 100%; min-height: 48px; border: 2px solid var(--navy); border-radius: 999px; padding: 17px 24px 14px; background: transparent; color: var(--navy); font-family: var(--font-logo), sans-serif; font-weight: 700; font-size: .92rem; letter-spacing: .08em; line-height: 1.25; text-align: center; text-transform: uppercase; transition: background-color .15s ease, color .15s ease, transform .15s ease; }

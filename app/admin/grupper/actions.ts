@@ -5,7 +5,7 @@ import { requireRoles } from "@/lib/platform/auth";
 import { assertSameOrigin } from "@/lib/platform/http";
 import { createGroupUpdate, saveGroup } from "@/lib/community";
 import { queueMail } from "@/lib/communications/queue";
-import { platformConfig } from "@/lib/platform/config";
+import { platformConfig, platformFeatures } from "@/lib/platform/config";
 
 const formValue = (form: FormData, key: string) => String(form.get(key) ?? "");
 export async function createGroup(form: FormData) {
@@ -61,7 +61,7 @@ export async function addMember(form: FormData) {
     });
   if (error) throw new Error("Medlemmen kunde inte läggas till i gruppen.");
   const url = `${platformConfig().siteUrl}/medlem?grupp=${input.groupId}`;
-  await queueMail({
+  if (platformFeatures().email) await queueMail({
     key: `group-member:${input.groupId}:${invitee.user_id}`,
     template: "group-invitation",
     recipient: input.email,

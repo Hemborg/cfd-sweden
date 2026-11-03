@@ -1,6 +1,6 @@
 import { ConfirmFreeEventRegistration } from "./ConfirmFreeEventRegistration";
 import { PageLayout } from "@/components/PageLayout";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 
 type Props = { searchParams: Promise<{ token?: string }> };
 export const metadata = {
@@ -10,7 +10,7 @@ export const metadata = {
 
 export default async function ConfirmFreeEventPage({ searchParams }: Props) {
   const { token } = await searchParams;
-  const enabled = platformEnabled();
+  const enabled = platformFeatures().eventRegistration;
   const valid = token && /^[A-Za-z0-9_-]{32,128}$/.test(token);
   return (
     <PageLayout

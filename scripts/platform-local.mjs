@@ -46,6 +46,10 @@ if (!existsSync(envPath)) {
     envPath,
     [
       "CFD_PLATFORM_ENABLED=true",
+      "CFD_MAIL_ENABLED=true",
+      "CFD_NEWSLETTER_ENABLED=true",
+      "CFD_EVENT_REGISTRATION_ENABLED=true",
+      "CFD_COMMENTS_ENABLED=true",
       "NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321",
       `NEXT_PUBLIC_SUPABASE_ANON_KEY=${key("anon")}`,
       `SUPABASE_SERVICE_ROLE_KEY=${key("service_role")}`,

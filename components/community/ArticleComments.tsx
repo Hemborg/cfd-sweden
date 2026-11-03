@@ -1,10 +1,10 @@
 import { getActor } from "@/lib/platform/auth";
 import { createPublicClient } from "@/lib/platform/db";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 import { submitComment, submitReport } from "./actions";
 
 export async function ArticleComments({ postSlug }: { postSlug: string }) {
-  if (!platformEnabled()) return null;
+  if (!platformFeatures().comments) return null;
   const [actor, result] = await Promise.all([
     getActor(),
     createPublicClient()

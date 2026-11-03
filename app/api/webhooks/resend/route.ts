@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformFeatures } from "@/lib/platform/config";
 import { createServiceClient } from "@/lib/platform/db";
 import { readLimitedBody } from "@/lib/platform/http";
 
@@ -22,7 +22,7 @@ function providerMessageId(event: WebhookEvent) {
 export async function POST(request: Request) {
   const secret = process.env.RESEND_WEBHOOK_SECRET;
   if (
-    !platformEnabled() ||
+    !platformFeatures().email ||
     !secret ||
     process.env.CFD_RESEND_ENABLED !== "true"
   )

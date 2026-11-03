@@ -2,7 +2,7 @@ import "server-only";
 import { createHash, randomBytes } from "node:crypto";
 import { encryptPayload } from "@/lib/communications/crypto";
 import { validateTemplateData } from "@/lib/communications/types";
-import { platformConfig } from "@/lib/platform/config";
+import { platformConfig, requireFeature } from "@/lib/platform/config";
 import { createServiceClient } from "@/lib/platform/db";
 import { ticketCode } from "./service";
 import type { z } from "zod";
@@ -14,6 +14,7 @@ const hash = (value: string) =>
 const token = () => randomBytes(32).toString("base64url");
 
 export async function requestFreeEventConfirmation(input: RegistrationInput) {
+  requireFeature("eventRegistration");
   const service = createServiceClient();
   const { data: event, error: eventError } = await service
     .from("events")
@@ -42,6 +43,7 @@ export async function requestFreeEventConfirmation(input: RegistrationInput) {
 }
 
 export async function confirmFreeEventRegistration(rawToken: string) {
+  requireFeature("eventRegistration");
   const { data, error } = await createServiceClient().rpc(
     "confirm_free_event_registration",
     {

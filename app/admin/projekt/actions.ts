@@ -10,7 +10,7 @@ import {
   saveTask,
 } from "@/lib/community";
 import { requireRoles } from "@/lib/platform/auth";
-import { platformConfig } from "@/lib/platform/config";
+import { platformConfig, platformFeatures } from "@/lib/platform/config";
 import { createServiceClient } from "@/lib/platform/db";
 import { assertSameOrigin } from "@/lib/platform/http";
 
@@ -67,7 +67,7 @@ export async function saveTaskAction(form: FormData) {
     assigneeId,
     position: Number(form.get("position") ?? 1000),
   });
-  if (assigneeId) {
+  if (assigneeId && platformFeatures().email) {
     const recipient =
       await createServiceClient().auth.admin.getUserById(assigneeId);
     const email = recipient.data.user?.email;

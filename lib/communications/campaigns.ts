@@ -1,7 +1,7 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
 import { createServiceClient } from "@/lib/platform/db";
-import { platformConfig } from "@/lib/platform/config";
+import { platformConfig, platformFeatures } from "@/lib/platform/config";
 import { decryptPayload } from "./crypto";
 import { queueCampaignMail } from "./queue";
 type Campaign = {
@@ -12,6 +12,7 @@ type Campaign = {
 };
 type Recipient = { consent_id: string; email: string };
 export async function dispatchDueCampaigns(limit = 3) {
+  if (!platformFeatures().newsletters) return 0;
   const service = createServiceClient();
   const worker = randomUUID();
   const { data, error } = await service.rpc("claim_due_newsletter_campaigns", {

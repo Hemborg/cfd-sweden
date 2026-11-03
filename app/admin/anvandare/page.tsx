@@ -1,6 +1,7 @@
 import { requireRoles, roles, roleLabels } from "@/lib/platform/auth";
 import { createServiceClient } from "@/lib/platform/db";
 import { inviteUser, changeAccess, reissueAccountLink } from "./actions";
+import { platformFeatures } from "@/lib/platform/config";
 
 export default async function UsersPage({
   searchParams,
@@ -46,12 +47,12 @@ export default async function UsersPage({
           Sista aktiva superadmin kan inte tas bort.
         </p>
       )}
-      {query.skickat && (
+      {query.skickat && platformFeatures().email && (
         <p role="status">
           Inbjudan ligger i leveranskön. Köstatus visar när den har skickats.
         </p>
       )}
-      <h2>Bjud in medlem</h2>
+      {platformFeatures().email ? <><h2>Bjud in medlem</h2>
       <form action={inviteUser}>
         <label className="field">
           Namn
@@ -67,6 +68,7 @@ export default async function UsersPage({
         En inbjudan skapar ett medlemskonto. Administrativa uppdrag tilldelas
         separat av superadmin.
       </p>
+      </> : <p>Kontoinbjudningar och återställning via e-post är avstängda. Befintliga konton och deras uppdrag kan administreras här. Nya administratörer skapas via den kontrollerade processen i driftguiden.</p>}
       {users.map((user) => {
         const profile = profiles?.find((p) => p.id === user.id);
         const assigned =
@@ -77,7 +79,7 @@ export default async function UsersPage({
           <section key={user.id}>
             <h2>{profile?.display_name || "Utan namn"}</h2>
             <p>{user.email}</p>
-            {profile?.approved && !profile.suspended && (
+            {platformFeatures().email && profile?.approved && !profile.suspended && (
               <form action={reissueAccountLink}>
                 <input type="hidden" name="id" value={user.id} />
                 <button>Skicka ny kontolänk</button>

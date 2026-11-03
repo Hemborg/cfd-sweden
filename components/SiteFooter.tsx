@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { navigation } from "@/content/site";
-import { platformEnabled } from "@/lib/platform/config";
+import { platformEnabled, platformFeatures } from "@/lib/platform/config";
 
 export function SiteFooter() {
   return (
@@ -22,7 +22,7 @@ export function SiteFooter() {
             </Link>
             {platformEnabled() && (
               <p>
-                <Link href="/nyhetsbrev">Nyhetsbrev</Link> ·{" "}
+                {platformFeatures().newsletters && <><Link href="/nyhetsbrev">Nyhetsbrev</Link> ·{" "}</>}
                 <Link href="/medlem">Medlemsportal</Link> ·{" "}
                 <Link href="/grupper">Arbetsgrupper</Link>
               </p>

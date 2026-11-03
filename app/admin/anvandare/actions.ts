@@ -4,12 +4,13 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireRoles, roles } from "@/lib/platform/auth";
 import { createServiceClient } from "@/lib/platform/db";
-import { platformConfig } from "@/lib/platform/config";
+import { platformConfig, requireFeature } from "@/lib/platform/config";
 import { assertSameOrigin, rateLimit } from "@/lib/platform/http";
 import { queueMail } from "@/lib/communications/queue";
 import { createHash } from "node:crypto";
 
 export async function inviteUser(form: FormData) {
+  requireFeature("email");
   await assertSameOrigin();
   const actor = await requireRoles(["administrator"]);
   await rateLimit(`invite:${actor.user.id}`, 20, 3600);
@@ -82,6 +83,7 @@ export async function changeAccess(form: FormData) {
 
 /** Reissue to the account's verified address; an admin cannot redirect the link. */
 export async function reissueAccountLink(form: FormData) {
+  requireFeature("email");
   await assertSameOrigin();
   const actor = await requireRoles(["administrator"]);
   const id = z.uuid().parse(form.get("id"));
