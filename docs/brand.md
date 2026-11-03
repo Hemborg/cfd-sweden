@@ -1,5 +1,18 @@
 # Logotypens delar
 
+## Fristående nedladdningar
+
+Fyra transparenta PNG-exporter finns i `public/brand/`:
+
+- `cfd-sweden-symbol-color.png`: symbol med SWEDEN under, i färg (532 × 640).
+- `cfd-sweden-symbol-black.png`: samma uppställning, helt svart.
+- `cfd-sweden-horizontal-color.png`: symbol och CITIZENS FOR DISCLOSURE SWEDEN till höger, i färg (1698 × 532).
+- `cfd-sweden-horizontal-black.png`: samma liggande uppställning, helt svart.
+
+`node scripts/export-brand.mjs` återskapar exporterna efter ett webbbygge och installation av projektets Playwright Chromium. Exporten använder originalets bilddelar och webbbyggets Josefin Sans 600. Bakgrunden är transparent; den svarta versionen behöver en ljus bakgrund för att synas. Filerna är raster i originalupplösning, inte vektororiginal eller artificiellt uppskalade bilder.
+
+## Webbkomponenter och original
+
 Den högupplösta transparenta originalfilen från Karl finns oförändrad i `public/brand/cfd-master.png` (1698 × 532). `cfd-symbol.png` (532 × 532) och `cfd-wordmark.png` (1108 × 324) är beskurna, utan omskalning eller ändrade pixlar. `scripts/prepare-brand.mjs` återskapar delarna och favicon från mastern med projektets befintliga Sharp-installation.
 
 `components/BrandLogo.tsx` exporterar:
