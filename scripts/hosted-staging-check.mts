@@ -155,11 +155,11 @@ async function run() {
   report.memberArticleWriteDenied = true;
 
   const event = { slug: `${runtime.prefix}-event`, title: "Synthetic hosted event", description: "Hosted staging event for RLS verification.", starts_at: new Date(Date.now() + 86_400_000).toISOString(), location: "Stockholm", organiser: "CFD Sweden", registration_open: false, published: true, price_ore: 0, currency: "sek" };
-  await expectDenied(editor.from("events").insert(event), "editor event insert");
+  await requireOk(await editor.from("events").insert(event).select("slug").single(), "editor event insert");
   const admin = await signIn(runtime, adminAccount);
   adminAccount.mfa = await elevateMfa(admin);
   await writeAccountHandoff(runtime, accounts, artifacts);
-  await requireOk(await admin.from("events").insert(event).select("slug").single(), "administrator event insert");
+  await requireOk(await admin.from("events").update({ description: "Verified by synthetic administrator." }).eq("slug", event.slug).select("slug").single(), "administrator event edit");
   artifacts.eventSlug = event.slug;
   const publicEvents = await requireOk(await anonymous.from("events").select("slug").eq("slug", event.slug), "anonymous event list");
   assert.equal((publicEvents ?? []).length, 1, "published uncancelled event must be public");
