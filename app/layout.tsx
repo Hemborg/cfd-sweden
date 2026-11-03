@@ -1,28 +1,35 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Manrope, Martian_Mono, Josefin_Sans } from "next/font/google";
 import "./globals.css";
+import { site } from "@/content/site";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const bodyFont = Manrope({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const monoFont = Martian_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
+  weight: "500",
+});
+
+const logoFont = Josefin_Sans({
+  variable: "--font-logo",
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "CFD Sweden | Citizens for Disclosure",
-  description:
-    "CFD Sweden organiserar svenskar för ansvarsfull transparens kring UFO/UAP-frågan.",
-  metadataBase: new URL("https://cfdsweden.se"),
+  title: site.title,
+  description: site.description,
+  metadataBase: new URL(site.url),
   openGraph: {
-    title: "CFD Sweden | Citizens for Disclosure",
-    description:
-      "Den svenska grenen av Citizens for Disclosure, inom New Paradigm Institute.",
-    url: "https://cfdsweden.se",
-    siteName: "CFD Sweden",
+    title: site.title,
+    description: site.socialDescription,
+    url: site.url,
+    siteName: site.name,
     locale: "sv_SE",
     type: "website",
   },
@@ -36,7 +43,7 @@ export default function RootLayout({
   return (
     <html
       lang="sv"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${bodyFont.variable} ${monoFont.variable} ${logoFont.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

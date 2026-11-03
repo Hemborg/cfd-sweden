@@ -1,0 +1,106 @@
+name: Pull request checks
+
+on:
+  pull_request:
+
+# This workflow intentionally has no deployment, environment, secret, or write
+# permissions. Do not replace pull_request with pull_request_target.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, test, build, and browser checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - name: Check out the pull request
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      # Next generates route-aware definitions into .next/types. This makes the
+      # standalone TypeScript check meaningful on a clean checkout.
+      - name: Generate Next.js route types
+        run: npm exec -- next typegen
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Verify public release needs no external service credentials
+        run: node -e "const fs = require('node:fs'); const keys = Object.keys(process.env).filter(k => /^(NEXT_PUBLIC_SUPABASE_|SUPABASE_|RESEND_|STRIPE_)/.test(k) && process.env[k]); if (keys.length || ['.env', '.env.local', '.env.production', '.env.production.local'].some(p => fs.existsSync(p))) throw new Error('Public release checks require a clean environment without service credentials or local env files');"
+
+      - name: Production build with platform disabled
+        env:
+          CFD_PLATFORM_ENABLED: "false"
+          CFD_CONTACT_BACKEND: ""
+        run: npm run build
+
+      - name: Install the Playwright Chromium browser
+        run: npm exec -- playwright install --with-deps chromium
+
+      - name: Browser regression tests
+        run: npm run test:e2e
+
+      # This script creates and removes explicit local fixtures, then rebuilds
+      # before completing. It never uses the deployed domain.
+      - name: Published-content integration tests
+        run: npm run test:content:e2e
+
+      - name: Dependency audit (high and critical gate)
+        run: npm audit --audit-level=high
+
+      - name: Start isolated PostgreSQL, Auth, REST and synthetic SMTP
+        run: npm run platform:start
+
+      - name: Migrate empty database and seed synthetic accounts
+        run: |
+          npm run platform:migrate
+          npm run platform:seed
+
+      - name: Real database, RLS, Auth and mail integration tests
+        run: npm run test:integration
+
+      - name: Backup and restore into an empty isolated database
+        run: npm run test:restore
+
+      - name: Build the locally activated platform
+        env:
+          CFD_SITE_URL: http://127.0.0.1:3402
+          CFD_CONTACT_BACKEND: database
+        run: node scripts/platform-command.mjs build
+
+      - name: Platform browser and accessibility integration tests
+        run: npm exec -- playwright test --config=playwright.platform.config.ts
+
+      - name: Build database and administration with optional features disabled
+        run: node scripts/platform-command.mjs build-core
+
+      - name: Editorial launch browser, MFA and accessibility regression
+        run: node scripts/platform-command.mjs browser-core
+
+      - name: Stop launch test stack
+        if: always()
+        run: npm run platform:stop

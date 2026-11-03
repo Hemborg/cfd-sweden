@@ -1,5 +1,25 @@
 # CFD Sweden — instruktioner till kodagenter
 
+## Produktionsförberedelse 2026-11-03 (senaste uppdraget)
+
+Arbeta på `codex/cfd-production-foundation-20261103`, byggt ovanpå PR #4. Separata agentuppgifter måste använda egna worktrees/brancher. Se `docs/production-operations.md` och `docs/production-status.md`. Databas, privat Auth och redaktionell administration ska kunna köras med alla valfria publika funktioner avstängda. FormSubmit till `cfdsweden@proton.me` är fortsatt standard även med aktiv Supabase.
+
+Hostad staging är beställd men kräver separata CFD-ägda projekt och verifierad åtkomst. Använd aldrig andra projekts databas eller nycklar. Inga betalda resurser, verkliga utskick eller betalningar. Produktionsmigration, produktionsimport, Vercels produktionsmiljö, merge till main och produktionsdeploy kräver Karls uttryckliga godkännande efter verifierad staging. De äldre förbuden mot all extern staging nedan beskriver tidigare uppdrag. De lokala testskriptens anslutningsspärrar ska behållas.
+
+## Föreningsplattform 2026-11-03
+
+Det senaste uppdraget utökar PR #3 till alla nio verksamhetsområden A–I på en NY feature-branch och en separat PR. Implementering, projektlokala beroenden, isolerade syntetiska PostgreSQL/Auth/SMTP-testmiljöer, tester, dokumentation och push av feature-branch är godkända. CRM/ERP ingår inte. Se `docs/platform-plan.md` och den nya kravmatrisen för aktuell omfattning. Äldre prototypbegränsningar nedan beskriver historiken, inte en gräns mot den uttryckligen beställda implementationen.
+
+Ingen merge, produktionsdeploy, produktionsmigration, skarp debitering, mejl till verkliga medlemmar eller ändring av DNS/konton. FormSubmit ligger kvar tills ett separat godkänt backendbyte sker. `.env.example` med TOMMA hemlighetsfält är uttryckligen beställd; riktiga `.env`-filer och `.test-platform` ska alltid förbli ignorerade. Lokala testmigreringar använder endast den namngivna `cfd_platform_test`-databasen, aldrig externa projekt.
+
+## Granskningsleverans 2026-11-03
+
+Karl har uttryckligen godkänt commit, push av feature-branchen och en Pull Request mot `main` för oberoende granskning. **Merga inte denna PR, pusha inte till `main` och driftsätt inte produktionssajten utan ett nytt uttryckligt beslut.** Detta överstyr de äldre direktpubliceringsrutinerna nedan för detta uppdrag. Inga externa migrationer, verkliga utskick, persondataöverföringar eller konto-/DNS-ändringar ingår. Den senare beställningen av modersidans grafiska profil överstyr prototypens ursprungliga krav att behålla den gamla designen. Se `docs/review-handoff.md` för omfattning, kravstatus och kvarstående arbete.
+
+## Lokalt experiment 2026-11-02
+
+På grenen `codex/cfd-modular-mvp-20261102` gäller bygguppdragets snävare gräns: endast lokal prototyp. Ingen push, PR, merge, Vercel-deploy, extern migration, verkligt mejl, prenumeration eller kontokonfiguration utan nytt uttryckligt godkännande. Det överstyr publiceringsrutinen nedan för denna gren. Läs `docs/architecture.md`, `docs/operations.md` och `docs/prototype-report.md` för resultat och begränsningar. Startsidan behåller sitt befintliga FormSubmit-flöde; skicka aldrig automatiska testdata dit.
+
 ## Projekt och publicering
 
 - Webbplats: https://cfdsweden.se. Next.js App Router, drift hos Vercel.
@@ -25,8 +45,8 @@ Verifierat före denna dokumentationsändring: repot är publikt. Direktpublicer
 
 ## Formuläret
 
-- `app/page.tsx`: FormSubmit POST till `https://formsubmit.co/cfdsweden@proton.me`.
-- `_next`: `https://cfdsweden.se/tack`. Behåll `_honey` tomt och dolt för vanliga besökare.
+- `components/InquiryForm.tsx`: gemensam FormSubmit POST till `https://formsubmit.co/cfdsweden@proton.me`, med separata kontakt-/intressevarianter. E-post krävs; kontakt kräver även meddelande. Ingen automatisk prenumeration.
+- `_next`: `https://cfdsweden.se/tack` för intresse, `https://cfdsweden.se/tack?typ=kontakt` för kontakt. Behåll `_honey` tomt och dolt för vanliga besökare. Båda tackvarianterna är noindex och ska hållas utanför sitemap.
 - CAPTCHA är avstängd som ett medvetet val för ett enklare inskick. Honeypot ger svagare spamskydd; bevaka spam och leveransproblem. [FormSubmit rekommenderar CAPTCHA](https://formsubmit.co/documentation).
 - En lyckad omdirigering bevisar inte mejlleverans. Redovisa separat vad som testats i webbläsaren och vad mottagaren bekräftat i inkorgen. Märk tekniska testinskick tydligt.
 

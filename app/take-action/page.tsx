@@ -1,56 +1,32 @@
 import { PageLayout } from "@/components/PageLayout";
 import Link from "next/link";
-
-const campaigns = [
-  {
-    title: "Gå med i CFD Sweden",
-    text: "Anmäl intresse, berätta var du finns och hur du kan bidra till den svenska organiseringen.",
-  },
-  {
-    title: "Starta en lokal grupp",
-    text: "Samla människor i din stad för samtal, källgenomgångar, visningar och lokala aktiviteter.",
-  },
-  {
-    title: "Kontakta beslutsfattare",
-    text: "Hjälp oss formulera sakliga frågor till politiker, myndigheter och institutioner i Sverige.",
-  },
-  {
-    title: "Sprid kunskap",
-    text: "Dela material, översätt resurser och bidra till att frågan behandlas seriöst i offentligheten.",
-  },
-];
+import { campaigns, engagementContent, pageContent } from "@/content/site";
 
 export default function TakeActionPage() {
   return (
     <PageLayout
       current="action"
-      eyebrow="Take Action"
-      title="Det här är rörelsens praktiska nav."
-      intro="Originalets Take Action-sida samlar kampanjer, petitions, kongresskontakter och resultat. Den svenska versionen fokuserar på vad människor här kan göra nu."
+      eyebrow={pageContent.action.eyebrow} title={pageContent.action.title} intro={pageContent.action.intro}
     >
       <section className="featured-action">
-        <p className="subpage-eyebrow">Prioriterad action</p>
-        <h2>Bygg det svenska Citizens for Disclosure-nätverket.</h2>
-        <p>
-          Vi behöver människor som kan organisera, skriva, översätta, kontakta
-          media, arrangera lokala träffar och bygga förtroende för en saklig
-          svensk disclosure-rörelse.
-        </p>
-        <Link className="quick-link active" href="/#form">
-          Anmäl intresse ↗
+        <p className="subpage-eyebrow">{pageContent.action.heroEyebrow}</p>
+        <h2>{pageContent.action.heroTitle}</h2><p>{pageContent.action.heroBody}</p>
+        <Link className="quick-link active" href="/ga-med">
+          {pageContent.action.heroLink}
         </Link>
       </section>
 
       <section className="subpage-section">
         <div className="section-title-row">
-          <p className="subpage-eyebrow">Aktiva spår</p>
-          <h2>Välj en väg in.</h2>
+          <p className="subpage-eyebrow">{pageContent.action.sectionEyebrow}</p><h2>{pageContent.action.sectionTitle}</h2>
         </div>
         <div className="card-grid">
           {campaigns.map((campaign) => (
             <article className="outline-card" key={campaign.title}>
               <h3>{campaign.title}</h3>
+              <p className="status-label">{campaign.status ?? engagementContent.status}</p>
               <p>{campaign.text}</p>
+              <Link className="text-link card-link" href={campaign.cta?.href ?? engagementContent.href}>{campaign.cta?.label ?? engagementContent.campaignCta}</Link>
             </article>
           ))}
         </div>
