@@ -1,6 +1,6 @@
 # Produktionsberedskap 2026-11-03
 
-**Inte produktionssatt. Hostad staging fungerar; full Auth-återställning och produktionsgrindar återstår.**
+**Inte produktionssatt. Hostad staging fungerar; lokal konto-/MFA-återställning är verifierad. Produktionsgrindar återstår.**
 Den här leveransen bygger på PR #4 (`24f868b`) och omfattar också designen och
 funktionerna från PR #3. `main` är oförändrad (`50860d9`). Ingen produktionsmigration,
 produktionsimport, miljöändring, merge, DNS-ändring eller skarp leverans har gjorts.
@@ -62,11 +62,11 @@ inte funnits tillgängligt för denna import.
 ## Testresultat
 
 - Lint, TypeScript och produktionsbyggen: godkända.
-- 53 enhetstester och 38 integrationstester; de två nya enhetstesterna låser
+- 54 enhetstester och 38 integrationstester; de två nya enhetstesterna låser
   stagingverktygets exakta mål och avstängda funktioner.
 - 13 befintliga publika webbläsartester, 4 publicerings-/avstängningsregressioner,
   11 tester med full lokal testplattform och 8 tester för det begränsade lanseringsläget.
-- Totalt **127 CI-tester**. Ett nytt webbläsartest täcker att artikelstatus förblir
+- Totalt **128 CI-tester**. Ett nytt webbläsartest täcker att artikelstatus förblir
   korrekt efter publicering, ytterligare redigering och avpublicering.
 - Separat från CI: verkliga hostade SDK-kontroller av lösenord, TOTP/AAL2,
   redaktionella ändringar och negativa RLS-fall; 2 automatiserade browserfall
@@ -88,17 +88,18 @@ Utförda hostade kontroller och begränsningar redovisas separat i
 
 ## Återstår före skarp drift
 
-1. Besluta kapacitet för en separat produktionsdatabas. Staging finns nu efter
-   Karls godkända pausning av `vbl`. Inga betalda resurser har skapats.
-2. Slutför verifierad återställning av Auth/MFA och en portabel backup. Hostad
-   applikationsdata har återställts lokalt med 31 RLS-tabeller, 45 policyer och
-   17 migrationsposter, men Auth-UUID-platshållare bevisar inte kontoåterställning.
+1. Karl har valt gratisplanen: pausa staging när separat produktion ska skapas,
+   efter releasegodkännande. Staging är ännu aktiv; inga betalda resurser finns.
+2. Lokal återställning av applikationsdata och faktiska Auth-konton är verifierad:
+   31 RLS-tabeller, 45 policyer, 17 migrationsposter, sex lösenord och tre TOTP-faktorer.
+   Portabel GPG-backup är verifierad men behöver förvaras utanför datorn med separat
+   nyckel. Hostad projektåterställning är inte provad. [Backupguide](backup-recovery.md).
 3. Behåll stagingnycklarna enbart på Preview-branchen. Produktionsnycklar och
    produktionsmiljö ska införas först efter separat releasegodkännande.
-4. Utse första verkliga superadmin och säker kontoprovisionering. Använd aldrig
-   de syntetiska stagingidentiteterna som produktionsadministratörer.
+4. Karl är utsedd första verkliga superadmin; adressen hålls privat. Konto, eget
+   lösenord och MFA provisioneras efter releasegodkännande. Använd aldrig testkonton.
 5. Föreningen beslutar personuppgiftsansvar, leverantörsavtal, gallring, roller,
-   redaktionellt ansvar och incident-/backupansvar. Ange vem som är första superadmin.
+   redaktionellt ansvar och incident-/backupansvar. Superadminbeslutet ersätter inte dessa ansvarsfördelningsbeslut.
 6. Presentera verifierade stagingresultat och exakt produktionsplan för Karl.
    Begär därefter uttryckligt godkännande innan produktionsmigration, import,
    miljöändringar, merge och publicering. Verifiera domänen och data efter release.

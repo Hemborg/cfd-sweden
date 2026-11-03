@@ -2,7 +2,7 @@
 
 > Status 2026-11-03: CFD-staging är installerad och ansluten till PR #5:s
 > Vercel Preview. Produktion är inte ändrad. Se [stagingrapporten](hosted-staging.md)
-> för utförda kontroller och kvarstående Auth-/MFA-återställningsbegränsning.
+> för utförda kontroller och verifierad lokal Auth-/MFA-återställning och kvarstående produktionsgränser.
 
 ## Nuvarande verifierade läge
 
@@ -15,8 +15,8 @@
   `eu-north-1`, på Free. 17 migrationer är installerade, 31 tabeller har RLS och
   45 policyer finns. Publik och anonym signup är avstängda; TOTP är aktiverat.
 - Karl godkände uttryckligen att `vbl` pausades, vilket frigjorde stagingplatsen.
-  Inget annat projekt har ändrats. En ytterligare samtidigt aktiv databas kräver
-  separat kapacitetsbeslut. Inga betalda resurser får skapas utan godkännande.
+  Inget annat projekt har ändrats. Karl har valt gratisplanen och paus av staging när separat produktion ska
+  skapas. Staging förblir aktiv fram till releasebeslutet.
 - Det finns för närvarande 0 artiklar och 0 evenemang i både `main` och denna
   leveransgren, alltså inget innehåll att importera.
 
@@ -148,8 +148,9 @@ serien ska testas på den verkliga stagingversionen innan produktion.
 
 ## Första verkliga superadmin utan SMTP
 
-Detta sker endast i en uttryckligen godkänd staging-miljö av en utsedd
-operatör. Ingen publik registrering, inbjudan eller e-postleverans används.
+Detta sker endast i den uttryckligen godkända miljön av en utsedd
+operatör. Karl är utsedd första verkliga superadmin; adressen hanteras privat.
+Produktionskontot får skapas först efter separat releasegodkännande. Ingen publik registrering, inbjudan eller e-postleverans används.
 
 1. Öppna **Authentication → Users** i Supabase Dashboard och skapa den namngivna
    administratören med starkt unikt lösenord och bekräftad e-post. Alternativt
@@ -239,6 +240,9 @@ krypteringsnycklar. Den hostade
 foreign keys, TOTP, sessionsåterkallelse och eventuella Storage-filer enligt
 leverantörens återställningsprocess. Kör därefter negativa RLS-tester på målet;
 enbart samma tabellantal räcker inte som produktionsbevis.
+
+Se [verifierad återställning och portabel backup](backup-recovery.md) för den
+utförda lokala konto-/MFA-övningen och kvarstående förvaring utanför datorn.
 
 ## Stagingacceptans och produktionsgrind
 

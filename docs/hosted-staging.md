@@ -18,8 +18,8 @@ produktionsvariabler, DNS eller produktionspublicering har genomförts.
   inloggning är avstängda. TOTP är aktiverat; AAL1-sessioner med MFA löper ut
   efter 15 minuter utan verifiering. Inga wildcard-redirects har lagts till.
 - `vbl` pausades först efter Karls uttryckliga beslut. Datan bevarades. Övriga
-  befintliga projekt har inte ändrats. Nuvarande gratisplatser räcker inte för
-  ytterligare ett samtidigt aktivt CFD-produktionsprojekt.
+  befintliga projekt har inte ändrats. Karl har valt gratisplanen och paus av staging när separat produktion ska
+  skapas. Staging är ännu aktiv i väntan på releasebeslutet.
 
 ## Databas och verkliga tester
 
@@ -96,22 +96,27 @@ korrekta radantal, två publikt läsbara testartiklar, dolda utkast/framtida pos
 och nekad anonym åtkomst till kontakter/profiler. Den egna testdatabasen tas bort
 efter övningen; källdatabasen ändras inte.
 
-**Begränsning:** övningen använder sex syntetiska Auth-UUID-platshållare för
-foreign keys. Den återställer inte Auth-lösenord, MFA, sessioner, Storage-objekt
-eller Supabases krypteringsmaterial. Dataexporten innehåller Auth/Storage-data,
-men det bevisar inte en fungerande fullständig Auth-återställning. En separat
-återställningsövning med leverantörens stödda process och rätt krypteringsnycklar
-återstår före ett påstående om komplett katastrofåterställning.
+Applikationsövningen använder Auth-UUID-platshållare för foreign keys.
+Den kompletteras nu av en separat, godkänd Auth-återställning: sex ursprungliga
+lösenord och tre ursprungliga TOTP-faktorer fungerar med samma användar-ID:n i
+en tom lokal GoTrue-miljö. Inga nya konton eller MFA-faktorer skapades i testet.
+Gamla sessioner återställs inte. Fel lösenord och fel MFA-kod nekas.
+
+En färsk SQL-export finns även i en verifierad portabel GnuPG/AES256-backup med
+separat slumpnyckel. Detta ersätter den tidigare begränsningen till DPAPI.
+Arkiv och nyckel finns ännu på samma dator och behöver förvaras separat utanför
+datorn. Full hostad projektåterställning är inte provad. Storage och Vault var
+båda tomma vid färsk kontroll. Se [backupbevis och instruktion](backup-recovery.md).
 
 ## Kvar före produktion
 
-1. Besluta kapacitet för en separat produktionsdatabas; ingen betald plan har
-   beställts. Pausad staging och aktiv produktion skulle ge separata databaser
-   men inte två samtidigt tillgängliga miljöer.
-2. Verifiera hela Auth-/MFA-återställningen, samt en portabel och ägarstyrd backup.
-   Testad applikationsåterställning är inte tillräcklig för detta krav.
-3. Utse verklig superadmin och ansvar för personuppgifter, gallring, leverantörer,
-   redaktion och incidenter. Testidentiteter får inte bli produktionskonton.
+1. Verkställ Karls val vid godkänd release: pausa staging och skapa separat
+   EU-produktion på Free. Miljöerna kan då inte vara aktiva samtidigt.
+2. Förvara den verifierade portabla backupen och nyckeln separat utanför datorn.
+   Lokal SQL- och Auth/MFA-återställning är verifierad; hostad projektåterställning är inte provad.
+3. Karl är utsedd första superadmin; adressen hanteras privat. Konto, eget
+   lösenord och MFA skapas efter releasegodkännande. Ansvar för personuppgifter,
+   gallring, leverantörer, redaktion och incidenter behöver fastställas.
 4. Ta fram den konkreta produktionsplanen när dessa återstående grindar är lösta,
    och invänta Karls uttryckliga godkännande före produktionsändringar.
 

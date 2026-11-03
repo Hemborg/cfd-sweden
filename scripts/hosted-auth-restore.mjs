@@ -33,10 +33,13 @@ function run(command, args, { input, env } = {}) {
     env: env ? { ...process.env, ...env } : process.env,
     encoding: "utf8",
     // Never relay SQL/parser errors: they can echo restored Auth rows.
-    stdio: [input === undefined ? "ignore" : "pipe", "ignore", "ignore"],
+    stdio: [input === undefined ? "ignore" : "pipe", "ignore", "pipe"],
     shell: false,
   });
-  if (result.error || result.status !== 0) throw new Error(`Local restore command failed: ${command} ${args[0] ?? ""}`);
+  if (result.error || result.status !== 0) {
+    const diagnostic = result.stderr?.match(/(?:column|relation) "[a-zA-Z_]+"[^\n]*(?:does not exist|generated column)|missing data for column "[a-zA-Z_]+"|extra data after last expected column/i)?.[0];
+    throw new Error(`Local restore command failed: ${command} ${args[0] ?? ""}${diagnostic ? ` (${diagnostic})` : ""}`);
+  }
 }
 
 function docker(...args) { run("docker", args); }
@@ -78,7 +81,7 @@ function jwt(role, secret) {
 function jwtClaims(token) { return JSON.parse(Buffer.from(token.split(".")[1], "base64url").toString("utf8")); }
 
 async function request(path, options = {}) {
-  const response = await fetch(`${authUrl}${path}`, options);
+  const response = await fetch(`${authUrl}${path}`, { ...options, signal: AbortSignal.timeout(10_000) });
   if (!response.ok) throw new Error(`Local GoTrue request failed with HTTP ${response.status}.`);
   return response.json();
 }
@@ -86,7 +89,7 @@ async function request(path, options = {}) {
 async function waitForHealth() {
   const end = Date.now() + 30_000;
   while (Date.now() < end) {
-    try { if ((await fetch(`${authUrl}/health`)).ok) return; } catch { /* retry */ }
+    try { if ((await fetch(`${authUrl}/health`, { signal: AbortSignal.timeout(1500) })).ok) return; } catch { /* retry */ }
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
   throw new Error("Timed out waiting for local isolated GoTrue.");
@@ -96,6 +99,7 @@ async function verifyAccount(account, anonKey) {
   const headers = { apikey: anonKey, "content-type": "application/json" };
   const login = await request("/token?grant_type=password", { method: "POST", headers, body: JSON.stringify({ email: account.email, password: account.password }) });
   const passwordClaims = jwtClaims(login.access_token);
+  if (passwordClaims.aal !== "aal1") throw new Error("Password-only login must remain AAL1 before MFA verification.");
   if (passwordClaims.sub !== account.id) throw new Error("Restored password session has an unexpected user id.");
   if (!account.mfa) {
     if (passwordClaims.aal !== "aal1") throw new Error("Account without a factor did not remain at AAL1.");
@@ -109,17 +113,12 @@ async function verifyAccount(account, anonKey) {
   return true;
 }
 
-function bootstrap(password) {
-  const literal = `'${password.replaceAll("'", "''")}'`;
+function bootstrap() {
+  // Roles/passwords are owned by the existing local test stack. Never change
+  // cluster-global roles when creating an isolated restore database.
   return `
-create role anon nologin;
-create role authenticated nologin;
-create role service_role nologin bypassrls;
-create role authenticator login noinherit password ${literal};
-create role supabase_auth_admin login createrole password ${literal};
 create schema auth authorization supabase_auth_admin;
 grant all on database ${targetDatabase} to supabase_auth_admin;
-grant usage on schema public, auth to anon, authenticated, service_role;
 grant create on schema public to supabase_auth_admin;
 `;
 }
@@ -154,6 +153,10 @@ for (const tokenColumn of ["confirmation_token", "recovery_token", "email_change
     throw new Error(`Refusing an Auth export with a non-empty ${tokenColumn}.`);
   }
 }
+const identityOwner = identities.columns.indexOf("user_id");
+if (identityOwner < 0 || identities.rows.some((row) => !byId.has(row.split("\t")[identityOwner]))) {
+  throw new Error("Unexpected identity owner in Auth export.");
+}
 const exportedFactors = factors.rows.map((row) => row.split("\t"));
 if (exportedFactors.some((row) => !byId.has(row[factorUserColumn]) || !/^[A-Z2-7]+=*$/i.test(row[factorSecretColumn]))) {
   throw new Error("Hosted MFA export contains unexpected owner or encrypted/unknown factor data.");
@@ -174,24 +177,27 @@ try {
   if ((await source.query("select 1 from pg_database where datname=$1", [targetDatabase])).rowCount) throw new Error("Refusing to overwrite existing Auth restore database.");
   await source.query(`create database ${targetDatabase}`);
   databaseCreated = true;
-  const dbPassword = randomBytes(24).toString("base64url");
+  const dbPassword = decodeURIComponent(sourceUrl.password);
+  if (!dbPassword) throw new Error("Missing local test database password.");
   const secret = randomBytes(32).toString("hex");
   const anonKey = jwt("anon", secret);
-  const serviceKey = jwt("service_role", secret);
   const base = new URL(sourceUrl);
   base.pathname = `/${targetDatabase}`;
-  run("docker", ["exec", "-i", container, "psql", "-X", "-v", "ON_ERROR_STOP=1", "-U", "postgres", "-d", targetDatabase], { input: bootstrap(dbPassword) });
+  run("docker", ["exec", "-i", container, "psql", "-X", "-v", "ON_ERROR_STOP=1", "-U", "postgres", "-d", targetDatabase], { input: bootstrap() });
   const env = {
     GOTRUE_API_HOST: "0.0.0.0", GOTRUE_API_PORT: "9999", GOTRUE_DB_DRIVER: "postgres",
+    API_EXTERNAL_URL: authUrl, GOTRUE_SITE_URL: "http://127.0.0.1:3400",
+    GOTRUE_MAILER_AUTOCONFIRM: "true",
     GOTRUE_DB_DATABASE_URL: `postgres://supabase_auth_admin:${encodeURIComponent(dbPassword)}@${container}:5432/${targetDatabase}`,
     GOTRUE_JWT_SECRET: secret, GOTRUE_JWT_ADMIN_ROLES: "service_role", GOTRUE_JWT_AUD: "authenticated", GOTRUE_JWT_DEFAULT_GROUP_NAME: "authenticated",
-    GOTRUE_DISABLE_SIGNUP: "true", GOTRUE_EXTERNAL_EMAIL_ENABLED: "false", GOTRUE_MFA_ENABLED: "true", GOTRUE_MFA_TOTP_ENROLL_ENABLED: "false", GOTRUE_MFA_TOTP_VERIFY_ENABLED: "true",
+    GOTRUE_DISABLE_SIGNUP: "true", GOTRUE_EXTERNAL_EMAIL_ENABLED: "true", GOTRUE_MFA_ENABLED: "true", GOTRUE_MFA_TOTP_ENROLL_ENABLED: "false", GOTRUE_MFA_TOTP_VERIFY_ENABLED: "true",
   };
   // docker receives only environment variable names on argv; values stay in this process environment.
-  run("docker", ["run", "-d", "--name", authContainer, "--network", "cfd-platform-test_default", "-p", "127.0.0.1:54326:9999", ...Object.keys(env).flatMap((name) => ["-e", name]), "ghcr.io/supabase/gotrue:v2.197.0"], { env });
+  run("docker", ["create", "--name", authContainer, "--network", "cfd-platform-test_default", "-p", "127.0.0.1:54326:9999", ...Object.keys(env).flatMap((name) => ["-e", name]), "ghcr.io/supabase/gotrue:v2.197.0"], { env });
   containerCreated = true;
+  docker("start", authContainer);
   await waitForHealth();
-  const restoreSql = [users.sql, identities.sql, factors.sql].join("\n");
+  const restoreSql = [users.sql, identities.sql, factors.sql].join("\n") + "\n";
   run("docker", ["exec", "-i", container, "psql", "-X", "-v", "ON_ERROR_STOP=1", "-U", "postgres", "-d", targetDatabase], { input: restoreSql });
   const restored = new pg.Client({ connectionString: base.toString() });
   await restored.connect();
@@ -202,17 +208,19 @@ try {
   let mfaVerified = 0;
   for (const account of byId.values()) if (await verifyAccount(account, anonKey)) mfaVerified += 1;
   const wrong = await fetch(`${authUrl}/token?grant_type=password`, { method: "POST", headers: { apikey: anonKey, "content-type": "application/json" }, body: JSON.stringify({ email: accounts[0].email, password: `${accounts[0].password}!wrong` }) });
-  if (wrong.status < 400) throw new Error("Wrong password unexpectedly authenticated.");
+  if (![400, 422].includes(wrong.status)) throw new Error("Wrong password unexpectedly authenticated.");
   const mfaAccount = [...byId.values()].find((account) => account.mfa);
   if (!mfaAccount) throw new Error("Expected synthetic MFA test account.");
   const login = await request("/token?grant_type=password", { method: "POST", headers: { apikey: anonKey, "content-type": "application/json" }, body: JSON.stringify({ email: mfaAccount.email, password: mfaAccount.password }) });
   const badChallenge = await request(`/factors/${mfaAccount.mfa.factorId}/challenge`, { method: "POST", headers: { apikey: anonKey, authorization: `Bearer ${login.access_token}`, "content-type": "application/json" }, body: "{}" });
-  const invalid = await fetch(`${authUrl}/factors/${mfaAccount.mfa.factorId}/verify`, { method: "POST", headers: { apikey: anonKey, authorization: `Bearer ${login.access_token}`, "content-type": "application/json" }, body: JSON.stringify({ challenge_id: badChallenge.id, code: "000000" }) });
-  if (invalid.status < 400) throw new Error("Invalid TOTP unexpectedly authenticated.");
+  const invalid = await fetch(`${authUrl}/factors/${mfaAccount.mfa.factorId}/verify`, { method: "POST", headers: { apikey: anonKey, authorization: `Bearer ${login.access_token}`, "content-type": "application/json" }, body: JSON.stringify({ challenge_id: badChallenge.id, code: ((Number(base32Totp(mfaAccount.mfa.secret)) + 1) % 1_000_000).toString().padStart(6, "0") }) });
+  if (![400, 422].includes(invalid.status)) throw new Error("Invalid TOTP unexpectedly authenticated.");
   console.log(`Hosted Auth restore verified: 6 synthetic bcrypt users, ${exportedFactors.length} TOTP factors, ${mfaVerified} restored MFA challenges, and no restored sessions or refresh tokens.`);
   console.log("LIMITATION: sessions are intentionally invalidated. Storage objects, hosted keys, e-mail delivery, and cloud project configuration are not restored by this local drill.");
 } finally {
-  if (containerCreated) { try { docker("rm", "-f", authContainer); } catch { /* preserve primary failure */ } }
-  if (databaseCreated) { try { await source.query(`drop database ${targetDatabase}`); } catch { /* preserve primary failure */ } }
+  const cleanupFailures = [];
+  if (containerCreated) { try { docker("rm", "-f", authContainer); } catch { cleanupFailures.push("temporary Auth container"); } }
+  if (databaseCreated) { try { await source.query(`drop database ${targetDatabase}`); } catch { cleanupFailures.push("temporary Auth database"); } }
   await source.end();
+  if (cleanupFailures.length) throw new Error(`Local cleanup failed for ${cleanupFailures.join(", ")}.`);
 }
