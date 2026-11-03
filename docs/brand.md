@@ -2,12 +2,13 @@
 
 ## Fristående nedladdningar
 
-Fyra transparenta PNG-exporter finns i `public/brand/`:
+Fem transparenta PNG-exporter finns i `public/brand/`:
 
 - `cfd-sweden-symbol-color.png`: symbol med SWEDEN under, i färg (532 × 640).
 - `cfd-sweden-symbol-black.png`: samma uppställning, helt svart.
 - `cfd-sweden-horizontal-color.png`: symbol och CITIZENS FOR DISCLOSURE SWEDEN till höger, i färg (1698 × 532).
 - `cfd-sweden-horizontal-black.png`: samma liggande uppställning, helt svart.
+- `cfd-sweden-horizontal-white.png`: samma liggande uppställning, helt vit för mörka bakgrunder.
 
 `node scripts/export-brand.mjs` återskapar exporterna efter ett webbbygge och installation av projektets Playwright Chromium. Exporten använder originalets bilddelar och webbbyggets Josefin Sans 600. Bakgrunden är transparent; den svarta versionen behöver en ljus bakgrund för att synas. Filerna är raster i originalupplösning, inte vektororiginal eller artificiellt uppskalade bilder.
 
