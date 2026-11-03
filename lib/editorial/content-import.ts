@@ -143,7 +143,7 @@ select kind, slug from cfd_import_conflicts order by kind, slug;
 do $$ begin
   if exists (select 1 from cfd_import_conflicts) then raise exception 'content_import_slug_conflict'; end if;
 end $$;
-create temporary table cfd_import_before as
+create temporary table cfd_import_before on commit drop as
   select 'article'::text kind, slug, exists(select 1 from public.articles d where d.slug=s.slug) existed from cfd_import_articles s
   union all select 'event', slug, exists(select 1 from public.events d where d.slug=s.slug) from cfd_import_events s;
 insert into public.articles(slug,title,excerpt,body,tags,status,published_at,seo_title,seo_description,author_id,author_name)
