@@ -27,13 +27,13 @@ try {
     const height = layout === "symbol" ? 640 : 532;
     const x = layout === "symbol" ? 266 : 1144;
     const y = layout === "symbol" ? 613 : 505;
-    const tones = layout === "horizontal" ? ["color", "black", "white"] : ["color", "black"];
+    const tones = layout === "horizontal" ? ["color", "black", "white", "color-white-text"] : ["color", "black"];
     for (const tone of tones) {
       const filter = tone === "white" ? "brightness(0) invert(1)" : tone === "black" ? "brightness(0)" : "none";
       const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" style="display:block;filter:${filter}">
         <image href="${symbol}" width="532" height="532"/>
-        ${layout === "horizontal" ? `<image href="${wordmark}" x="590" y="100" width="1108" height="324"/>` : ""}
-        <text x="${x}" y="${y}" text-anchor="middle" fill="#464342" font-family="Josefin Sans" font-size="60" font-weight="600" letter-spacing="10">SWEDEN</text>
+        ${layout === "horizontal" ? `<image href="${wordmark}" x="590" y="100" width="1108" height="324" style="filter:${tone === "color-white-text" ? "brightness(0) invert(1)" : "none"}"/>` : ""}
+        <text x="${x}" y="${y}" text-anchor="middle" fill="${tone === "color-white-text" ? "#ffffff" : "#464342"}" font-family="Josefin Sans" font-size="60" font-weight="600" letter-spacing="10">SWEDEN</text>
       </svg>`;
       await page.setContent(`<style>${fontFace}html,body{margin:0;background:transparent}</style>${svg}`);
       await page.evaluate(async () => { await document.fonts.load('600 60px "Josefin Sans"', "SWEDEN"); await document.fonts.ready; });
