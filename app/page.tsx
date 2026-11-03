@@ -1,151 +1,36 @@
+import Image from "next/image";
+import Link from "next/link";
 import { ArrowIcon, Header } from "@/components/Header";
+import { JoinForm } from "@/components/JoinForm";
+import { SiteFooter } from "@/components/SiteFooter";
+import { homeContent } from "@/content/site";
 
-const fields = [
-  { label: "Förnamn", name: "firstName", type: "text" },
-  { label: "Efternamn", name: "lastName", type: "text" },
-  { label: "Postnummer", name: "postalCode", type: "text" },
-  { label: "Ort", name: "city", type: "text" },
-  { label: "E-post", name: "email", type: "email" },
-  { label: "Telefon", name: "phone", type: "tel" },
+const involvementDescriptions = [
+  "Skapa rum för sakliga samtal, visningar och möten där fler kan delta.",
+  "Bidra med källarbete, språk och sammanhang som gör information mer tillgänglig.",
+  "Hjälp till att föra en konstruktiv dialog med media, politiker och myndigheter.",
+  "Hitta andra som vill bygga ett lokalt nätverk där du bor.",
 ];
 
-const actions = [
-  "Arrangera lokala samtal och visningar",
-  "Hjälpa till med research och översättning",
-  "Kontakta media, politiker och myndigheter",
-  "Bygga CFD Sweden i din stad eller region",
-];
+const involvementIcons = ["grassroots", "right-to-know", "policy", "whistleblower"];
 
 export default function Home() {
-  return (
-    <main>
-      <Header current="home" />
-
-      <section id="top" className="join-section">
-        <div className="join-inner">
-          <div className="intro-column">
-            <h1>Gå med i Citizens for Disclosure</h1>
-            <p className="lead">
-              Genom att utbilda och mobilisera oss kan vi driva på för
-              öppenhet kring UFO/UAP-frågan och säkerställa att våra
-              institutioner arbetar i allmänhetens intresse. Vi medborgare
-              behöver kräva insyn, ansvar och transparens.
-            </p>
-
-            <a
-              className="video-card"
-              href="https://newparadigminstitute.org/take-action/join-citizens-for-disclosure/"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Se filmen hos New Paradigm Institute"
-            >
-              <span className="video-title">
-                Citizens for Disclosure · kort introduktionsfilm
-              </span>
-              <span className="play-button" aria-hidden="true">
-                ▶
-              </span>
-              <span className="video-caption">Titta på originalkampanjen</span>
-            </a>
-          </div>
-
-          <aside id="form" className="form-panel" aria-labelledby="form-title">
-            <h2 id="form-title">
-              Engagera dig i
-              <span>vår rörelse</span>
-            </h2>
-            <form action="https://formsubmit.co/cfdsweden@proton.me" method="POST">
-              {/* formsubmit.co: redirect after submission */}
-              <input type="hidden" name="_next" value="https://cfdsweden.se/tack" />
-              <input type="hidden" name="_subject" value="Ny intresseanmälan – CFD Sweden" />
-              {/* honeypot spam protection */}
-              <input type="text" name="_honey" style={{ display: "none" }} />
-              {/* disable formsubmit captcha */}
-              <input type="hidden" name="_captcha" value="false" />
-
-              <div className="field-row">
-                {fields.slice(0, 2).map((field) => (
-                  <label className="field full" key={field.name}>
-                    {field.label}
-                    <input name={field.name} type={field.type} />
-                  </label>
-                ))}
-              </div>
-
-              <div className="field-grid">
-                <label className="field">
-                  Land
-                  <select name="country" defaultValue="Sverige">
-                    <option>Sverige</option>
-                    <option>Norge</option>
-                    <option>Danmark</option>
-                    <option>Finland</option>
-                    <option>Annat</option>
-                  </select>
-                </label>
-                {fields.slice(2, 4).map((field) => (
-                  <label className="field" key={field.name}>
-                    {field.label}
-                    <input name={field.name} type={field.type} />
-                  </label>
-                ))}
-                <label className="field">
-                  Region
-                  <select name="region" defaultValue="">
-                    <option value="">- Välj region -</option>
-                    <option>Stockholm</option>
-                    <option>Västra Götaland</option>
-                    <option>Skåne</option>
-                    <option>Uppsala</option>
-                    <option>Övriga Sverige</option>
-                  </select>
-                </label>
-              </div>
-
-              <div className="field-row">
-                {fields.slice(4).map((field) => (
-                  <label className="field full" key={field.name}>
-                    {field.label}
-                    <input name={field.name} type={field.type} />
-                  </label>
-                ))}
-              </div>
-
-              <label className="field full">
-                Hur vill du bidra?
-                <textarea name="message" rows={5} />
-              </label>
-
-              <button className="submit-button" type="submit">
-                Skicka intresseanmälan <ArrowIcon />
-              </button>
-            </form>
-          </aside>
-        </div>
-      </section>
-
-      <section id="info" className="content-section">
-        <div className="content-inner">
-          <div id="om" className="text-block">
-            <h2>Varför CFD Sweden?</h2>
-            <p>
-              När frågor om UAP, säkerhet och offentlig insyn hanteras utan
-              transparens förlorar medborgarna möjlighet att förstå, granska och
-              delta. CFD Sweden samlar människor som vill arbeta sakligt,
-              demokratiskt och långsiktigt för ansvarsfull disclosure.
-            </p>
-          </div>
-
-          <div id="arbete" className="action-list">
-            <h2>Du kan bidra genom att</h2>
-            <ul>
-              {actions.map((action) => (
-                <li key={action}>{action}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-    </main>
-  );
+  return <main><Header current="home" />
+    <section id="top" className="mother-hero">
+      <div className="hero-backdrop" aria-hidden="true"><Image src="/images/cfd-hero.webp" alt="" fill priority sizes="100vw" /></div>
+      <div className="hero-inner section-wrap"><p className="eyebrow">En del av New Paradigm Institute</p><h1>Citizens for Disclosure</h1><p className="hero-lead">En svensk rörelse för ansvarsfull transparens kring UAP och UFO-frågan.</p><div className="button-row"><Link className="button button-primary" href="/ga-med">Engagera dig <ArrowIcon /></Link><Link className="button button-outline" href="/take-action">Se hur du kan bidra</Link></div></div>
+    </section>
+    <section id="info" className="home-about"><div className="section-wrap home-about-grid"><div><p className="eyebrow">Om rörelsen</p><h2>{homeContent.title}</h2><p>{homeContent.lead}</p><Link className="text-link" href="/om-oss">Lär känna CFD Sweden ↗</Link></div><a className="video-card" href={homeContent.video.href} target="_blank" rel="noreferrer" aria-label={homeContent.video.accessibleLabel}><Image src="/images/cfd-film.jpg" alt="Bild ur Citizens for Disclosure-filmen" fill sizes="(max-width: 800px) 100vw, 48vw" /><span className="video-title">{homeContent.video.title}</span><span className="play-button" aria-hidden="true">▶</span><span className="video-caption">{homeContent.video.caption}</span></a></div></section>
+    <section className="home-involvement"><div className="section-wrap"><p className="eyebrow">Engagera dig</p><h2>{homeContent.actionHeading}</h2><div className="involvement-grid">{homeContent.actions.map((action, index) => <article className="involvement-card" key={action}><Image className="involvement-icon" src={`/icons/${involvementIcons[index]}.svg`} alt="" width={64} height={64} /><h3>{action}</h3><p>{involvementDescriptions[index]}</p><Link href="/ga-med">Anmäl intresse <ArrowIcon /></Link></article>)}</div></div></section>
+    <section className="home-why"><div className="section-wrap home-why-grid"><div><p className="eyebrow">CFD Sweden</p><h2>{homeContent.why.title}</h2><p>{homeContent.why.text}</p><Link className="text-link" href="/vart-arbete">Läs om vårt arbete ↗</Link></div><div className="home-why-image"><Image src="/images/cfd-volunteers.webp" alt="Deltagare i den internationella Citizens for Disclosure-rörelsen med banderoll och skyltar" fill sizes="(max-width: 800px) 100vw, 45vw" /></div></div></section>
+    <section className="home-faq"><div className="section-wrap"><p className="eyebrow">Vanliga frågor</p><h2>Nyfiken på CFD Sweden?</h2><div className="faq-list">
+      <details><summary>Vad är Citizens for Disclosure?</summary><p>Citizens for Disclosure är New Paradigm Institutes gräsrotsnätverk för ansvarsfull öppenhet kring UFO och UAP. CFD Sweden samlar människor som vill bidra i en svensk kontext. <Link href="/om-oss">Läs mer om oss.</Link></p></details>
+      <details><summary>Hur kan jag engagera mig?</summary><p>Du kan hjälpa till med research, översättning, lokala samtal och kontakt med media eller folkvalda. <Link href="/ga-med">Berätta hur du vill bidra i vårt formulär.</Link></p></details>
+      <details><summary>Behöver jag vara expert?</summary><p>Du behöver inte vara expert för att bidra. Börja med det du är nyfiken på och engagera dig i den omfattning som passar dig. <Link href="/lar-dig-mer">Utforska vårt resursbibliotek.</Link></p></details>
+      <details><summary>Var hittar jag nyheter och aktiviteter?</summary><p>Bekräftade uppdateringar publiceras under <Link href="/nyheter">Nyheter</Link> och planerade aktiviteter under <Link href="/evenemang">Evenemang</Link>.</p></details>
+    </div></div></section>
+    <section id="form" className="home-join"><div className="section-wrap join-inner"><div className="join-copy"><p className="eyebrow">Nästa steg</p><h2>{homeContent.formHeading.firstLine}<span>{homeContent.formHeading.secondLine}</span></h2><p>Berätta vem du är och vad du vill bidra med. Du väljer själv hur mycket du vill engagera dig.</p><Link className="text-link" href="/kontakta-oss">Har du en fråga? Kontakta oss ↗</Link></div><JoinForm /></div></section>
+    <section className="subpage-cta"><div><p className="subpage-eyebrow">En rörelse som växer tillsammans</p><h2>Gör din röst hörd.</h2></div><Link className="button button-primary" href="/ga-med">Gå med i CFD Sweden ↗</Link></section>
+    <SiteFooter />
+  </main>;
 }

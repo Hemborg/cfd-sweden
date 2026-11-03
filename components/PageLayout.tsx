@@ -1,6 +1,8 @@
 import { ArrowIcon, Header } from "@/components/Header";
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { pageContent } from "@/content/site";
+import { SiteFooter } from "@/components/SiteFooter";
 
 type PageLayoutProps = {
   current: Parameters<typeof Header>[0]["current"];
@@ -18,7 +20,7 @@ export function PageLayout({
   children,
 }: PageLayoutProps) {
   return (
-    <main>
+    <main className={`page-${current ?? "default"}`}>
       <Header current={current} />
       <section className="subpage-hero">
         <div className="subpage-hero-inner">
@@ -28,15 +30,16 @@ export function PageLayout({
         </div>
       </section>
       {children}
-      <section className="subpage-cta">
+      {current !== "join" && <section className="subpage-cta">
         <div>
-          <p className="subpage-eyebrow">Citizens for Disclosure Sweden</p>
-          <h2>Vill du vara med och bygga den svenska rörelsen?</h2>
+          <p className="subpage-eyebrow">{pageContent.sharedCta.eyebrow}</p>
+          <h2>{pageContent.sharedCta.title}</h2>
         </div>
-        <Link className="quick-link active" href="/#form">
-          Gå med <ArrowIcon />
+        <Link className="quick-link active" href="/ga-med">
+          {pageContent.sharedCta.link} <ArrowIcon />
         </Link>
-      </section>
+      </section>}
+      <SiteFooter />
     </main>
   );
 }

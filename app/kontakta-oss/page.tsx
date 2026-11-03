@@ -1,30 +1,25 @@
 import { PageLayout } from "@/components/PageLayout";
+import { pageContent, site } from "@/content/site";
 
 export default function ContactPage() {
   return (
     <PageLayout
       current="contact"
-      eyebrow="Kontakt"
-      title="Kontakta CFD Sweden."
-      intro="Vill du engagera dig, ställa en fråga, tipsa om en källa eller prata om samarbete? Hör av dig så återkommer vi."
+      eyebrow={pageContent.contact.eyebrow} title={pageContent.contact.title} intro={pageContent.contact.intro}
     >
       <section className="subpage-section two-column">
         <article className="large-copy">
-          <h2>E-post</h2>
+          <h2>{pageContent.contact.email.heading}</h2>
           <p>
             Skicka ett mejl till{" "}
-            <a className="text-link" href="mailto:cfdsweden@proton.me">
-              cfdsweden@proton.me
+            <a className="text-link" href={`mailto:${site.contactEmail}`}>
+              {site.contactEmail}
             </a>
-            . Skriv gärna kort vem du är, var du finns och vad ärendet gäller.
+            . {pageContent.contact.email.body}
           </p>
         </article>
         <article className="large-copy dark-card">
-          <h2>Press och samarbete</h2>
-          <p>
-            För media, föreningar, forskare eller organisationer: ange gärna
-            deadline, format och vilken typ av underlag du söker.
-          </p>
+          <h2>{pageContent.contact.press.heading}</h2><p>{pageContent.contact.press.body}</p>
         </article>
       </section>
     </PageLayout>

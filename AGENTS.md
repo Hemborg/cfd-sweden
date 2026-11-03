@@ -1,5 +1,13 @@
 # CFD Sweden — instruktioner till kodagenter
 
+## Granskningsleverans 2026-11-03
+
+Karl har uttryckligen godkänt commit, push av feature-branchen och en Pull Request mot `main` för oberoende granskning. **Merga inte denna PR, pusha inte till `main` och driftsätt inte produktionssajten utan ett nytt uttryckligt beslut.** Detta överstyr de äldre direktpubliceringsrutinerna nedan för detta uppdrag. Inga externa migrationer, verkliga utskick, persondataöverföringar eller konto-/DNS-ändringar ingår. Den senare beställningen av modersidans grafiska profil överstyr prototypens ursprungliga krav att behålla den gamla designen. Se `docs/review-handoff.md` för omfattning, kravstatus och kvarstående arbete.
+
+## Lokalt experiment 2026-11-02
+
+På grenen `codex/cfd-modular-mvp-20261102` gäller bygguppdragets snävare gräns: endast lokal prototyp. Ingen push, PR, merge, Vercel-deploy, extern migration, verkligt mejl, prenumeration eller kontokonfiguration utan nytt uttryckligt godkännande. Det överstyr publiceringsrutinen nedan för denna gren. Läs `docs/architecture.md`, `docs/operations.md` och `docs/prototype-report.md` för resultat och begränsningar. Startsidan behåller sitt befintliga FormSubmit-flöde; skicka aldrig automatiska testdata dit.
+
 ## Projekt och publicering
 
 - Webbplats: https://cfdsweden.se. Next.js App Router, drift hos Vercel.
