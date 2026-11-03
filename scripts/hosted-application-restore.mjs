@@ -2,7 +2,7 @@
 // It intentionally does not restore Supabase Auth, MFA, sessions, Storage objects,
 // API keys, or the hosted encryption root key. See the final console limitation note.
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import pg from "pg";
@@ -12,7 +12,6 @@ const sourceUrl = new URL(process.env.CFD_TEST_DATABASE_URL ?? "http://invalid")
 const targetDatabase = "cfd_hosted_restore_test";
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const testDirectory = resolve(root, ".test-platform");
-const workspace = resolve(testDirectory, "hosted-restore-work");
 
 if (
   sourceUrl.hostname !== "127.0.0.1" ||
@@ -49,10 +48,6 @@ function run(command, args, options = {}) {
   });
   if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(`Restore command failed: ${command} ${args.join(" ")}`);
-}
-
-function docker(...args) {
-  run("docker", args);
 }
 
 function psql(database, sql) {
@@ -106,9 +101,10 @@ function applicationDataOnly(sql) {
   // restore so encrypted passwords, sessions, factors, and recovery material are
   // never restored or written to the working copy.
   const lines = sql.split("\n");
-  const authBlocks = copyBlocks(sql).filter((block) => block.schema === "auth");
+  const authBlocks = copyBlocks(sql).filter((block) => ["auth", "storage"].includes(block.schema));
   const skippedLines = new Set(authBlocks.flatMap((block) => Array.from({ length: block.end - block.start + 1 }, (_, offset) => block.start + offset)));
-  const cleaned = lines.filter((_, index) => !skippedLines.has(index)).join("\n");
+  const cleaned = lines.filter((line, index) => !skippedLines.has(index) &&
+    !/^SELECT pg_catalog\.setval\('\"(?:auth|storage)\"\./.test(line)).join("\n");
   const skippedAuthTables = authBlocks.length;
   return { cleaned, skippedAuthTables };
 }
@@ -208,7 +204,7 @@ async function assertApplicationData(client, expectedCounts, connectionString) {
       (select count(*)::int from supabase_migrations.schema_migrations) as migrations,
       (select count(*)::int from public.articles where status='published' and published_at <= clock_timestamp()) as published_articles`,
   );
-  if (overview.rows[0].rls_tables < 1 || overview.rows[0].policies < 1 || overview.rows[0].migrations < 17) {
+  if (overview.rows[0].rls_tables !== 31 || overview.rows[0].policies !== 45 || overview.rows[0].migrations !== 17) {
     throw new Error("Restored database is missing expected RLS policies or migration history.");
   }
 
@@ -219,19 +215,25 @@ async function assertApplicationData(client, expectedCounts, connectionString) {
     await anonymous.query("set local role anon");
     const publicArticles = await anonymous.query("select count(*)::int as count from public.articles");
     const drafts = await anonymous.query("select count(*)::int as count from public.articles where status='draft'");
+    await anonymous.query("rollback");
     let contactDenied = false;
     let profileDenied = false;
     try {
+      await anonymous.query("begin; set local role anon");
       await anonymous.query("select count(*) from public.contact_submissions");
-    } catch {
-      contactDenied = true;
+    } catch (error) {
+      contactDenied = error.code === "42501";
+    } finally {
+      await anonymous.query("rollback");
     }
     try {
+      await anonymous.query("begin; set local role anon");
       await anonymous.query("select count(*) from public.profiles");
-    } catch {
-      profileDenied = true;
+    } catch (error) {
+      profileDenied = error.code === "42501";
+    } finally {
+      await anonymous.query("rollback");
     }
-    await anonymous.query("rollback");
     if (publicArticles.rows[0].count !== overview.rows[0].published_articles || drafts.rows[0].count !== 0) {
       throw new Error("Anonymous article visibility did not preserve published-versus-draft behaviour.");
     }
@@ -269,12 +271,6 @@ if ([...profileIds].some((id) => !placeholderIds.has(id))) {
 }
 const { cleaned: portableSchema, skippedPlatformStatements } = portableSchemaOnly(readFileSync(files.schema, "utf8"));
 
-mkdirSync(workspace, { recursive: true });
-const sanitizedSchema = resolve(workspace, "application-schema.sql");
-const sanitizedData = resolve(workspace, "application-data.sql");
-writeFileSync(sanitizedSchema, portableSchema, { mode: 0o600 });
-writeFileSync(sanitizedData, applicationData, { mode: 0o600 });
-
 const client = new pg.Client({ connectionString: sourceUrl.toString() });
 let created = false;
 try {
@@ -292,7 +288,7 @@ try {
   created = true;
 
   psql(targetDatabase, authScaffold(placeholderIds));
-  psql(targetDatabase, readFileSync(sanitizedSchema, "utf8"));
+  psql(targetDatabase, portableSchema);
   psql(targetDatabase, applicationData);
   psql(targetDatabase, readFileSync(files.historySchema, "utf8"));
   psql(targetDatabase, readFileSync(files.historyData, "utf8"));
@@ -304,7 +300,7 @@ try {
   try {
     const summary = await assertApplicationData(restored, expectedCounts, restoreUrl.toString());
     console.log(
-      `Application restore verified: ${expectedCounts.size} public tables, ${summary.rls_tables} RLS tables, ${summary.policies} policies, ${summary.migrations} migration records, ${summary.published_articles} anonymous-visible published articles. Filtered ${skippedAuthTables} managed Auth tables and skipped ${skippedPlatformStatements} local-incompatible platform statements.`,
+      `Application restore verified: ${expectedCounts.size} public tables, ${summary.rls_tables} RLS tables, ${summary.policies} policies, ${summary.migrations} migration records, ${summary.published_articles} anonymous-visible published articles. Filtered ${skippedAuthTables} managed Auth/Storage tables and skipped ${skippedPlatformStatements} local-incompatible platform statements.`,
     );
     console.log(
       `LIMITATION: ${placeholderIds.size} synthetic Auth UUID placeholders satisfy public foreign keys only. This drill does not restore Auth identities, passwords, MFA factors, sessions, Storage, hosted keys, or encryption material.`,
@@ -315,5 +311,4 @@ try {
 } finally {
   if (created) await client.query(`drop database ${targetDatabase}`);
   await client.end();
-  rmSync(workspace, { recursive: true, force: true });
 }

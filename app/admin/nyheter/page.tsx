@@ -40,6 +40,7 @@ export default async function AdminNewsPage() {
       seoDescription: parsed.seoDescription ?? null,
     };
     await createPlatformEditorialRepository(actor.client).save(input);
+    revalidatePath("/admin/nyheter");
     revalidatePath("/nyheter");
     revalidatePath(`/nyheter/${input.slug}`);
     revalidatePath("/rss.xml");
@@ -92,7 +93,7 @@ export default async function AdminNewsPage() {
             {article.title} ({article.status})
           </summary>
           <Link href={`/admin/nyheter/${article.slug}/forhandsgranska`}>Förhandsgranska sparat utkast</Link>
-          <form className="formcard" action={save}>
+          <form key={article.updatedAt} className="formcard" action={save}>
             <input type="hidden" name="slug" value={article.slug} />
             <label>
               Rubrik

@@ -73,3 +73,29 @@ test("core launch: database outage shows a clear message and retryable feeds", a
     await expect.poll(async () => (await request.get("/rss.xml")).status(), { timeout: 30_000 }).toBe(200);
   }
 });
+
+test("core launch: editor form reflects saved status and preserves publication on the next edit", async ({ page }) => {
+  await login(page, "editor", { mfa: true });
+  await page.goto("/admin/nyheter");
+  const slug = `status-regression-${randomUUID().slice(0, 8)}`;
+  const create = page.locator("form").filter({ has: page.getByRole("button", { name: "Spara nyhet", exact: true }) });
+  await create.getByLabel("Slug", { exact: true }).fill(slug);
+  await create.getByLabel("Rubrik", { exact: true }).fill(slug);
+  await create.getByLabel("Ingress", { exact: true }).fill("Syntetiskt regressionstest för sparad status.");
+  await create.getByLabel("Text (Markdown)", { exact: true }).fill("Syntetiskt innehåll för redaktionellt regressionstest.");
+  await create.getByRole("button", { name: "Spara nyhet", exact: true }).click();
+  const details = page.locator("details").filter({ has: page.locator("summary", { hasText: slug }) });
+  await details.locator("summary").click();
+  await details.getByRole("combobox", { name: "Status", exact: true }).selectOption("published");
+  await details.getByRole("button", { name: "Spara ändring", exact: true }).click();
+  await expect(details.locator("summary")).toContainText("published");
+  await expect(details.getByRole("combobox", { name: "Status", exact: true })).toHaveValue("published");
+  await details.getByLabel("Rubrik", { exact: true }).fill(`${slug} redigerad`);
+  await details.getByRole("button", { name: "Spara ändring", exact: true }).click();
+  await expect(details.locator("summary")).toContainText(`${slug} redigerad (published)`);
+  await expect(details.getByRole("combobox", { name: "Status", exact: true })).toHaveValue("published");
+  await details.getByRole("combobox", { name: "Status", exact: true }).selectOption("draft");
+  await details.getByRole("button", { name: "Spara ändring", exact: true }).click();
+  await expect(details.locator("summary")).toContainText("draft");
+  await expect(details.getByRole("combobox", { name: "Status", exact: true })).toHaveValue("draft");
+});

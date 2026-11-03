@@ -1,6 +1,6 @@
 # Produktionsberedskap 2026-11-03
 
-**Inte produktionssatt. Hostad staging och produktionsverifiering återstår.**
+**Inte produktionssatt. Hostad staging fungerar; full Auth-återställning och produktionsgrindar återstår.**
 Den här leveransen bygger på PR #4 (`24f868b`) och omfattar också designen och
 funktionerna från PR #3. `main` är oförändrad (`50860d9`). Ingen produktionsmigration,
 produktionsimport, miljöändring, merge, DNS-ändring eller skarp leverans har gjorts.
@@ -19,11 +19,12 @@ produktionsimport, miljöändring, merge, DNS-ändring eller skarp leverans har 
 | Kontakt och Gå med | Befintlig FormSubmit-mottagare, validering, honeypot, integritetsinformation och separata tackflöden. Inget riktigt meddelande skickat. |
 | Grupper, projekt, kampanjer och Kanban | Behörig intern administration kvar. Grupp-/uppgiftsändringar fungerar utan att köa mejl när e-post är avstängd. |
 | Ej aktiva publika funktioner | Nyhetsbrev, kommentarer, eventanmälan, biljetter, betalning, inbjudningsmejl och återställningsmejl spärras i UI och servergränser. Arbetaren gör inga nätverksanrop när e-post är avstängd. |
-| Behörighet | Supabase Auth, serverkontroll, RLS och AAL2 för administrativa roller. Ingen publik kontoregistrering i applikationen. Hostad signup måste dessutom stängas i Supabase. |
+| Behörighet | Supabase Auth, serverkontroll, RLS och AAL2 för administrativa roller. Publik signup och anonym inloggning är även avstängda i hostad Supabase. |
 
 ## Konfiguration och beroenden
 
-Ingen ny tjänst, datamodell, autentiseringslösning eller paketdependency har införts.
+Den beställda Supabase-stagingmiljön har nu konfigurerats. Ingen ny datamodell,
+autentiseringslösning eller paketdependency har införts.
 Next.js, Supabase SDK, Zod, PostgreSQL och de befintliga valfria Resend-/Stripe-modulerna återanvänds.
 `lib/platform/config.ts` är den typade funktionskonfigurationen. Varje optional flagga
 kräver exakt strängen `true`; standard är stängd. E-post kräver dessutom aktiv transport.
@@ -50,7 +51,8 @@ Detta betyder inte att föreningen saknar material utanför Git; sådant materia
 inte funnits tillgängligt för denna import.
 
 - Källmanifest SHA-256: `eaa5c850317fa93e42351d95853848637eec24600302164d9ca981e331ac3d83`.
-- Hostad import: inte körd. Verkliga importerade artiklar/event: **0/0**.
+- Verkliga importerade artiklar/event: **0/0** eftersom källinventeringen är tom.
+  Syntetiska stagingposter är testdata, inte föreningens importerade innehåll.
 - Syntetiskt lokalt test: första körningen 2 artiklar + 1 event, andra körningen
   0 nya och 3 överhoppade. Avvikande befintlig slug stoppar hela transaktionen.
 - Markdown, författare, taggar, SEO och tidsstämplar jämförs mot källan.
@@ -60,10 +62,15 @@ inte funnits tillgängligt för denna import.
 ## Testresultat
 
 - Lint, TypeScript och produktionsbyggen: godkända.
-- 51 enhetstester och 38 integrationstester godkända.
+- 53 enhetstester och 38 integrationstester; de två nya enhetstesterna låser
+  stagingverktygets exakta mål och avstängda funktioner.
 - 13 befintliga publika webbläsartester, 4 publicerings-/avstängningsregressioner,
-  11 tester med full lokal testplattform och 7 tester för det begränsade lanseringsläget.
-- Totalt **124 automatiserade tester**. De nya testerna ingår i GitHub Actions.
+  11 tester med full lokal testplattform och 8 tester för det begränsade lanseringsläget.
+- Totalt **127 CI-tester**. Ett nytt webbläsartest täcker att artikelstatus förblir
+  korrekt efter publicering, ytterligare redigering och avpublicering.
+- Separat från CI: verkliga hostade SDK-kontroller av lösenord, TOTP/AAL2,
+  redaktionella ändringar och negativa RLS-fall; 2 automatiserade browserfall
+  mot lokal Next med hostad databas, samt faktiskt redaktörsflöde i Vercel Preview.
 - Alla 17 migrationer installerade i tom isolerad databas. De 16 tidigare filerna är oförändrade.
 - Lokal återställningsövning: 8 syntetiska profiler, 31 RLS-tabeller, 45 policyer;
   anonym åtkomst till kontaktärenden nekas också efter återställning.
@@ -76,21 +83,20 @@ inte funnits tillgängligt för denna import.
 FormSubmit har verifierats med avlyssnad/mockad leverans. Ingen riktig inkorgsleverans
 har testats. Resend/Stripe kontaktades inte; valfria leveranstester använder syntetisk
 lokal SMTP eller verifierade mockar. Lokal Postgres är inte hostad staging.
+Utförda hostade kontroller och begränsningar redovisas separat i
+[stagingrapporten](hosted-staging.md).
 
 ## Återstår före skarp drift
 
-1. Ordna kapacitet för två separata CFD-ägda Supabase-projekt i EU. Kontot har nått
-   gratisgränsen; skapa inga betalda resurser och ändra inga andra projekt utan beslut.
-   Gå till Supabase Dashboard → organisation → New project när kapaciteten finns.
-   Skapa först `cfd-sweden-staging`, välj Stockholm och spara lösenord i lösenordshanteraren.
-   Plan, ägarskap och driftansvar behöver beslutas om gratisalternativet inte ryms.
-2. Generera/granska CLI-konfiguration, länka enbart staging, granska migrationsplan,
-   applicera de 17 migrationerna och dokumentera verklig hostad historik.
-3. Lägg stagingnycklar och rätt Site URL enbart i branchens Vercel Preview-miljö.
-   Inga projektmiljövariabler var tillagda vid inventeringen. Lägg inte produktionsnycklar i Preview.
-4. Skapa intern stagingtestidentitet, stäng signup/anonyma konton och testa MFA,
-   RLS, import, publiceringsflöde, avbrott och fullständig hostad backup/restore.
-   Produktionssuperadmin ska vara en namngiven verklig person, aldrig testidentiteten.
+1. Besluta kapacitet för en separat produktionsdatabas. Staging finns nu efter
+   Karls godkända pausning av `vbl`. Inga betalda resurser har skapats.
+2. Slutför verifierad återställning av Auth/MFA och en portabel backup. Hostad
+   applikationsdata har återställts lokalt med 31 RLS-tabeller, 45 policyer och
+   17 migrationsposter, men Auth-UUID-platshållare bevisar inte kontoåterställning.
+3. Behåll stagingnycklarna enbart på Preview-branchen. Produktionsnycklar och
+   produktionsmiljö ska införas först efter separat releasegodkännande.
+4. Utse första verkliga superadmin och säker kontoprovisionering. Använd aldrig
+   de syntetiska stagingidentiteterna som produktionsadministratörer.
 5. Föreningen beslutar personuppgiftsansvar, leverantörsavtal, gallring, roller,
    redaktionellt ansvar och incident-/backupansvar. Ange vem som är första superadmin.
 6. Presentera verifierade stagingresultat och exakt produktionsplan för Karl.

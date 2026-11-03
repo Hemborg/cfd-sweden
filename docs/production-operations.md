@@ -1,23 +1,22 @@
 # CFD Sweden – hostad driftinstruktion
 
-> Status 2026-11-03: detta är en instruktion för en framtida, manuellt
-> kontrollerad staging- och produktionssättning. Den innebär inte att CFD Sweden
-> är produktionsklar och bekräftar inte att någon hostad databas, miljövariabel
-> eller extern tjänst har konfigurerats.
+> Status 2026-11-03: CFD-staging är installerad och ansluten till PR #5:s
+> Vercel Preview. Produktion är inte ändrad. Se [stagingrapporten](hosted-staging.md)
+> för utförda kontroller och kvarstående Auth-/MFA-återställningsbegränsning.
 
 ## Nuvarande verifierade läge
 
 - `main` är `50860d9`. PR #3 och PR #4 är öppna; PR #4:s tidigare
   granskningsunderlag är `24f868b`.
-- Vercel-projektet `cfd-sweden` finns i teamet `hemborg-5741s-projects`. Inga
-  projektmiljövariabler har lagts till där enligt den granskade inställningssidan.
-- Ingen CFD Sweden-databas eller hostad staging-miljö finns verifierad.
-- Det inloggade Supabase-kontots två fria projekt används redan för andra
-  ändamål. Gränssnittet blockerar
-  nya fria projekt på grund av tvåprojektsgränsen.
-- Ändra, pausa, radera eller flytta aldrig de andra projekten för denna
-  webbplats. Uppgradera inte plan och skapa inte nytt konto utan ett nytt,
-  uttryckligt beslut.
+- Vercel-projektet `cfd-sweden` finns i teamet `hemborg-5741s-projects`.
+  16 variabler gäller endast Preview-branchen `codex/cfd-production-foundation-20261103`.
+  Inga produktionsvariabler har lagts till.
+- Supabase `cfd-sweden-staging`, ref `feubwwglcqbwrurpvpwk`, finns i Stockholm,
+  `eu-north-1`, på Free. 17 migrationer är installerade, 31 tabeller har RLS och
+  45 policyer finns. Publik och anonym signup är avstängda; TOTP är aktiverat.
+- Karl godkände uttryckligen att `vbl` pausades, vilket frigjorde stagingplatsen.
+  Inget annat projekt har ändrats. En ytterligare samtidigt aktiv databas kräver
+  separat kapacitetsbeslut. Inga betalda resurser får skapas utan godkännande.
 - Det finns för närvarande 0 artiklar och 0 evenemang i både `main` och denna
   leveransgren, alltså inget innehåll att importera.
 
@@ -116,25 +115,27 @@ prefixet `202611030040`.
    Byt aldrig namn på en migration som redan är hostad; skapa i stället en ny.
 2. Kör den lokala migrations- och testsviten mot den isolerade testdatabasen.
    Det är inte bevis för hostad funktion.
-3. När staging faktiskt skapats och behörighet verifierats, skapa/reparera
-   CLI-konfiguration med `supabase init` utan att ersätta filerna i
-   `supabase/migrations/`. Granska och versionshantera den genererade
-   `supabase/config.toml` innan användning.
-4. Länka endast staging: `supabase link --project-ref <STAGING_REF>`.
-5. Kör `supabase migration list --linked`. Om projektet inte är tomt eller
+3. Använd granskad `supabase/config.toml` och pinnad CLI via `npx --yes supabase@3.0.0`.
+   Konfigurationen är lokal; kör inte `config push` som en del av databasmigrationen.
+   CLI-inloggningen använder operativsystemets credential store och en temporär
+   databasroll; inget databaslösenord behöver delas i chatten.
+4. Ange alltid exakt mål: `--remote=feubwwglcqbwrurpvpwk` för staging. CLI v3:s
+   `--remote` ersätter äldre `--linked`. Använd aldrig implicit produktionsmål.
+5. Kör `npx --yes supabase@3.0.0 migration list --remote=feubwwglcqbwrurpvpwk`. Om projektet inte är tomt eller
    historiken avviker: avbryt och dokumentera skillnaden.
-6. Granska `supabase db push --linked --dry-run`. Kör sedan stagingdeployen:
-   `supabase db push --linked`, utan seed.
+6. Granska `npx --yes supabase@3.0.0 db push --remote=feubwwglcqbwrurpvpwk --dry-run --skip-vault`.
+   Kör sedan samma kommando med `--yes` i stället för `--dry-run`, utan seed.
 7. Spara commit-SHA, projektref, migreringslista före/efter och resultat av
    RLS/Auth-smoketester. Processreturkod ensam är inte ett godkännande.
 
-Använd aldrig `supabase db reset --linked` eller reset med extern `--db-url`;
-det är destruktivt. `supabase db pull --linked` används endast för att fånga en
+Använd aldrig `supabase db reset --remote` eller reset med extern databas-URL;
+det är destruktivt. `supabase db pull --remote=<ref>` används endast för att fånga en
 medveten existerande remote-ändring före fortsatt lokal utveckling, inte för att
 normalisera okända produktionsändringar. [Miljö- och
 migrationsflöde](https://supabase.com/docs/guides/deployment/managing-environments)
 
-Flaggorna är kontrollerade mot [CLI-referensen](https://supabase.com/docs/reference/cli/supabase-db-push).
+Flaggorna är kontrollerade mot installerad CLI 3.0.0 och
+[v3-guiden](https://supabase.com/docs/guides/local-development/cli/migrating-to-v3).
 
 ### Supabase-specifika förutsättningar
 
@@ -214,9 +215,9 @@ Före varje framtida hostad migrering eller import ska operatören ta en
 CLI-upplägg är separata dumpfiler för roller, schema och data:
 
 ```text
-supabase db dump --linked -f roles.sql --role-only
-supabase db dump --linked -f schema.sql
-supabase db dump --linked -f data.sql --use-copy --data-only
+npx --yes supabase@3.0.0 db dump --remote=<ref> -f roles.sql --role-only
+npx --yes supabase@3.0.0 db dump --remote=<ref> -f schema.sql
+npx --yes supabase@3.0.0 db dump --remote=<ref> -f data.sql --use-copy --data-only
 ```
 
 En backup räknas inte som verifierad förrän filerna finns, är krypterat skyddade
@@ -229,7 +230,11 @@ migreringarna. [Backupguide](https://supabase.com/docs/guides/platform/backups)
 och [CLI-återställning](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore).
 
 De tre dumpkommandona är inte ensamma ett verifierat komplett Auth-återställningspaket.
-CLI undantar hanterade scheman som `auth` och `storage` som standard. Den hostade
+Schemaexporten undantar hanterade scheman som `auth` och `storage`. Den faktiskt
+verifierade CLI 3.0.0-dataexporten innehåller däremot Auth-/Storage-rader, även
+lösenordshashar och MFA-material, och måste därför behandlas som hemlig.
+Export av sådana rader bevisar inte att Auth/MFA kan återställas med rätt
+krypteringsnycklar. Den hostade
 återställningsövningen måste uttryckligen omfatta Auth-identiteter, profilernas
 foreign keys, TOTP, sessionsåterkallelse och eventuella Storage-filer enligt
 leverantörens återställningsprocess. Kör därefter negativa RLS-tester på målet;
@@ -237,8 +242,8 @@ enbart samma tabellantal räcker inte som produktionsbevis.
 
 ## Stagingacceptans och produktionsgrind
 
-Hostade syntetiska stagingtester är blockerade eftersom CFD-staging saknas. När
-den finns ska följande ha verifierbara bevis: unik migrationhistorik före/efter,
+Hostade syntetiska stagingtester har genomförts enligt [rapporten](hosted-staging.md).
+Acceptans kräver fortfarande verifierbara bevis för: unik migrationhistorik före/efter,
 superadmin med TOTP/AAL2, RLS för anonym och inloggad användare, fortsatt
 FormSubmit till `cfdsweden@proton.me`, frånvaro av aktiva mail-/nyhetsbrev-/betal-
 nings-/eventregistrerings-/kommentarflöden, mobil- och desktopkontroll samt
