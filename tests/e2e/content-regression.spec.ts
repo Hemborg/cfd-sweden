@@ -4,12 +4,14 @@ import { pageContent } from "../../content/site";
 
 // User-approved redesign: signup stays on our new form; film opens the actual film.
 const updatedLinks: Record<string, string> = {
+  "mailto:cfdsweden@proton.me": "/kontakta-oss#kontaktformular",
   "/#form": "/ga-med",
   "https://newparadigminstitute.org/take-action/join-citizens-for-disclosure/": "https://www.youtube.com/watch?v=SIxt4mtGk-s",
 };
 
 // The three old intros described the source website; the redesign speaks to Swedish visitors.
 const updatedIntros = [
+  ["Skicka ett mejl till", "Använd kontaktformuläret nedan för att skriva till"],
   ["Originalets arbete kretsar", pageContent.work.intro],
   ["Originalets Learn-sida fungerar", pageContent.learn.intro],
   ["Originalets Take Action-sida samlar", pageContent.action.intro],

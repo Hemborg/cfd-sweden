@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+.form-help { font-size: 0.9rem; line-height: 1.6; margin-block: 1rem; }
+
 /* Shared tokens measured from the parent site. */
 :root {
   --navy: #222b60;

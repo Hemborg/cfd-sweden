@@ -3,7 +3,7 @@ import { MobileNav } from "@/components/MobileNav";
 import { BrandLogo } from "@/components/BrandLogo";
 import { navigation, pageContent } from "@/content/site";
 
-type HeaderProps = { current?: "home" | "join" | (typeof navigation)[number]["key"]; };
+type HeaderProps = { current?: "home" | "join" | "privacy" | "thanks" | (typeof navigation)[number]["key"]; };
 
 function ArrowIcon() {
   return <span aria-hidden="true">↗</span>;

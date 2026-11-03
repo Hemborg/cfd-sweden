@@ -1,0 +1,64 @@
+name: Pull request checks
+
+on:
+  pull_request:
+
+# This workflow intentionally has no deployment, environment, secret, or write
+# permissions. Do not replace pull_request with pull_request_target.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, test, build, and browser checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - name: Check out the pull request
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      # Next generates route-aware definitions into .next/types. This makes the
+      # standalone TypeScript check meaningful on a clean checkout.
+      - name: Generate Next.js route types
+        run: npm exec -- next typegen
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Production build
+        run: npm run build
+
+      - name: Install the Playwright Chromium browser
+        run: npm exec -- playwright install --with-deps chromium
+
+      - name: Browser regression tests
+        run: npm run test:e2e
+
+      # This script creates and removes explicit local fixtures, then rebuilds
+      # before completing. It never uses the deployed domain.
+      - name: Published-content integration tests
+        run: npm run test:content:e2e

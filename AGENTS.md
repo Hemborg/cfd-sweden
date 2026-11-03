@@ -33,8 +33,8 @@ Verifierat före denna dokumentationsändring: repot är publikt. Direktpublicer
 
 ## Formuläret
 
-- `app/page.tsx`: FormSubmit POST till `https://formsubmit.co/cfdsweden@proton.me`.
-- `_next`: `https://cfdsweden.se/tack`. Behåll `_honey` tomt och dolt för vanliga besökare.
+- `components/InquiryForm.tsx`: gemensam FormSubmit POST till `https://formsubmit.co/cfdsweden@proton.me`, med separata kontakt-/intressevarianter. E-post krävs; kontakt kräver även meddelande. Ingen automatisk prenumeration.
+- `_next`: `https://cfdsweden.se/tack` för intresse, `https://cfdsweden.se/tack?typ=kontakt` för kontakt. Behåll `_honey` tomt och dolt för vanliga besökare. Båda tackvarianterna är noindex och ska hållas utanför sitemap.
 - CAPTCHA är avstängd som ett medvetet val för ett enklare inskick. Honeypot ger svagare spamskydd; bevaka spam och leveransproblem. [FormSubmit rekommenderar CAPTCHA](https://formsubmit.co/documentation).
 - En lyckad omdirigering bevisar inte mejlleverans. Redovisa separat vad som testats i webbläsaren och vad mottagaren bekräftat i inkorgen. Märk tekniska testinskick tydligt.
 

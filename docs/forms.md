@@ -1,6 +1,16 @@
 # Formulär- och samtyckesprototyp
 
-Den publicerade startsidans FormSubmit-formulär är medvetet oförändrat. Det skickar fortsatt till `cfdsweden@proton.me` och är det enda befintliga skarpa flödet. En omdirigering till `/tack` bevisar inte leverans till inkorgen.
+## Publika formulär i PR #3
+
+`InquiryForm` återanvänder befintlig FormSubmit-leverans till `cfdsweden@proton.me`. Varianten `join` används på startsidan och `/ga-med`; `contact` på `/kontakta-oss`. Kontaktärenden har egen ämnesrad, ärendetyp och tacktext (`/tack?typ=kontakt`), och presenteras inte som medlemsanmälan. Båda använder samma befintliga endpoint, honeypot och CAPTCHA-inställning. Ingen backend eller extern konfiguration har ändrats.
+
+E-post är obligatoriskt med webbläsarens e-postvalidering och maxlängd 254. Kontaktmeddelandet krävs (2–4000 tecken); övriga personfält är frivilliga och längdbegränsade. Detta är HTML-validering för vanliga besökare, inte ett serverbaserat missbruksskydd. FormSubmit hanterar mottagandet; testsviten fångar POST lokalt och skickar aldrig till tjänsten. En omdirigering till `/tack` bevisar inte leverans till inkorgen.
+
+Kort personuppgiftsinformation länkar till `/integritet`. Sidan beskriver kända ändamål, uppgifter, FormSubmit/Proton och kontaktväg för rättighetsfrågor. Före skarp drift behöver föreningen fastställa och komplettera identifierbar personuppgiftsansvarig, rättslig grund, lagring/gallring samt leverantörs- och överföringsvillkor. Ingen juridisk fullständighet eller GDPR-efterlevnad påstås.
+
+`/tack` och kontaktvarianten har `noindex, nofollow` och finns inte i sitemap. Gamla URL:er behålls. `/integritet` är en ny publik sida med samma grafiska profil.
+
+## Isolerad serverprototyp
 
 Den nya prototypen finns lokalt på `/experiment/formular`. Starta den endast så här:
 

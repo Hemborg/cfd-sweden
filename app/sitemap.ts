@@ -3,7 +3,7 @@ import { getPublishedPosts } from "@/lib/content/posts";
 import { getEvents } from "@/lib/content/events";
 import { site } from "@/content/site";
 
-const staticRoutes = ["", "/om-oss", "/vart-arbete", "/new-paradigm", "/lar-dig-mer", "/take-action", "/kontakta-oss", "/tack", "/nyheter", "/evenemang", "/ga-med", "/cfd-gear"];
+const staticRoutes = ["", "/om-oss", "/vart-arbete", "/new-paradigm", "/lar-dig-mer", "/take-action", "/kontakta-oss", "/integritet", "/nyheter", "/evenemang", "/ga-med", "/cfd-gear"];
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...staticRoutes.map((route) => ({ url: `${site.url}${route}` })),

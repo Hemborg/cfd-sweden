@@ -24,8 +24,8 @@ test("centralt innehåll innehåller den publicerade navigeringen och synliga ko
   for (const text of ["Grundläggande UAP-historia", "Svensk kontext", "Lokal organisering", "Research och granskning"]) assert.ok(JSON.stringify([resourceItems, workGroups]).includes(text));
 });
 
-test("alla åtta publicerade sidor behåller fångad synlig copy och länkkontrakt", () => {
-  const pages = { home: createElement(Home), about: createElement(AboutPage), work: createElement(WorkPage), paradigm: createElement(ParadigmPage), learn: createElement(LearnPage), action: createElement(TakeActionPage), contact: createElement(ContactPage), thanks: createElement(TackPage) };
+test("alla åtta publicerade sidor behåller fångad synlig copy och länkkontrakt", async () => {
+  const pages = { home: createElement(Home), about: createElement(AboutPage), work: createElement(WorkPage), paradigm: createElement(ParadigmPage), learn: createElement(LearnPage), action: createElement(TakeActionPage), contact: createElement(ContactPage), thanks: await TackPage({ searchParams: Promise.resolve({}) }) };
   for (const [name, element] of Object.entries(pages)) {
     const html = renderToStaticMarkup(element);
     for (const value of publishedContentContract[name as keyof typeof publishedContentContract]) {

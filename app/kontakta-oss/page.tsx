@@ -1,4 +1,5 @@
 import { PageLayout } from "@/components/PageLayout";
+import { InquiryForm } from "@/components/InquiryForm";
 import { pageContent, site } from "@/content/site";
 
 export default function ContactPage() {
@@ -11,17 +12,15 @@ export default function ContactPage() {
         <article className="large-copy">
           <h2>{pageContent.contact.email.heading}</h2>
           <p>
-            Skicka ett mejl till{" "}
-            <a className="text-link" href={`mailto:${site.contactEmail}`}>
-              {site.contactEmail}
-            </a>
-            . {pageContent.contact.email.body}
+            Använd kontaktformuläret nedan för att skriva till {site.contactEmail}.
+            {" "}{pageContent.contact.email.body}
           </p>
         </article>
         <article className="large-copy dark-card">
           <h2>{pageContent.contact.press.heading}</h2><p>{pageContent.contact.press.body}</p>
         </article>
       </section>
+      <section className="subpage-section"><InquiryForm variant="contact" /></section>
     </PageLayout>
   );
 }

@@ -9,6 +9,21 @@ nyhetsbrevsprenumerationer, kontoändringar eller DNS-ändringar har utförts.
 
 ## Resultat och kravstatus
 
+### Uppföljning av PR #3, 2026-11-03
+
+Samtliga sex beställda kodändringar är genomförda på samma feature-branch:
+
+1. Kontaktsida och sidfot saknar `mailto:`. Gemensam `InquiryForm` återanvänder befintlig FormSubmit-leverans med separata kontakt-/intressevarianter, ärendetyp, ämnesrad och tacktext. Ingen ny backend.
+2. E-post är obligatoriskt och valideras av webbläsaren; kontaktmeddelande krävs och fält har längdgränser. Kort personuppgiftsinformation och `/integritet` finns. Juridisk komplettering återstår enligt nedan.
+3. Listan visar bara kommande evenemang, sorterade efter faktisk tid. Den beräknas per förfrågan utan ombygge. Passerade aktiviteter döljs från listan; befintliga detalj-URL:er och deras sitemap-poster behålls som historiska sidor.
+4. `/tack`, inklusive kontaktvarianten, har `noindex, nofollow` och är borttagen ur sitemap.
+5. GitHub Actions på varje PR kör lint, typgenerering/typkontroll, enhetstester, produktionsbygge och båda webbläsarsviterna. Ingen deploy, externa nycklar eller skrivbehörighet. Se `ci.md`.
+6. Regressionstester täcker validering, kontaktinskick med lokalt mockad FormSubmit, separata tacktexter, mailto-borttagning, integritetslänkar, noindex/sitemap och faktisk renderad evenemangsfiltrering. Mobil (375 px) och dator (1440 px) har verifierats utan overflow.
+
+Inga nya paket tillkommer. Grafisk profil, övrigt innehåll och befintliga URL:er behålls. Browservalidering är inte serverbaserat missbruksskydd. FormSubmit-mottagare/CAPTCHA, databas, leverantörskonton och skarp drift har inte ändrats. Kontaktens tack-URL och ämnesrad är formulärdata i koden, inte en ändring av e-posttjänsten.
+
+**Före skarp drift:** oberoende kodgranskning, föreningens beslut om personuppgiftsansvarig/rättslig grund/lagring och leverantörsvillkor samt kompletterad integritetstext. Ett separat godkänt leveranstest till inkorgen återstår. De tidigare server-/nyhetsbrevsprototypernas integrationsarbete nedan kvarstår; de aktiveras inte av denna uppföljning.
+
 Beställningen avser en körbar prototyp, inte en produktionsklar medlemsplattform.
 Den senare beställningen av en svensk version av modersidans utseende ersätter
 det ursprungliga kravet att bevara den gamla grafiska profilen.
@@ -58,14 +73,14 @@ Node.js 24.19.0, npm 11.17.0, Windows, Chromium. Körda 2026-11-03:
 | --- | --- |
 | `npm run lint` | Godkänd |
 | `npm run typecheck` | Godkänd |
-| `npm test` | 28 godkända |
+| `npm test` | 32 godkända |
 | `npm run build` | Godkänt produktionsbygge |
-| `npm run test:e2e` | 9 godkända |
+| `npm run test:e2e` | 13 godkända |
 | `npm run test:content:e2e` | 2 godkända; temporära artiklar borttagna och rent bygge återställt |
 | `npm audit --omit=dev` | 0 rapporterade sårbarheter |
 | `npm audit` | 16 måttliga i utvecklingsberoenden; 0 höga/kritiska |
 
-Totalt **39 passerade tester**. De täcker bland annat innehåll/länkar, nya Gå med/Gear,
+Totalt **47 passerade tester**. De täcker bland annat innehåll/länkar, nya Gå med/Gear,
 mobilmeny, resursfilter, layout, FormSubmit-kontrakt, API-validering, samtycke,
 idempotens, SQL-/adapterkontrakt och publicerings-/demospärrar. Inga testinskick går
 till FormSubmit. 13 routes har även kontrollerats i 1499, 768 och 375 px utan overflow
@@ -116,6 +131,8 @@ Fångade från den lokala produktionsversionen utan testuppgifter:
 - [Startsida, dator](review/home-desktop.png)
 - [Startsida, mobil](review/home-mobile.png)
 - [Gå med, dator](review/join-desktop.png)
+- [Kontaktformulär, dator](review/contact-desktop.png)
+- [Kontaktformulär, mobil](review/contact-mobile.png)
 
 Slutrapporten `prototype-report.md` är historisk och innehåller även jämförelsen mellan
 fortsatt Next.js-förvaltning och ett separat WordPress-alternativ. Läs fasdateringar;
