@@ -16,7 +16,7 @@ jobs:
   verify:
     name: Lint, test, build, and browser checks
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       CI: "true"
       NEXT_TELEMETRY_DISABLED: "1"
@@ -62,3 +62,33 @@ jobs:
       # before completing. It never uses the deployed domain.
       - name: Published-content integration tests
         run: npm run test:content:e2e
+
+      - name: Dependency audit (high and critical gate)
+        run: npm audit --audit-level=high
+
+      - name: Start isolated PostgreSQL, Auth, REST and synthetic SMTP
+        run: npm run platform:start
+
+      - name: Migrate empty database and seed synthetic accounts
+        run: |
+          npm run platform:migrate
+          npm run platform:seed
+
+      - name: Real database, RLS, Auth and mail integration tests
+        run: npm run test:integration
+
+      - name: Backup and restore into an empty isolated database
+        run: npm run test:restore
+
+      - name: Build the locally activated platform
+        env:
+          CFD_SITE_URL: http://127.0.0.1:3402
+          CFD_CONTACT_BACKEND: database
+        run: node scripts/platform-command.mjs build
+
+      - name: Platform browser and accessibility integration tests
+        run: npm exec -- playwright test --config=playwright.platform.config.ts
+
+      - name: Stop the isolated test stack
+        if: always()
+        run: npm run platform:stop

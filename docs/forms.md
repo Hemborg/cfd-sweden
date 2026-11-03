@@ -1,5 +1,7 @@
 # Formulär- och samtyckesprototyp
 
+> Historik för PR #3/prototypen. För den nya valbara föreningsplattformen gäller [plattformens arkitektur](platform-architecture.md), [driftguide](platform-operations.md) och [kravmatris](platform-requirements.md).
+
 ## Publika formulär i PR #3
 
 `InquiryForm` återanvänder befintlig FormSubmit-leverans till `cfdsweden@proton.me`. Varianten `join` används på startsidan och `/ga-med`; `contact` på `/kontakta-oss`. Kontaktärenden har egen ämnesrad, ärendetyp och tacktext (`/tack?typ=kontakt`), och presenteras inte som medlemsanmälan. Båda använder samma befintliga endpoint, honeypot och CAPTCHA-inställning. Ingen backend eller extern konfiguration har ändrats.

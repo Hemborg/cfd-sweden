@@ -1,5 +1,18 @@
 # CFD Sweden: underlag för oberoende kodgranskning
 
+## Ny plattformsleverans 2026-11-03
+
+Aktuell branch: `codex/cfd-association-platform-20261103`, bas senaste PR #3
+`9c40781450c2e7802afae75c2ec8949e8df968bf`. Den nya separata PR:n omfattar
+alla A–I-moduler. Den ska granskas, inte mergas eller produktionsaktiveras.
+
+Aktuellt underlag: [kravmatris](platform-requirements.md),
+[arkitektur](platform-architecture.md), [driftguide](platform-operations.md),
+[admin-/redaktörsguide](platform-admin-guide.md) och [OSS](oss-reuse.md).
+Verifieringsresultat och externa luckor finns i matrisen och PR-beskrivningen.
+Alla uppgifter nedan om prototypens begränsade funktioner gäller historiska PR #3,
+inte den nya plattformens aktiverade kodväg.
+
 Verifierat 2026-11-03. Feature-branch: `codex/cfd-modular-mvp-20261102`.
 Mål: `Hemborg/cfd-sweden`, `main`. Verifierad bas: `50860d90b312e6a38cacea00b5755a3f48dec33a`.
 

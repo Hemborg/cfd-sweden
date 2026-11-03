@@ -1,5 +1,7 @@
 # Förvaltning och lokal demonstration
 
+> Historik för PR #3/prototypen. För den nya valbara föreningsplattformen gäller [plattformens arkitektur](platform-architecture.md), [driftguide](platform-operations.md) och [kravmatris](platform-requirements.md).
+
 För granskningsleveransen 2026-11-03 är commit, push av feature-branchen och PR mot `main` uttryckligen godkända. Ingen merge eller produktionsdriftsättning är godkänd. Se `review-handoff.md`; begränsningarna för externa tjänster nedan gäller fortfarande.
 
 Denna gren är ett lokalt experiment. Inget i denna instruktion är tillstånd att pusha, deploya, skapa konton, skicka mejl eller köra migrationer på en extern databas. Befintlig produktionssajt använder fortfarande sitt befintliga FormSubmit-flöde.

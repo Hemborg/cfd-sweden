@@ -1,5 +1,11 @@
 # CFD Sweden — instruktioner till kodagenter
 
+## Föreningsplattform 2026-11-03
+
+Det senaste uppdraget utökar PR #3 till alla nio verksamhetsområden A–I på en NY feature-branch och en separat PR. Implementering, projektlokala beroenden, isolerade syntetiska PostgreSQL/Auth/SMTP-testmiljöer, tester, dokumentation och push av feature-branch är godkända. CRM/ERP ingår inte. Se `docs/platform-plan.md` och den nya kravmatrisen för aktuell omfattning. Äldre prototypbegränsningar nedan beskriver historiken, inte en gräns mot den uttryckligen beställda implementationen.
+
+Ingen merge, produktionsdeploy, produktionsmigration, skarp debitering, mejl till verkliga medlemmar eller ändring av DNS/konton. FormSubmit ligger kvar tills ett separat godkänt backendbyte sker. `.env.example` med TOMMA hemlighetsfält är uttryckligen beställd; riktiga `.env`-filer och `.test-platform` ska alltid förbli ignorerade. Lokala testmigreringar använder endast den namngivna `cfd_platform_test`-databasen, aldrig externa projekt.
+
 ## Granskningsleverans 2026-11-03
 
 Karl har uttryckligen godkänt commit, push av feature-branchen och en Pull Request mot `main` för oberoende granskning. **Merga inte denna PR, pusha inte till `main` och driftsätt inte produktionssajten utan ett nytt uttryckligt beslut.** Detta överstyr de äldre direktpubliceringsrutinerna nedan för detta uppdrag. Inga externa migrationer, verkliga utskick, persondataöverföringar eller konto-/DNS-ändringar ingår. Den senare beställningen av modersidans grafiska profil överstyr prototypens ursprungliga krav att behålla den gamla designen. Se `docs/review-handoff.md` för omfattning, kravstatus och kvarstående arbete.

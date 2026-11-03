@@ -2,9 +2,22 @@
 
 Svensk landningssida för Citizens for Disclosure Sweden.
 
-## Prototyp och design för kodgranskning
+## Föreningsplattform för oberoende granskning
 
-Denna feature-branch innehåller en modulär prototyp och en svensk anpassning av modersidans grafiska profil. Den lämnas som Pull Request för oberoende granskning, utan merge eller produktionspublicering. Börja med [granskningsöverlämningen](docs/review-handoff.md), [arkitekturen](docs/architecture.md), [kör- och förvaltningsguiden](docs/operations.md), [formulärens begränsningar](docs/forms.md) och [prototypens historiska slutrapport](docs/prototype-report.md). Publiceringsinstruktionen längre ned beskriver det befintliga produktionsflödet och ger inte tillstånd att publicera denna PR.
+Denna feature-branch utökar senaste PR #3 till kontaktärenden, nyhetsbrev och
+transaktionella mejl, medlemsportal med MFA/roller, arbetsgrupper/kampanjer,
+Kanban, moderering samt databaspublicerade nyheter och evenemang med biljetter.
+Plattformen är avstängd som standard. Den publika grafiska profilen, copy,
+URL:er och FormSubmit-flödet bevaras.
+
+Börja med [kravmatris och verifieringsbevis](docs/platform-requirements.md),
+[arkitektur](docs/platform-architecture.md), [installation/drift och externa grindar](docs/platform-operations.md),
+[administratörs- och redaktörsguide](docs/platform-admin-guide.md) och
+[OSS-val](docs/oss-reuse.md). [Granskningsöverlämningen](docs/review-handoff.md)
+beskriver även tidigare PR #3. Äldre prototypdokument är historik.
+
+Ingen merge eller produktionspublicering ingår. Resend/Stripe och hosted
+Supabase måste verifieras i separat godkänd staging innan skarp aktivering.
 
 ## Utveckling
 

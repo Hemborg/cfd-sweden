@@ -1,13 +1,37 @@
 import type { MetadataRoute } from "next";
-import { getPublishedPosts } from "@/lib/content/posts";
-import { getEvents } from "@/lib/content/events";
+import { getEditorialRepository } from "@/lib/editorial/platform-repository";
+import { getEventRepository } from "@/lib/events/repository";
 import { site } from "@/content/site";
 
-const staticRoutes = ["", "/om-oss", "/vart-arbete", "/new-paradigm", "/lar-dig-mer", "/take-action", "/kontakta-oss", "/integritet", "/nyheter", "/evenemang", "/ga-med", "/cfd-gear"];
-export default function sitemap(): MetadataRoute.Sitemap {
+const staticRoutes = [
+  "",
+  "/om-oss",
+  "/vart-arbete",
+  "/new-paradigm",
+  "/lar-dig-mer",
+  "/take-action",
+  "/kontakta-oss",
+  "/integritet",
+  "/nyheter",
+  "/evenemang",
+  "/ga-med",
+  "/cfd-gear",
+];
+export const dynamic = "force-dynamic";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [articles, events] = await Promise.all([
+    getEditorialRepository().listPublic(),
+    getEventRepository().listPublicArchive(),
+  ]);
   return [
     ...staticRoutes.map((route) => ({ url: `${site.url}${route}` })),
-    ...getPublishedPosts().map((post) => ({ url: `${site.url}/nyheter/${post.slug}`, lastModified: new Date(post.date) })),
-    ...getEvents().map((event) => ({ url: `${site.url}/evenemang/${event.slug}` })),
+    ...articles.map((article) => ({
+      url: `${site.url}/nyheter/${article.slug}`,
+      lastModified: new Date(article.updatedAt),
+    })),
+    ...events.map((event) => ({
+      url: `${site.url}/evenemang/${event.slug}`,
+      lastModified: new Date(event.updatedAt),
+    })),
   ];
 }

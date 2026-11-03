@@ -1,0 +1,9 @@
+.board { display:grid; grid-template-columns:repeat(5,minmax(230px,1fr)); gap:16px; overflow-x:auto; padding-bottom:12px; }
+.column { min-width:230px; padding:14px; border:1px solid #d8deea; border-top:3px solid #4e70bb; border-radius:10px; background:#fff; }
+.column h2 { font-size:1.2rem; }
+.card { display:grid; gap:12px; margin:14px 0; padding:14px; border:1px solid #d8deea; border-radius:7px; background:#f4f6fa; }
+.card h3 { font-size:1.05rem; }
+.card p { margin:0; font-size:.86rem; overflow-wrap:anywhere; }
+.card form { display:grid; gap:8px; }
+.card select,.card textarea,.card button { min-height:38px; max-width:100%; }
+.card button { justify-self:start; padding:8px 12px; border:0; border-radius:5px; background:#222b60; color:#fff; }

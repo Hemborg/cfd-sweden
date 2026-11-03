@@ -1,5 +1,7 @@
 # Lokal CFD-prototyp: arkitekturbeslut
 
+> Historik för PR #3/prototypen. För den nya valbara föreningsplattformen gäller [plattformens arkitektur](platform-architecture.md), [driftguide](platform-operations.md) och [kravmatris](platform-requirements.md).
+
 Datum: 2026-11-02. Bas: `50860d90b312e6a38cacea00b5755a3f48dec33a`.
 Gren: `codex/cfd-modular-mvp-20261102`. Ingen push, merge, deploy eller ändring av externa tjänster ingår.
 
