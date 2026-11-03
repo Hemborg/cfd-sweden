@@ -58,10 +58,9 @@ upp endast i en ny privat katalog, kontrollera filernas manifest/checksummor
 och följ den granskade schema-/Auth-processen. Att dekryptera ett tar-arkiv
 importerar ingenting till en databas.
 
-**Kvar för ägaren:** förvara det krypterade arkivet utanför denna dator och
-nyckeln separat, exempelvis i en lösenordshanterare. Nuvarande två mappar på
-samma dator skyddar inte mot förlust av datorn. Ingen privat backup har laddats
-upp till en extern tjänst utan ett valt mål.
+**Ägarens nuvarande beslut:** den krypterade syntetiska stagingkopian får ligga
+lokalt tills vidare. Nyckeln hålls separat. Det skyddar inte mot förlust av datorn;
+ingen privat backup har laddats upp till en extern tjänst utan ett valt mål.
 
 ## Vad bevisen inte omfattar
 
@@ -69,7 +68,9 @@ Detta är provad lokal SQL-/konto-/MFA-återställning, inte en full hostad
 katastrofåterställning till ett nytt Supabase-projekt. Cloud-konfiguration,
 JWT/API-nycklar, Vault-kryptering och Storage-filer ingår inte i det provet.
 En framtida export med krypterade MFA-faktorer kräver en ny verifierad process.
-Inga produktionsbackuper finns ännu eftersom produktionen inte skapats.
+Produktionen har en lokalt, DPAPI-skyddad baslinje före migrering. En krypterad
+post-release-backup tas efter att domänsläppet och den verkliga MFA-kontrollen är klara.
+Hostad katastrofåterställning är fortfarande inte provad.
 
 [Supabases Auth-migreringsguide](https://supabase.com/kb/troubleshooting/migrating-auth-users-between-projects)
 beskriver bevarande av lösenordshashar och att andra JWT-nycklar ogiltigförklarar

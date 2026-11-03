@@ -1,9 +1,14 @@
 # Produktionsberedskap 2026-11-03
 
-**Inte produktionssatt. Hostad staging fungerar; lokal konto-/MFA-återställning är verifierad. Produktionsgrindar återstår.**
-Den här leveransen bygger på PR #4 (`24f868b`) och omfattar också designen och
-funktionerna från PR #3. `main` är oförändrad (`50860d9`). Ingen produktionsmigration,
-produktionsimport, miljöändring, merge, DNS-ändring eller skarp leverans har gjorts.
+**Produktionsgrund är installerad och kontrollerad, men domänen är ännu inte
+omkopplad till plattformsversionen.** Ett separat produktionsprojekt finns i
+Stockholm (`eu-north-1`), medan staging är pausad enligt vald gratisplanslösning.
+Produktionsinloggning och MFA behöver ännu verifieras i den verkliga domänversionen.
+
+Den godkända koden är `89e9706c4d146958c1ac52d212f9e3ae9b5f66e0` och dess
+[fullständiga CI med 128 tester är grön](https://github.com/Hemborg/cfd-sweden/actions/runs/41653185888).
+En produktionskonfigurerad, men domänfrikopplad, Vercel-deployment är
+[klar för kontroll](https://vercel.com/hemborg-5741s-projects/cfd-sweden/3ctGTeYZ83nxoJ9U4ZBD14sPKXpa).
 
 ## Implementerat och lokalt verifierat
 
@@ -20,6 +25,24 @@ produktionsimport, miljöändring, merge, DNS-ändring eller skarp leverans har 
 | Grupper, projekt, kampanjer och Kanban | Behörig intern administration kvar. Grupp-/uppgiftsändringar fungerar utan att köa mejl när e-post är avstängd. |
 | Ej aktiva publika funktioner | Nyhetsbrev, kommentarer, eventanmälan, biljetter, betalning, inbjudningsmejl och återställningsmejl spärras i UI och servergränser. Arbetaren gör inga nätverksanrop när e-post är avstängd. |
 | Behörighet | Supabase Auth, serverkontroll, RLS och AAL2 för administrativa roller. Publik signup och anonym inloggning är även avstängda i hostad Supabase. |
+
+## Verifierat hostat produktionsläge
+
+- Separat Supabase-projekt `mreojynpylkitltnwxdu` är aktivt i `eu-north-1`.
+  Alla 17 granskade migrationer är installerade utan seed: 31 RLS-skyddade
+  tabeller och 45 policyer. Anonyma publika läsningar av innehåll är kontrollerade;
+  privata profiler och kontaktärenden nekas.
+- Produktionsmiljön i Vercel har 16 variabler. FormSubmit är fortsatt kontaktväg;
+  nyhetsbrev, automatiska mejl, eventanmälan, betalningar och kommentarer är avstängda.
+  Inga Resend- eller Stripe-nycklar har konfigurerats.
+- Publik signup och anonym inloggning är avstängda. Canonical Site URL är
+  `https://cfdsweden.se`.
+- Det första verkliga administratörskontot är bekräftat, har korrekt profil och har
+  tilldelats `superadmin` efter UUID-kontroll. Identiteten publiceras inte i Git.
+  Kontoägaren har ännu inte slutfört inloggning och TOTP/AAL2 i produktionsversionen.
+- Källinventeringen innehåller 0 artiklar och 0 evenemang. Ingen produktionsimport
+  kördes och databasen är tom på redaktionellt innehåll; inga syntetiska
+  stagingposter har förts över.
 
 ## Konfiguration och beroenden
 
@@ -86,32 +109,31 @@ lokal SMTP eller verifierade mockar. Lokal Postgres är inte hostad staging.
 Utförda hostade kontroller och begränsningar redovisas separat i
 [stagingrapporten](hosted-staging.md).
 
-## Återstår före skarp drift
+## Återstår för att slutföra releasen
 
-1. Karl har valt gratisplanen: pausa staging när separat produktion ska skapas,
-   efter releasegodkännande. Staging är ännu aktiv; inga betalda resurser finns.
-2. Lokal återställning av applikationsdata och faktiska Auth-konton är verifierad:
+1. Slå ihop den godkända koden och kontrollera den Vercel-deployment som kopplas
+   till `cfdsweden.se`. Verifiera sedan publika URL:er, FormSubmit-formulärens
+   action utan testutskick, tomma redaktionella flöden och avstängda API:er på domänen.
+2. Kontoägaren ska logga in, enrolera TOTP i egen autentiseringsapp och verifiera
+   ett administrativt AAL2-flöde. Ingen lösenordsåterställning eller e-postleverans
+   ska användas för detta.
+3. Lokal återställning av applikationsdata och faktiska Auth-konton är verifierad:
    31 RLS-tabeller, 45 policyer, 17 migrationsposter, sex lösenord och tre TOTP-faktorer.
-   Portabel GPG-backup är verifierad men behöver förvaras utanför datorn med separat
-   nyckel. Hostad projektåterställning är inte provad. [Backupguide](backup-recovery.md).
-3. Behåll stagingnycklarna enbart på Preview-branchen. Produktionsnycklar och
-   produktionsmiljö ska införas först efter separat releasegodkännande.
-4. Karl är utsedd första verkliga superadmin; adressen hålls privat. Konto, eget
-   lösenord och MFA provisioneras efter releasegodkännande. Använd aldrig testkonton.
-5. Föreningen beslutar personuppgiftsansvar, leverantörsavtal, gallring, roller,
+   Den krypterade stagingkopian ligger lokalt enligt ägarens beslut, men överlever
+   inte datorförlust; extern separat lagring och hostad återställningsövning återstår.
+   En krypterad produktionsbaslinje finns lokalt; en uppdaterad post-release-backup
+   tas först efter domänsläpp. [Backupguide](backup-recovery.md).
+4. Föreningen beslutar personuppgiftsansvar, leverantörsavtal, gallring, roller,
    redaktionellt ansvar och incident-/backupansvar. Superadminbeslutet ersätter inte dessa ansvarsfördelningsbeslut.
-6. Presentera verifierade stagingresultat och exakt produktionsplan för Karl.
-   Begär därefter uttryckligt godkännande innan produktionsmigration, import,
-   miljöändringar, merge och publicering. Verifiera domänen och data efter release.
 
 ### Återställningsväg
 
 Vid databasavbrott: behåll vald datakälla, visa felstatus, använd kontaktvägen och
 återställ databasåtkomst. Slå inte automatiskt av plattformen så att gamla Git-filer
-ser aktuella ut. Vid felaktig kodrelease: återgå till senast granskade deployment
-med kompatibelt schema; återställ inga data utan incidentbeslut och verifierad backup.
-Den första databaslanseringen kräver att en sådan kompatibel rollbackversion har
-provats i staging. DNS behöver inte ändras.
+ser aktuella ut. Vid felaktig kodrelease: återaktivera endast en tidigare Vercel-
+deployment som har samma produktionsmiljö och kompatibelt schema. Återställ inga
+data utan incidentbeslut och verifierad backup. Använd aldrig den pausade staging-
+previewn som rollback och kör aldrig `db reset` mot produktion.
 
 ### Framtida aktivering
 

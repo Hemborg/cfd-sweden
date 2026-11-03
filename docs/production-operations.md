@@ -1,24 +1,27 @@
 # CFD Sweden – hostad driftinstruktion
 
-> Status 2026-11-03: CFD-staging är installerad och ansluten till PR #5:s
-> Vercel Preview. Produktion är inte ändrad. Se [stagingrapporten](hosted-staging.md)
-> för utförda kontroller och verifierad lokal Auth-/MFA-återställning och kvarstående produktionsgränser.
+> Status 2026-11-03: Produktionsgrund är installerad efter uttryckligt
+> releasegodkännande, men domänen är inte omkopplad ännu. Staging är pausad enligt
+> gratisplansvalet. Se [produktionsstatus](production-status.md) för verifierat
+> läge, kvarstående domän- och MFA-kontroller samt historiska stagingbevis.
 
 ## Nuvarande verifierade läge
 
-- `main` är `50860d9`. PR #3 och PR #4 är öppna; PR #4:s tidigare
-  granskningsunderlag är `24f868b`.
-- Vercel-projektet `cfd-sweden` finns i teamet `hemborg-5741s-projects`.
-  16 variabler gäller endast Preview-branchen `codex/cfd-production-foundation-20261103`.
-  Inga produktionsvariabler har lagts till.
-- Supabase `cfd-sweden-staging`, ref `feubwwglcqbwrurpvpwk`, finns i Stockholm,
-  `eu-north-1`, på Free. 17 migrationer är installerade, 31 tabeller har RLS och
-  45 policyer finns. Publik och anonym signup är avstängda; TOTP är aktiverat.
-- Karl godkände uttryckligen att `vbl` pausades, vilket frigjorde stagingplatsen.
-  Inget annat projekt har ändrats. Karl har valt gratisplanen och paus av staging när separat produktion ska
-  skapas. Staging förblir aktiv fram till releasebeslutet.
-- Det finns för närvarande 0 artiklar och 0 evenemang i både `main` och denna
-  leveransgren, alltså inget innehåll att importera.
+- Godkänd kod: `89e9706c4d146958c1ac52d212f9e3ae9b5f66e0`; [CI med 128 tester är grön](https://github.com/Hemborg/cfd-sweden/actions/runs/41653185888).
+- Vercel-projektet `cfd-sweden` i teamet `hemborg-5741s-projects` har 16
+  produktionsvariabler. FormSubmit är fortsatt kontaktbackend och alla valfria
+  mail-, betalnings-, eventregistrerings-, nyhetsbrevs- och kommentarsfunktioner är avstängda.
+- Supabase-produktion `mreojynpylkitltnwxdu` är `ACTIVE_HEALTHY` i Stockholm,
+  `eu-north-1`, på Free. Alla 17 migrationer är installerade utan seed;
+  31 tabeller har RLS och 45 policyer finns. Publik signup och anonym inloggning
+  är avstängda, och Site URL är `https://cfdsweden.se`.
+- Första verkliga superadmin har skapats med bekräftad e-post, profil och
+  UUID-verifierad rolltilldelning. Ingen identitet eller hemlighet dokumenteras här.
+  TOTP/AAL2 och administrativt produktionsflöde återstår att köra med kontoägaren.
+- Supabase-staging `feubwwglcqbwrurpvpwk` är pausad enligt det godkända
+  gratisplansvalet. Den får inte användas som produktionsroll-back eller previewkälla.
+- Källinventeringen innehåller 0 artiklar och 0 evenemang; ingen produktionsimport
+  kördes och inga syntetiska stagingposter har förts över.
 
 Supabase Free har två fria projekt per ägare/administratör över organisationer;
 ett fritt projekt kan dessutom pausas vid låg aktivitet. Se [Supabases
@@ -109,7 +112,7 @@ prefixet `202611030040`.
 16. `202611030150_communications_lease_recovery.sql`
 17. `202611030160_article_scheduling.sql`
 
-### Stagingpreflight och kontrollerad deploy
+### Historisk stagingpreflight och kontrollerad deploy
 
 1. Kontrollera exakt den godkända serien och ett unikt versionsprefix per fil.
    Byt aldrig namn på en migration som redan är hostad; skapa i stället en ny.
@@ -119,11 +122,13 @@ prefixet `202611030040`.
    Konfigurationen är lokal; kör inte `config push` som en del av databasmigrationen.
    CLI-inloggningen använder operativsystemets credential store och en temporär
    databasroll; inget databaslösenord behöver delas i chatten.
-4. Ange alltid exakt mål: `--remote=feubwwglcqbwrurpvpwk` för staging. CLI v3:s
-   `--remote` ersätter äldre `--linked`. Använd aldrig implicit produktionsmål.
-5. Kör `npx --yes supabase@3.0.0 migration list --remote=feubwwglcqbwrurpvpwk`. Om projektet inte är tomt eller
+4. Ange alltid exakt mål. För fortsatt stagingarbete används `--remote=feubwwglcqbwrurpvpwk`
+   först när staging uttryckligen återaktiverats; för produktion används
+   `--remote=mreojynpylkitltnwxdu`. CLI v3:s `--remote` ersätter äldre `--linked`.
+   Använd aldrig ett implicit mål.
+5. Kör `npx --yes supabase@3.0.0 migration list --remote=<verifierad-ref>`. Om projektet inte är tomt eller
    historiken avviker: avbryt och dokumentera skillnaden.
-6. Granska `npx --yes supabase@3.0.0 db push --remote=feubwwglcqbwrurpvpwk --dry-run --skip-vault`.
+6. Granska `npx --yes supabase@3.0.0 db push --remote=<verifierad-ref> --dry-run --skip-vault`.
    Kör sedan samma kommando med `--yes` i stället för `--dry-run`, utan seed.
 7. Spara commit-SHA, projektref, migreringslista före/efter och resultat av
    RLS/Auth-smoketester. Processreturkod ensam är inte ett godkännande.
@@ -150,7 +155,9 @@ serien ska testas på den verkliga stagingversionen innan produktion.
 
 Detta sker endast i den uttryckligen godkända miljön av en utsedd
 operatör. Karl är utsedd första verkliga superadmin; adressen hanteras privat.
-Produktionskontot får skapas först efter separat releasegodkännande. Ingen publik registrering, inbjudan eller e-postleverans används.
+Produktionskontot har skapats efter separat releasegodkännande. Ingen publik
+registrering, inbjudan eller e-postleverans används. Inloggning, TOTP-enrolering
+och AAL2-verifiering är fortfarande ett manuellt kontoägarsteg.
 
 1. Öppna **Authentication → Users** i Supabase Dashboard och skapa den namngivna
    administratören med starkt unikt lösenord och bekräftad e-post. Alternativt
@@ -244,18 +251,15 @@ enbart samma tabellantal räcker inte som produktionsbevis.
 Se [verifierad återställning och portabel backup](backup-recovery.md) för den
 utförda lokala konto-/MFA-övningen och kvarstående förvaring utanför datorn.
 
-## Stagingacceptans och produktionsgrind
+## Releasekontroll före domänsläpp
 
-Hostade syntetiska stagingtester har genomförts enligt [rapporten](hosted-staging.md).
-Acceptans kräver fortfarande verifierbara bevis för: unik migrationhistorik före/efter,
-superadmin med TOTP/AAL2, RLS för anonym och inloggad användare, fortsatt
-FormSubmit till `cfdsweden@proton.me`, frånvaro av aktiva mail-/nyhetsbrev-/betal-
-nings-/eventregistrerings-/kommentarflöden, mobil- och desktopkontroll samt
-backup- och återställningsacceptans.
-
-**Först efter separat uttryckligt godkännande av stagingbevisen får någon skapa
-eller ändra produktionsdatabas, produktionsmiljövariabler eller publicera
-plattformsläge.**
+Hostade syntetiska stagingtester har genomförts enligt [rapporten](hosted-staging.md)
+och releasegodkännande gavs därefter. Produktionsmigrering, miljö och första
+superadmin är nu installerade. För att slutföra releasen återstår den verkliga
+inloggningen med TOTP/AAL2, full smoke på den domänkopplade deploymenten och
+en post-release-krypterad backup. Behåll FormSubmit och samtliga avstängda moduler
+oförändrade. Promota endast en deployment som byggts med produktionsmiljön;
+återställ aldrig genom att peka om till den pausade stagingpreviewn.
 
 ## Redaktionellt ansvar och styrning som återstår
 
