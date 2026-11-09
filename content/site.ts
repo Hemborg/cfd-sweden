@@ -23,11 +23,11 @@ export const navigation: NavItem[] = [
   { href: "/om-oss", label: "Om oss", key: "about" },
   { href: "/vart-arbete", label: "Vårt arbete", key: "work" },
   { href: "/new-paradigm", label: "New Paradigm", key: "paradigm" },
-  { href: "/lar-dig-mer", label: "Lär dig mer", key: "learn" },
+  // { href: "/lar-dig-mer", label: "Lär dig mer", key: "learn" },
   { href: "/take-action", label: "Take action", key: "action" },
   { href: "/kontakta-oss", label: "Kontakta oss", key: "contact" },
-  { href: "/nyheter", label: "Nyheter", key: "news" },
-  { href: "/evenemang", label: "Evenemang", key: "events" },
+  // { href: "/nyheter", label: "Nyheter", key: "news" },
+  // { href: "/evenemang", label: "Evenemang", key: "events" },
 ];
 
 export const homeContent = {
