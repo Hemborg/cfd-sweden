@@ -150,7 +150,7 @@ type WorkGroup = { title: string; kicker: string; text: string; status?: string;
 type Campaign = { title: string; text: string; status?: string; cta?: EngagementLink };
 
 export const workGroups: WorkGroup[] = [
-  { title: "Lokala initiativ", kicker: "Vi delar i samhället", text: "Vi hjälper människor att starta samtal, träffar och lokala team som kan sprida saklig information och bygga förtroende över tid." },
+  { title: "Lokala initiativ", kicker: "Vi delar i samhället", text: "Vi hjälper människor att starta samtal och organisera träffar som kan sprida saklig information och bygga förtroende över tid." },
   { title: "Research och granskning", kicker: "Faktabaserat arbete", text: "Vi följer offentliga dokument, internationella hearings, policyförslag och relevanta svenska ingångar för att göra frågan begriplig." },
   { title: "Policy och påverkan", kicker: "Beslutsfattare", text: "Vi vill skapa konstruktiv kontakt med folkvalda och myndigheter om transparens, visselblåsarskydd och ansvarsfull offentlig hantering." },
   { title: "Utbildning", kicker: "Kunskap först", text: "Vi samlar introduktioner, källor och samtalsmaterial så att nya personer kan närma sig ämnet utan sensationalism." },
