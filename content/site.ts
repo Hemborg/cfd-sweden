@@ -120,7 +120,7 @@ export const newsContent = {
 };
 
 export const engagementContent = {
-  status: "Arbetsinriktning", groupCta: "Anmäl intresse för arbetsområdet",
+  status: "Arbetsinriktning", groupCta: "Anmäl intresse",
   campaignCta: "Anmäl intresse", href: "/ga-med",
 };
 
