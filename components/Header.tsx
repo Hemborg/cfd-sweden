@@ -22,9 +22,6 @@ export function Header({ current = "home" }: HeaderProps) {
         <div className="header-menus">
           <nav className="main-nav" aria-label="Huvudnavigering">
             {navigation
-              .filter((item) =>
-                ["learn", "gear"].includes(item.key),
-              )
               .map((item) => (
                 <Link
                   aria-current={current === item.key ? "page" : undefined}
@@ -42,13 +39,13 @@ export function Header({ current = "home" }: HeaderProps) {
               Medlemsportal
             </Link>
           )}
-          <Link
+          {/* <Link
             className="button button-primary header-join"
             href="/ga-med"
             aria-current={current === "join" ? "page" : undefined}
           >
             {pageContent.header.join}
-          </Link>
+          </Link> */}
         </div>
       </div>
     </header>

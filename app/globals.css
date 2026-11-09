@@ -92,7 +92,7 @@ p { margin: 0 0 1.1em; }
 .main-nav a { white-space: nowrap; }
 .main-nav a:hover, .main-nav .current { text-decoration: underline; text-decoration-color: var(--amber); text-decoration-thickness: 2px; }
 .header-join { min-height: 42px; padding: 13px 20px 10px; font-size: .8rem; white-space: nowrap; }
-.mobile-nav { position: relative; }
+.mobile-nav { position: relative; display: none; }
 .menu-button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; border: 1px solid #ffffff55; border-radius: 999px; padding: 9px 15px; background: transparent; color: var(--white); font-size: .85rem; font-weight: 600; }
 .menu-button::after { content: "≡"; font-size: 1.1rem; }
 .menu-button[aria-expanded="true"] { background: var(--white); color: var(--navy); }
@@ -242,7 +242,6 @@ button:disabled { cursor: wait; opacity: .6; }
   .hero-backdrop img { object-position: 60% 62%; mask-image: linear-gradient(90deg, transparent, #000 30%); }
 }
 @media (max-width: 1100px) {
-  .main-nav { display: none; }
   .involvement-grid, .card-grid, .resource-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer-grid { gap: 36px; }
 }
@@ -256,6 +255,8 @@ button:disabled { cursor: wait; opacity: .6; }
   .gear-symbol { padding: 28px; }
 }
 @media (max-width: 760px) {
+  .mobile-nav { display: block; }
+  .main-nav { display: none; }
   .header-inner { gap: 10px; padding-block: 20px; }
   .brand { width: clamp(140px, 36vw, 190px); }
   .header-menus { gap: 8px; }
