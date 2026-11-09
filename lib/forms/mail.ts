@@ -45,13 +45,13 @@ export function createResendMailAdapter(options: MailAdapterOptions) {
     async sendSubmissionNotification(submission: SubmissionNotice) {
       const name = [submission.firstName, submission.lastName].filter(Boolean).join(" ") || "Ej angivet";
       return send({
-        to: [OPERATIONS_ADDRESS], subject: "Ny intresseanmälan – CFD Sweden", idempotencyKey: `contact:${submission.idempotencyKey}`,
+        to: [OPERATIONS_ADDRESS], subject: "Ny intresseanmälan – CfD Sweden", idempotencyKey: `contact:${submission.idempotencyKey}`,
         text: `Ny intresseanmälan\nE-post: ${submission.email}\nNamn: ${name}\nOrt: ${submission.city || "Ej angivet"}\nMeddelande: ${submission.message || "Ej angivet"}`,
       });
     },
     async sendDoubleOptIn(email: string, token: string, idempotencyKey: string) {
       const url = confirmationUrl(baseUrl, token);
-      return send({ to: [email], subject: "Bekräfta din prenumeration hos CFD Sweden", idempotencyKey: `newsletter:${idempotencyKey}`, text: `Bekräfta din frivilliga prenumeration: ${url}` });
+      return send({ to: [email], subject: "Bekräfta din prenumeration hos CfD Sweden", idempotencyKey: `newsletter:${idempotencyKey}`, text: `Bekräfta din frivilliga prenumeration: ${url}` });
     },
     async syncConfirmedContact(email: string) {
       try { const result = await options.client.contacts.create({ email, unsubscribed: false }); return result.error ? { ok: false as const } : { ok: true as const }; } catch { return { ok: false as const }; }

@@ -52,7 +52,7 @@ test("administratör hanterar gratisaktivitet med väntelista, incheckning, avbo
     .getByLabel("Start (UTC)", { exact: true })
     .fill("2030-01-02T10:30");
   await create.getByLabel("Plats", { exact: true }).fill("Stockholm");
-  await create.getByLabel("Arrangör", { exact: true }).fill("CFD Sweden");
+  await create.getByLabel("Arrangör", { exact: true }).fill("CfD Sweden");
   await create.getByLabel("Platser", { exact: true }).fill("1");
   await create.getByLabel("Öppna anmälan", { exact: true }).check();
   await create.getByLabel("Publicera", { exact: true }).check();

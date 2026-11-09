@@ -6,8 +6,8 @@ if (process.env.NEXT_PUBLIC_SUPABASE_URL !== "http://127.0.0.1:54321")
   throw new Error(
     "Browser integration tests require the isolated local stack.",
   );
-process.env.CFD_SITE_URL = "http://127.0.0.1:3402";
-process.env.CFD_CONTACT_BACKEND = "database";
+process.env.CfD_SITE_URL = "http://127.0.0.1:3402";
+process.env.CfD_CONTACT_BACKEND = "database";
 export default defineConfig({
   testDir: "./tests/e2e",
   testMatch: "**/platform-*.spec.ts",
@@ -17,19 +17,19 @@ export default defineConfig({
   timeout: 60_000,
   reporter: "list",
   use: {
-    baseURL: process.env.CFD_SITE_URL,
+    baseURL: process.env.CfD_SITE_URL,
     ...devices["Desktop Chrome"],
     trace: "retain-on-failure",
   },
   webServer: {
     command: "npm run start -- --hostname 127.0.0.1 --port 3402",
-    url: process.env.CFD_SITE_URL,
+    url: process.env.CfD_SITE_URL,
     reuseExistingServer: false,
     timeout: 90_000,
     env: {
-      CFD_PLATFORM_ENABLED: "true",
-      CFD_CONTACT_BACKEND: "database",
-      CFD_SITE_URL: process.env.CFD_SITE_URL,
+      CfD_PLATFORM_ENABLED: "true",
+      CfD_CONTACT_BACKEND: "database",
+      CfD_SITE_URL: process.env.CfD_SITE_URL,
       NEXT_TELEMETRY_DISABLED: "1",
     },
   },

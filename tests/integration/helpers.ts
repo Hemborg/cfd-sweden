@@ -29,10 +29,10 @@ export function seedAccount(role: SeedRole): SeedAccount {
   return account;
 }
 export function testDatabase() {
-  const url = process.env.CFD_TEST_DATABASE_URL;
+  const url = process.env.CfD_TEST_DATABASE_URL;
   if (!url)
     throw new Error(
-      "CFD_TEST_DATABASE_URL is required: integration tests never silently skip.",
+      "CfD_TEST_DATABASE_URL is required: integration tests never silently skip.",
     );
   const parsed = new URL(url);
   if (

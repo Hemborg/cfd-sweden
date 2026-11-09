@@ -102,32 +102,32 @@ export async function renderMail(
   switch (template) {
     case "newsletter-confirmation":
       return transactional({
-        subject: "Bekräfta din prenumeration hos CFD Sweden",
+        subject: "Bekräfta din prenumeration hos CfD Sweden",
         intro: "Bekräfta din frivilliga prenumeration.",
         action: { label: "Bekräfta prenumeration", url: String(value.url) },
       });
     case "newsletter-confirmed":
       return transactional({
         subject: "Din prenumeration är bekräftad",
-        intro: "Du är nu prenumerant hos CFD Sweden.",
+        intro: "Du är nu prenumerant hos CfD Sweden.",
         action: { label: "Avregistrera", url: String(value.unsubscribeUrl) },
       });
     case "portal-invitation":
       return transactional({
-        subject: "Inbjudan till CFD Swedens medlemsportal",
+        subject: "Inbjudan till CfD Swedens medlemsportal",
         intro: "Du har bjudits in till medlemsportalen.",
         action: { label: "Acceptera inbjudan", url: String(value.url) },
       });
     case "account-recovery":
       return transactional({
-        subject: "Återställ lösenord för CFD Sweden",
+        subject: "Återställ lösenord för CfD Sweden",
         intro:
           "Du kan välja ett nytt lösenord via länken. Om du inte bad om detta kan du ignorera meddelandet.",
         action: { label: "Återställ lösenord", url: String(value.url) },
       });
     case "welcome":
       return transactional({
-        subject: "Välkommen till CFD Sweden",
+        subject: "Välkommen till CfD Sweden",
         intro: `Välkommen${value.name ? ` ${String(value.name)}` : ""}!`,
       });
     case "event-confirmation":
@@ -144,7 +144,7 @@ export async function renderMail(
       });
     case "contact-owner-notification":
       return transactional({
-        subject: "Ny kontaktförfrågan – CFD Sweden",
+        subject: "Ny kontaktförfrågan – CfD Sweden",
         intro: "Ett nytt kontaktärende har kommit in.",
         detail: `ID: ${String(value.submissionId)}`,
       });
@@ -197,7 +197,7 @@ export async function renderMail(
       });
     case "campaign-newsletter": {
       const unsubscribeUrl = String(value.unsubscribeUrl);
-      const footer = `<hr><p style="font-size:12px">Du får detta eftersom du har bekräftat din prenumeration hos CFD Sweden. <a href="${escapeHtml(unsubscribeUrl)}">Avregistrera</a></p>`;
+      const footer = `<hr><p style="font-size:12px">Du får detta eftersom du har bekräftat din prenumeration hos CfD Sweden. <a href="${escapeHtml(unsubscribeUrl)}">Avregistrera</a></p>`;
       return {
         subject: String(value.subject),
         text: `${String(value.text)}\n\nAvregistrera: ${unsubscribeUrl}`,

@@ -60,7 +60,7 @@ export function InquiryForm({ variant }: { variant: "join" | "contact" }) {
           type="hidden"
           name="_subject"
           value={
-            isContact ? "Kontaktförfrågan – CFD Sweden" : site.form.subject
+            isContact ? "Kontaktförfrågan – CfD Sweden" : site.form.subject
           }
         />
         <input type="hidden" name="inquiryType" value={variant} />
@@ -138,7 +138,7 @@ export function InquiryForm({ variant }: { variant: "join" | "contact" }) {
           />
         </label>
         <p className="form-help" id={`${id}-privacy`}>
-          CFD Sweden använder uppgifterna för att{" "}
+          CfD Sweden använder uppgifterna för att{" "}
           {isContact ? "besvara din förfrågan" : "följa upp ditt intresse"}. De
           skickas via FormSubmit till vår e-post hos Proton. Ingen automatisk
           prenumeration skapas. Undvik känsliga personuppgifter.{" "}

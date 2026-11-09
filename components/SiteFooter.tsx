@@ -9,7 +9,7 @@ export function SiteFooter() {
       <div className="section-wrap">
         <div className="footer-grid">
           <div className="footer-intro">
-            <Link className="footer-brand" href="/" aria-label="CFD Sweden">
+            <Link className="footer-brand" href="/" aria-label="CfD Sweden">
               <BrandLogo tone="white" decorative />
             </Link>
             <p>
@@ -28,7 +28,7 @@ export function SiteFooter() {
               </p>
             )}
           </div>
-          <nav aria-label="Utforska CFD Sweden">
+          <nav aria-label="Utforska CfD Sweden">
             <h2>Utforska</h2>
             <ul>
               {navigation
@@ -64,7 +64,7 @@ export function SiteFooter() {
         </div>
         <div className="footer-bottom">
           <Link href="/">Citizens for Disclosure</Link>
-          <span>CFD Sweden · En del av en internationell rörelse</span>
+          <span>CfD Sweden · En del av en internationell rörelse</span>
           <Link href="/lar-dig-mer">Läs mer</Link>
           <Link href="/integritet">Integritet</Link>
         </div>

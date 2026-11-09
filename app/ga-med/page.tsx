@@ -1,7 +1,7 @@
 import { JoinForm } from "@/components/JoinForm";
 import { PageLayout } from "@/components/PageLayout";
 
-export const metadata = { title: "Gå med | CFD Sweden", description: "Anmäl ditt intresse för CFD Sweden." };
+export const metadata = { title: "Gå med | CfD Sweden", description: "Anmäl ditt intresse för CfD Sweden." };
 
 export default function JoinPage() {
   return <PageLayout current="join" eyebrow="Gå med" title="Engagera dig i vår rörelse." intro="Berätta vem du är och hur du vill bidra. Vi återkommer så snart vi kan.">

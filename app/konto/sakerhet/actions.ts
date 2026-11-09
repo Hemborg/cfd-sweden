@@ -24,7 +24,7 @@ export async function enrollMfa(): Promise<MfaState> {
       await actor.client.auth.mfa.unenroll({ factorId: factor.id });
   const { data, error } = await actor.client.auth.mfa.enroll({
     factorType: "totp",
-    friendlyName: "CFD Sweden",
+    friendlyName: "CfD Sweden",
   });
   if (error) return { error: "Kunde inte starta aktivering." };
   return { factorId: data.id, qr: data.totp.qr_code, secret: data.totp.secret };

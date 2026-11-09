@@ -22,7 +22,7 @@ test("befintliga sidor fungerar och liveformulärets kontrakt är bevarat", asyn
   await expect(form.locator('[name="_next"]')).toHaveValue("https://cfdsweden.se/tack");
   await expect(form.locator('[name="_captcha"]')).toHaveValue("false");
   await expect(form.locator('[name="_honey"]')).toBeHidden();
-  await expect(form.locator('[name="_subject"]')).toHaveValue("Ny intresseanmälan – CFD Sweden");
+  await expect(form.locator('[name="_subject"]')).toHaveValue("Ny intresseanmälan – CfD Sweden");
   await expect(form.locator('input[type="checkbox"]')).toHaveCount(0);
 });
 

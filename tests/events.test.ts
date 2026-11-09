@@ -6,7 +6,7 @@ import EventsPage from "../app/evenemang/page";
 import { events } from "../content/site";
 import { eventSchema, getEvents, getUpcomingEvents } from "../lib/content/events";
 
-const makeEvent = (slug: string, date: string) => eventSchema.parse({ slug, title: slug, date, location: "Stockholm", organiser: "CFD Sweden", description: "Teknisk testfixture." });
+const makeEvent = (slug: string, date: string) => eventSchema.parse({ slug, title: slug, date, location: "Stockholm", organiser: "CfD Sweden", description: "Teknisk testfixture." });
 
 test("visar bara framtida evenemang och inkluderar exakt tidsgräns", () => {
   const now = new Date("2026-11-03T10:00:00.000Z");
@@ -35,8 +35,8 @@ test("evenemangssidan renderar kommande event men behåller passerade event för
   const original = [...events];
   try {
     events.splice(0, events.length,
-      { slug: "arkiv-fixture", title: "Passerat fixture-event", date: "2020-01-01T10:00:00+01:00", location: "Arkivort", organiser: "CFD Sweden", description: "Tidigare aktivitet." },
-      { slug: "framtid-fixture", title: "Kommande fixture-event", date: "2999-01-01T10:00:00+01:00", location: "Framtidsort", organiser: "CFD Sweden", description: "Kommande aktivitet." },
+      { slug: "arkiv-fixture", title: "Passerat fixture-event", date: "2020-01-01T10:00:00+01:00", location: "Arkivort", organiser: "CfD Sweden", description: "Tidigare aktivitet." },
+      { slug: "framtid-fixture", title: "Kommande fixture-event", date: "2999-01-01T10:00:00+01:00", location: "Framtidsort", organiser: "CfD Sweden", description: "Kommande aktivitet." },
     );
     assert.deepEqual(getEvents().map((event) => event.slug), ["arkiv-fixture", "framtid-fixture"]);
     const html = renderToStaticMarkup(createElement(EventsPage));

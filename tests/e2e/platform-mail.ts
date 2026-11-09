@@ -9,7 +9,7 @@ export async function deliveredMessage(
     .poll(
       async () => {
         const work = await request.post("/api/jobs/mail", {
-          headers: { Authorization: `Bearer ${process.env.CFD_JOB_SECRET}` },
+          headers: { Authorization: `Bearer ${process.env.CfD_JOB_SECRET}` },
         });
         expect(work.ok()).toBeTruthy();
         const messages = (await fetch(

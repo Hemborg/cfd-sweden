@@ -26,7 +26,7 @@ type TaskActivity = { action: string; occurred_at: string };
 
 export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "Medlemsportal | CFD Sweden",
+  title: "Medlemsportal | CfD Sweden",
   robots: { index: false, follow: false },
 };
 
@@ -106,7 +106,7 @@ export default async function MemberPage({
   return (
     <main className="portal">
       <header className="portal-header">
-        <Link href="/">CFD Sweden</Link>
+        <Link href="/">CfD Sweden</Link>
         <Link href="/konto/sakerhet">Säker inloggning</Link>
         <Link href="/admin">Administration</Link>
       </header>

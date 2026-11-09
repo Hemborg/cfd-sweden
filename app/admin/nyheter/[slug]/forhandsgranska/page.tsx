@@ -5,7 +5,7 @@ import { createPlatformEditorialRepository } from "@/lib/editorial/platform-repo
 import { renderPostContent } from "@/lib/content/posts";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Förhandsgranskning | CFD Sweden", robots: { index: false, follow: false } };
+export const metadata = { title: "Förhandsgranskning | CfD Sweden", robots: { index: false, follow: false } };
 
 export default async function ArticlePreview({ params }: { params: Promise<{ slug: string }> }) {
   const actor = await requireRoles(["editor", "administrator"]);

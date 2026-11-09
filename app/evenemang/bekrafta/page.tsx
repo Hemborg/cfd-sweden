@@ -4,7 +4,7 @@ import { platformFeatures } from "@/lib/platform/config";
 
 type Props = { searchParams: Promise<{ token?: string }> };
 export const metadata = {
-  title: "Bekräfta anmälan | CFD Sweden",
+  title: "Bekräfta anmälan | CfD Sweden",
   robots: { index: false, follow: false },
 };
 

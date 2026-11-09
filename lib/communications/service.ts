@@ -34,7 +34,7 @@ export async function createContact(input: ContactInput) {
   requireFeature("contactDatabase");
   const id = randomUUID();
   const now = new Date();
-  const owner = (process.env.CFD_MAIL_OPERATIONS ?? "cfdsweden@proton.me")
+  const owner = (process.env.CfD_MAIL_OPERATIONS ?? "cfdsweden@proton.me")
     .trim()
     .toLowerCase();
   const receipt = encryptedMail(

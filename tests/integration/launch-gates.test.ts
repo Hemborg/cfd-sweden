@@ -13,9 +13,9 @@ test("launch configuration blocks disabled routes, actions and workers before an
   const before = { ...process.env }, originalFetch = globalThis.fetch;
   let requests = 0;
   try {
-    process.env.CFD_PLATFORM_ENABLED = "true";
-    for (const key of ["CFD_MAIL_ENABLED", "CFD_NEWSLETTER_ENABLED", "CFD_EVENT_REGISTRATION_ENABLED", "CFD_COMMENTS_ENABLED", "CFD_STRIPE_ENABLED"]) process.env[key] = "false";
-    process.env.CFD_CONTACT_BACKEND = "formsubmit";
+    process.env.CfD_PLATFORM_ENABLED = "true";
+    for (const key of ["CfD_MAIL_ENABLED", "CfD_NEWSLETTER_ENABLED", "CfD_EVENT_REGISTRATION_ENABLED", "CfD_COMMENTS_ENABLED", "CfD_STRIPE_ENABLED"]) process.env[key] = "false";
+    process.env.CfD_CONTACT_BACKEND = "formsubmit";
     for (const key of ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY", "SUPABASE_SERVICE_ROLE_KEY", "RESEND_API_KEY", "STRIPE_SECRET_KEY"]) delete process.env[key];
     globalThis.fetch = async () => { requests++; throw new Error("Unexpected external request"); };
     const routes = [

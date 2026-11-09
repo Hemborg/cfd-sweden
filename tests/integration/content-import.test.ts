@@ -10,10 +10,10 @@ const draftSlug = `${suffix}-draft`;
 const futureSlug = `${suffix}-future`;
 const eventSlug = `${suffix}-event`;
 const posts: Post[] = [
-  { slug: draftSlug, title: "Draft import", date: "2099-12-31", excerpt: "A private draft imported from Git.", author: "CFD Redaktion", tags: ["UAP", "Sverige"], published: false, seoTitle: "Draft search title", seoDescription: "Draft search description", content: "# Draft\n\n**Markdown** is kept intact." },
-  { slug: futureSlug, title: "Future import", date: "2999-01-01", excerpt: "A future item must remain hidden.", author: "CFD Redaktion", tags: ["Nyheter"], published: true, content: "Future publication." },
+  { slug: draftSlug, title: "Draft import", date: "2099-12-31", excerpt: "A private draft imported from Git.", author: "CfD Redaktion", tags: ["UAP", "Sverige"], published: false, seoTitle: "Draft search title", seoDescription: "Draft search description", content: "# Draft\n\n**Markdown** is kept intact." },
+  { slug: futureSlug, title: "Future import", date: "2999-01-01", excerpt: "A future item must remain hidden.", author: "CfD Redaktion", tags: ["Nyheter"], published: true, content: "Future publication." },
 ];
-const events: Event[] = [{ slug: eventSlug, title: "Future event", date: "2031-06-01T18:30:00+02:00", location: "Stockholm", organiser: "CFD Sweden", description: "Timezone must survive import.", externalUrl: "https://example.test/event", registrationOpen: false }];
+const events: Event[] = [{ slug: eventSlug, title: "Future event", date: "2031-06-01T18:30:00+02:00", location: "Stockholm", organiser: "CfD Sweden", description: "Timezone must survive import.", externalUrl: "https://example.test/event", registrationOpen: false }];
 
 function reports(result: unknown) {
   const sets = Array.isArray(result) ? result : [result];
@@ -31,7 +31,7 @@ test("real PostgreSQL import is idempotent, preserves source fields, and rejects
       { kind: "event", imported: 1, skipped: 0, conflicts: 0 },
     ]);
     const article = (await pool.query<{ body: string; tags: string[]; author_name: string; published_at: string }>("select body,tags,author_name,published_at::text from public.articles where slug=$1", [draftSlug])).rows[0];
-    assert.deepEqual(article, { body: "# Draft\n\n**Markdown** is kept intact.", tags: ["UAP", "Sverige"], author_name: "CFD Redaktion", published_at: "2099-12-31 00:00:00+00" });
+    assert.deepEqual(article, { body: "# Draft\n\n**Markdown** is kept intact.", tags: ["UAP", "Sverige"], author_name: "CfD Redaktion", published_at: "2099-12-31 00:00:00+00" });
     assert.equal((await pool.query<{ starts_at: string }>("select starts_at::text from public.events where slug=$1", [eventSlug])).rows[0].starts_at, "2031-06-01 16:30:00+00");
 
     const second = reports(await pool.query(contentImportSql(manifest, owner.id)));

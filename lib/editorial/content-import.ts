@@ -115,7 +115,7 @@ export function contentImportSql(manifest: ContentImportManifest, ownerId: strin
   const eventValues = events.length
     ? events.map((item) => `(${[literal(item.slug), literal(item.title), literal(item.description), literal(item.startsAt), literal(item.location), literal(item.organiser), item.registrationOpen ? "true" : "false", literal(item.externalUrl)].join(",")})`).join(",\n")
     : "(null::text,null::text,null::text,null::timestamptz,null::text,null::text,false,null::text)";
-  return `-- CFD Sweden content import manifest SHA-256: ${manifest.sha256}
+  return `-- CfD Sweden content import manifest SHA-256: ${manifest.sha256}
 -- Review this file and its paired JSON manifest before a separately approved run.
 begin;
 create temporary table cfd_import_articles(slug text,title text,excerpt text,body text,tags text[],status text,published_at timestamptz,seo_title text,seo_description text,author_name text) on commit drop;

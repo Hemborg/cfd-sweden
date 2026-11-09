@@ -26,7 +26,7 @@ test("contact and join validate email and keep distinct purposes", async ({ page
     await expect(form.getByRole("link", { name: /personuppgifter och integritet/ })).toHaveAttribute("href", "/integritet");
     if (path === "/kontakta-oss") {
       await expect(form.locator('[name="inquiryType"]')).toHaveValue("contact");
-      await expect(form.locator('[name="_subject"]')).toHaveValue("Kontaktförfrågan – CFD Sweden");
+      await expect(form.locator('[name="_subject"]')).toHaveValue("Kontaktförfrågan – CfD Sweden");
       await expect(form.getByRole("button", { name: /Skicka intresseanmälan/ })).toHaveCount(0);
       expect(await form.evaluate((element: HTMLFormElement) => element.checkValidity())).toBe(false);
       await page.getByLabel("Meddelande", { exact: true }).fill("En vanlig fråga.");

@@ -112,7 +112,7 @@ test("real Mailpit accepts local synthetic SMTP", async () => {
   assert.ok(
     (
       await transport.sendMail({
-        from: "CFD Sweden <noreply@example.test>",
+        from: "CfD Sweden <noreply@example.test>",
         to: `smtp-${id}@example.test`,
         subject,
         text: "integration",
@@ -126,8 +126,8 @@ test("real Mailpit accepts local synthetic SMTP", async () => {
 });
 
 test("worker encrypts queued payload then delivers it to Mailpit", async () => {
-  const old = process.env.CFD_MAIL_TRANSPORT;
-  process.env.CFD_MAIL_TRANSPORT = "smtp";
+  const old = process.env.CfD_MAIL_TRANSPORT;
+  process.env.CfD_MAIL_TRANSPORT = "smtp";
   const id = randomUUID();
   const email = `worker-${id}@example.test`;
   const key = `welcome/${id}`;
@@ -150,12 +150,12 @@ test("worker encrypts queued payload then delivers it to Mailpit", async () => {
       listed.messages?.some(
         (message) =>
           message.To?.some((to) => to.Address === email) &&
-          message.Subject === "Välkommen till CFD Sweden",
+          message.Subject === "Välkommen till CfD Sweden",
       ),
     );
   } finally {
-    if (old === undefined) delete process.env.CFD_MAIL_TRANSPORT;
-    else process.env.CFD_MAIL_TRANSPORT = old;
+    if (old === undefined) delete process.env.CfD_MAIL_TRANSPORT;
+    else process.env.CfD_MAIL_TRANSPORT = old;
     const pool = testDatabase();
     await pool.query("delete from public.queue_mail where key=$1", [key]);
     await pool.end();
@@ -559,10 +559,10 @@ test("signed Resend route atomically suppresses consent and queued delivery once
   const timestamp = new Date();
   const signature = new Webhook(secret).sign(eventId, timestamp, payload);
   const saved = {
-    enabled: process.env.CFD_RESEND_ENABLED,
+    enabled: process.env.CfD_RESEND_ENABLED,
     secret: process.env.RESEND_WEBHOOK_SECRET,
   };
-  process.env.CFD_RESEND_ENABLED = "true";
+  process.env.CfD_RESEND_ENABLED = "true";
   process.env.RESEND_WEBHOOK_SECRET = secret;
   try {
     await pool.query(
@@ -612,8 +612,8 @@ test("signed Resend route atomically suppresses consent and queued delivery once
       1,
     );
   } finally {
-    if (saved.enabled === undefined) delete process.env.CFD_RESEND_ENABLED;
-    else process.env.CFD_RESEND_ENABLED = saved.enabled;
+    if (saved.enabled === undefined) delete process.env.CfD_RESEND_ENABLED;
+    else process.env.CfD_RESEND_ENABLED = saved.enabled;
     if (saved.secret === undefined) delete process.env.RESEND_WEBHOOK_SECRET;
     else process.env.RESEND_WEBHOOK_SECRET = saved.secret;
     await pool.query("delete from public.queue_mail where key=$1", [key]);
@@ -644,10 +644,10 @@ test("signed Resend delivery webhooks retain only minimal metadata and reconcile
   const timestamp = new Date();
   const signature = new Webhook(secret).sign(eventId, timestamp, payload);
   const saved = {
-    enabled: process.env.CFD_RESEND_ENABLED,
+    enabled: process.env.CfD_RESEND_ENABLED,
     secret: process.env.RESEND_WEBHOOK_SECRET,
   };
-  process.env.CFD_RESEND_ENABLED = "true";
+  process.env.CfD_RESEND_ENABLED = "true";
   process.env.RESEND_WEBHOOK_SECRET = secret;
   try {
     await pool.query(
@@ -683,8 +683,8 @@ test("signed Resend delivery webhooks retain only minimal metadata and reconcile
     ).rows[0].payload;
     assert.deepEqual(receipt, { provider_message_id: providerId });
   } finally {
-    if (saved.enabled === undefined) delete process.env.CFD_RESEND_ENABLED;
-    else process.env.CFD_RESEND_ENABLED = saved.enabled;
+    if (saved.enabled === undefined) delete process.env.CfD_RESEND_ENABLED;
+    else process.env.CfD_RESEND_ENABLED = saved.enabled;
     if (saved.secret === undefined) delete process.env.RESEND_WEBHOOK_SECRET;
     else process.env.RESEND_WEBHOOK_SECRET = saved.secret;
     await pool.query("delete from public.queue_mail where key=$1", [key]);
@@ -698,10 +698,10 @@ test("signed Resend delivery webhooks retain only minimal metadata and reconcile
 test("Resend webhook streaming limit rejects an oversized signed-body candidate", async () => {
   const secret = `whsec_${Buffer.from(randomUUID()).toString("base64")}`;
   const saved = {
-    enabled: process.env.CFD_RESEND_ENABLED,
+    enabled: process.env.CfD_RESEND_ENABLED,
     secret: process.env.RESEND_WEBHOOK_SECRET,
   };
-  process.env.CFD_RESEND_ENABLED = "true";
+  process.env.CfD_RESEND_ENABLED = "true";
   process.env.RESEND_WEBHOOK_SECRET = secret;
   try {
     const id = `evt_${randomUUID()}`;
@@ -719,8 +719,8 @@ test("Resend webhook streaming limit rejects an oversized signed-body candidate"
     );
     assert.equal(response.status, 413);
   } finally {
-    if (saved.enabled === undefined) delete process.env.CFD_RESEND_ENABLED;
-    else process.env.CFD_RESEND_ENABLED = saved.enabled;
+    if (saved.enabled === undefined) delete process.env.CfD_RESEND_ENABLED;
+    else process.env.CfD_RESEND_ENABLED = saved.enabled;
     if (saved.secret === undefined) delete process.env.RESEND_WEBHOOK_SECRET;
     else process.env.RESEND_WEBHOOK_SECRET = saved.secret;
   }

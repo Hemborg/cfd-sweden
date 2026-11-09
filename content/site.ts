@@ -5,9 +5,9 @@ export type NavItem = {
 };
 
 export const site = {
-  name: "CFD Sweden",
+  name: "CfD Sweden",
   url: "https://cfdsweden.se",
-  title: "CFD Sweden | Citizens for Disclosure",
+  title: "CfD Sweden | Citizens for Disclosure",
   socialDescription: "Den svenska grenen av Citizens for Disclosure, inom New Paradigm Institute.",
   description:
     "En svensk förening för transparens, kunskapande och informationsspridning kring existensen av utomjordisk närvaro och verksamhet på jorden.",
@@ -15,7 +15,7 @@ export const site = {
   form: {
     action: "https://formsubmit.co/cfdsweden@proton.me",
     redirectUrl: "https://cfdsweden.se/tack",
-    subject: "Ny intresseanmälan – CFD Sweden",
+    subject: "Ny intresseanmälan – CfD Sweden",
   },
 } as const;
 
@@ -51,15 +51,15 @@ export const homeContent = {
     { label: "Telefon", name: "phone", type: "tel" },
   ],
   why: {
-    title: "Varför CFD Sweden?",
-    text: "När frågor om ufo/UAP och offentlig insyn hanteras utan transparens förlorar medborgarna möjlighet att förstå, granska och delta. CFD Sweden samlar människor som vill arbeta sakligt, demokratiskt och långsiktigt för ansvarsfull insyn.",
+    title: "Varför CfD Sweden?",
+    text: "När frågor om ufo/UAP och offentlig insyn hanteras utan transparens förlorar medborgarna möjlighet att förstå, granska och delta. CfD Sweden samlar människor som vill arbeta sakligt, demokratiskt och långsiktigt för ansvarsfull insyn.",
   },
   actionHeading: "Du kan bidra genom att",
   actions: [
     "Arrangera lokala samtal och visningar",
     "Hjälpa till med research och översättning",
     "Kontakta media, politiker och myndigheter",
-    "Bygga CFD Sweden i din stad eller region",
+    "Bygga CfD Sweden i din stad eller region",
   ],
 } as const;
 
@@ -74,13 +74,13 @@ export const formContent = {
 } as const;
 
 export const pageContent = {
-  about: { eyebrow: "Om oss", title: "En svensk gren av Citizens for Disclosure.", intro: "CFD Sweden är ett gräsrotsinitiativ för full och ansvarsfull transparens kring ufo/UAP-frågan, inspirerat av New Paradigm Institutes internationella arbete.", mission: { heading: "Vårt uppdrag", body: "Vi vill bidra till att frågor om ufo/UAP, icke-mänsklig intelligens, ska behandlas öppet, sakligt och demokratiskt. Målet är att bygga och dela kunskap som bygger på upplevelser och fakta som granskas sakligt. Vi tar avstånd från att aldrig ha en hypotes om vad vi ser. Vi utökar terminologin så att det blir tydligt vad vi pratar om." }, role: { heading: "Vår roll", body: "Den svenska rörelsen behöver översätta ett internationellt samtal till svensk kontext: riksdag, myndigheter, media, universitet, föreningsliv och lokala medborgare." }, workEyebrow: "Vad vi gör", workHeading: "Vi bygger kapacitet för ansvarsfull disclosure." },
-  events: { eyebrow: "Evenemang", title: "Kommande samtal och aktiviteter.", intro: "Här visas bara bekräftade aktiviteter från CFD Sweden.", empty: "Inga bekräftade evenemang är publicerade just nu.", link: "Läs mer" },
+  about: { eyebrow: "Om oss", title: "En svensk gren av Citizens for Disclosure.", intro: "CfD Sweden är ett gräsrotsinitiativ för full och ansvarsfull transparens kring ufo/UAP-frågan, inspirerat av New Paradigm Institutes internationella arbete.", mission: { heading: "Vårt uppdrag", body: "Vi vill bidra till att frågor om ufo/UAP, icke-mänsklig intelligens, ska behandlas öppet, sakligt och demokratiskt. Målet är att bygga och dela kunskap som bygger på upplevelser och fakta som granskas sakligt. Vi tar avstånd från att aldrig ha en hypotes om vad vi ser. Vi utökar terminologin så att det blir tydligt vad vi pratar om." }, role: { heading: "Vår roll", body: "Den svenska rörelsen behöver översätta ett internationellt samtal till svensk kontext: riksdag, myndigheter, media, universitet, föreningsliv och lokala medborgare." }, workEyebrow: "Vad vi gör", workHeading: "Vi bygger kapacitet för ansvarsfull disclosure." },
+  events: { eyebrow: "Evenemang", title: "Kommande samtal och aktiviteter.", intro: "Här visas bara bekräftade aktiviteter från CfD Sweden.", empty: "Inga bekräftade evenemang är publicerade just nu.", link: "Läs mer" },
   work: { eyebrow: "Vårt arbete", title: "Flera spår, ett mål: ansvarsfull transparens.", intro: "Vi förenar lokalt engagemang, forskning, folkbildning och saklig påverkan. Här kan du hitta ett sätt att bidra till öppenhet kring ufo/UAP-frågan i Sverige." },
-  paradigm: { eyebrow: "New Paradigm Institute", title: "Den internationella rörelsen bakom Citizens for Disclosure.", intro: "New Paradigm Institute är ett amerikanskt lag- och policyinitiativ som arbetar för full och ansvarsfull ufo/UAP-disclosure genom forskning, opinionsbildning, juridik och medborgarorganisering.", background: { heading: "Bakgrund", body: "New Paradigm Institute är kopplat till Romero Institute och bygger vidare på en lång tradition av juridiskt och medborgerligt arbete för transparens och ansvar. Citizens for Disclosure är deras gräsrotsnätverk för personer som vill bidra praktiskt." }, relationship: { heading: "Vår relation", body: "CFD Sweden är en svensk förening som är affilierad och följer samma grundidé som CFD i USA: Medborgare ska kunna organisera sig fredligt, sakligt och effektivt för offentlig insyn i ufo/UAP-frågan." }, cta: { eyebrow: "Originalorganisation", title: "Läs mer hos New Paradigm Institute.", link: "Besök NPI ↗", href: "https://newparadigminstitute.org/" } },
+  paradigm: { eyebrow: "New Paradigm Institute", title: "Den internationella rörelsen bakom Citizens for Disclosure.", intro: "New Paradigm Institute är ett amerikanskt lag- och policyinitiativ som arbetar för full och ansvarsfull ufo/UAP-disclosure genom forskning, opinionsbildning, juridik och medborgarorganisering.", background: { heading: "Bakgrund", body: "New Paradigm Institute är kopplat till Romero Institute och bygger vidare på en lång tradition av juridiskt och medborgerligt arbete för transparens och ansvar. Citizens for Disclosure är deras gräsrotsnätverk för personer som vill bidra praktiskt." }, relationship: { heading: "Vår relation", body: "CfD Sweden är en svensk förening som är affilierad och följer samma grundidé som CfD i USA: Medborgare ska kunna organisera sig fredligt, sakligt och effektivt för offentlig insyn i ufo/UAP-frågan." }, cta: { eyebrow: "Originalorganisation", title: "Läs mer hos New Paradigm Institute.", link: "Besök NPI ↗", href: "https://newparadigminstitute.org/" } },
   learn: { eyebrow: "Lär dig mer", title: "Ett svenskt bibliotek för UAP-disclosure.", intro: "Utforska UAP-frågan genom introduktioner, offentliga källor och svenska perspektiv. Filtrera på ämne, typ eller samling för att hitta din väg vidare." },
   action: { eyebrow: "Take Action", title: "Det här är rörelsens praktiska nav.", intro: "Från ett första samtal till en lokal grupp: det finns många sätt att bidra. Hitta ett område som passar dig och hjälp oss bygga den svenska rörelsen.", heroEyebrow: "Prioriterad action", heroTitle: "Bygg det svenska Citizens for Disclosure-nätverket.", heroBody: "Vi behöver människor som kan organisera, skriva, översätta, kontakta media, arrangera lokala träffar och bygga förtroende för en saklig svensk disclosure-rörelse.", heroLink: "Anmäl intresse ↗", sectionEyebrow: "Aktiva spår", sectionTitle: "Välj en väg in." },
-  contact: { eyebrow: "Kontakt", title: "Kontakta CFD Sweden.", intro: "Vill du engagera dig, ställa en fråga, tipsa om en källa eller prata om samarbete? Hör av dig så återkommer vi.", email: { heading: "E-post", body: "Skriv gärna kort vem du är, var du finns och vad ärendet gäller." }, press: { heading: "Press och samarbete", body: "För media, föreningar, forskare eller organisationer: ange gärna deadline, format och vilken typ av underlag du söker." } },
+  contact: { eyebrow: "Kontakt", title: "Kontakta CfD Sweden.", intro: "Vill du engagera dig, ställa en fråga, tipsa om en källa eller prata om samarbete? Hör av dig så återkommer vi.", email: { heading: "E-post", body: "Skriv gärna kort vem du är, var du finns och vad ärendet gäller." }, press: { heading: "Press och samarbete", body: "För media, föreningar, forskare eller organisationer: ange gärna deadline, format och vilken typ av underlag du söker." } },
   thanks: { eyebrow: "Tack!", title: "Vi hör av oss snart.", intro: "Din intresseanmälan har tagits emot. Vi återkommer så snart vi kan.", body: "Välkommen till rörelsen.", link: "Gå tillbaka till startsidan" },
   sharedCta: { eyebrow: "Citizens for Disclosure Sweden", title: "Vill du vara med och bygga den svenska rörelsen?", link: "Gå med" },
   header: { campaign: "Citizens for Disclosure", join: "Gå med", learn: "Läs mer", menu: "Meny" },
@@ -97,7 +97,7 @@ export const resourceItems = [
   { title: "Grundläggande UAP-historia", type: "Introduktion", text: "En svensk översikt över centrala begrepp, offentliga rapporter och varför UAP-frågan berör demokrati och säkerhet." },
   { title: "Offentliga hearings och vittnesmål", type: "Källor", text: "Sammanställningar av kongressförhör, myndighetsrapporter och uttalanden som går att följa upp i primärkällor." },
   { title: "Visselblåsare och skydd", type: "Policy", text: "Material om varför skyddade kanaler och ansvarsfull hantering behövs när personer med insyn träder fram." },
-  { title: "Svensk kontext", type: "CFD Sweden", text: "Kommande guider om hur frågan kan diskuteras i Sverige, från media och forskning till riksdag och myndigheter." },
+  { title: "Svensk kontext", type: "CfD Sweden", text: "Kommande guider om hur frågan kan diskuteras i Sverige, från media och forskning till riksdag och myndigheter." },
 ] as const;
 
 // Redaktionell indelning av de fyra befintliga korten, inga nya resurser.
@@ -114,7 +114,7 @@ export const libraryContent = {
 };
 
 export const newsContent = {
-  eyebrow: "Nyheter", title: "Nyheter från CFD Sweden.",
+  eyebrow: "Nyheter", title: "Nyheter från CfD Sweden.",
   intro: "Här publicerar vi bekräftade uppdateringar när de finns.",
   empty: "Det finns inga publicerade nyheter ännu.", link: "Läs nyheten",
 };
@@ -159,7 +159,7 @@ export const workGroups: WorkGroup[] = [
 ] as const;
 
 export const campaigns: Campaign[] = [
-  { title: "Gå med i CFD Sweden", text: "Anmäl intresse, berätta var du finns och hur du kan bidra till den svenska organiseringen." },
+  { title: "Gå med i CfD Sweden", text: "Anmäl intresse, berätta var du finns och hur du kan bidra till den svenska organiseringen." },
   { title: "Starta en lokal grupp", text: "Samla människor i din stad för t.ex. samtal, källgenomgångar, visningar och lokala aktiviteter." },
   { title: "Kontakta beslutsfattare", text: "Hjälp oss formulera sakliga frågor till politiker, myndigheter och institutioner i Sverige." },
   { title: "Sprid kunskap", text: "Dela material, översätt resurser och bidra till att frågan behandlas seriöst i offentligheten." },

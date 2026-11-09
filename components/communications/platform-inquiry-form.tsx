@@ -18,7 +18,7 @@ const fieldOptions: Record<
 
 /** Drop-in form for the explicitly approved database backend. The caller keeps
  * InquiryForm/FormSubmit as the default and renders this only behind both the
- * platform and CFD_CONTACT_BACKEND=database gates. */
+ * platform and CfD_CONTACT_BACKEND=database gates. */
 export function PlatformInquiryForm({
   variant,
 }: {
@@ -172,7 +172,7 @@ export function PlatformInquiryForm({
           />
         </label>
         <p className="form-help" id={`${id}-privacy`}>
-          CFD Sweden använder uppgifterna för att{" "}
+          CfD Sweden använder uppgifterna för att{" "}
           {isContact ? "besvara din förfrågan" : "följa upp ditt intresse"}.
           Ingen automatisk prenumeration skapas. Undvik känsliga
           personuppgifter.{" "}

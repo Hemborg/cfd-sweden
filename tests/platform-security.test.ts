@@ -14,8 +14,8 @@ import {
 import { z } from "zod";
 
 test("password setup proof rejects wrong account, expiry, tampering and missing proof", () => {
-  const previous = process.env.CFD_RATE_LIMIT_SECRET;
-  process.env.CFD_RATE_LIMIT_SECRET =
+  const previous = process.env.CfD_RATE_LIMIT_SECRET;
+  process.env.CfD_RATE_LIMIT_SECRET =
     "synthetic-unit-test-secret-32-characters";
   try {
     const now = 123456789,
@@ -26,8 +26,8 @@ test("password setup proof rejects wrong account, expiry, tampering and missing 
     assert.equal(verifyPasswordProof(`${proof}x`, "test-user", now), false);
     assert.equal(verifyPasswordProof(undefined, "test-user", now), false);
   } finally {
-    if (previous === undefined) delete process.env.CFD_RATE_LIMIT_SECRET;
-    else process.env.CFD_RATE_LIMIT_SECRET = previous;
+    if (previous === undefined) delete process.env.CfD_RATE_LIMIT_SECRET;
+    else process.env.CfD_RATE_LIMIT_SECRET = previous;
   }
 });
 
@@ -79,23 +79,23 @@ test("raw webhook reader preserves signed whitespace and caps streamed chunks", 
 
 test("platform rejects unapproved remote endpoints and request origin/body abuse", async () => {
   const names = [
-    "CFD_PLATFORM_ENABLED",
+    "CfD_PLATFORM_ENABLED",
     "NEXT_PUBLIC_SUPABASE_URL",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY",
     "SUPABASE_SERVICE_ROLE_KEY",
-    "CFD_SITE_URL",
-    "CFD_EXTERNAL_SERVICES_APPROVED",
+    "CfD_SITE_URL",
+    "CfD_EXTERNAL_SERVICES_APPROVED",
   ];
   const old = Object.fromEntries(
     names.map((name) => [name, process.env[name]]),
   );
   Object.assign(process.env, {
-    CFD_PLATFORM_ENABLED: "true",
+    CfD_PLATFORM_ENABLED: "true",
     NEXT_PUBLIC_SUPABASE_URL: "http://127.0.0.1:54321",
     NEXT_PUBLIC_SUPABASE_ANON_KEY: "synthetic",
     SUPABASE_SERVICE_ROLE_KEY: "synthetic",
-    CFD_SITE_URL: "http://127.0.0.1:3402",
-    CFD_EXTERNAL_SERVICES_APPROVED: "false",
+    CfD_SITE_URL: "http://127.0.0.1:3402",
+    CfD_EXTERNAL_SERVICES_APPROVED: "false",
   });
   try {
     assert.equal(platformConfig().siteUrl, "http://127.0.0.1:3402");

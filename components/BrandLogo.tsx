@@ -32,8 +32,8 @@ export function BrandWordmark({ country = false, decorative = false, tone = "ori
 /** Full chapter lockup. Each exported part can also be used on its own. */
 export function BrandLogo({ decorative = false, tone = "original", style, ...props }: LogoPartProps) {
   return (
-    <svg viewBox="0 0 1698 532" role={decorative ? undefined : "img"} aria-label={decorative ? undefined : "CFD Sweden – Citizens for Disclosure"} aria-hidden={decorative || undefined} style={{ ...style, filter: tone === "white" ? "brightness(0) invert(1)" : style?.filter }} {...props}>
-      <title>CFD Sweden – Citizens for Disclosure</title>
+    <svg viewBox="0 0 1698 532" role={decorative ? undefined : "img"} aria-label={decorative ? undefined : "CfD Sweden – Citizens for Disclosure"} aria-hidden={decorative || undefined} style={{ ...style, filter: tone === "white" ? "brightness(0) invert(1)" : style?.filter }} {...props}>
+      <title>CfD Sweden – Citizens for Disclosure</title>
       <BrandSymbol decorative x="0" y="0" width="532" height="532" />
       <BrandWordmark decorative country x="590" y="100" width="1108" height="432" />
     </svg>

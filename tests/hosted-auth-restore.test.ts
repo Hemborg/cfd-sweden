@@ -11,7 +11,7 @@ test("Auth restore refuses remote targets and other local databases before acces
     "postgres://127.0.0.1:54322/another_database",
   ]) {
     const result = spawnSync(process.execPath, [script], {
-      env: { ...process.env, CFD_TEST_DATABASE_URL: target },
+      env: { ...process.env, CfD_TEST_DATABASE_URL: target },
       encoding: "utf8",
       timeout: 5_000,
     });

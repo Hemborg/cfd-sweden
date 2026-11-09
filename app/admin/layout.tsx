@@ -3,7 +3,7 @@ import { requireRoles } from "@/lib/platform/auth";
 import { logout } from "@/app/logga-in/actions";
 export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "Administration | CFD Sweden",
+  title: "Administration | CfD Sweden",
   robots: { index: false, follow: false },
 };
 const links = [
@@ -33,7 +33,7 @@ export default async function AdminLayout({
   return (
     <div className="portal">
       <header className="portal-header">
-        <Link href="/">CFD Sweden</Link>
+        <Link href="/">CfD Sweden</Link>
         <Link href="/medlem">Medlemsportal</Link>
         <form action={logout}>
           <button>Logga ut</button>

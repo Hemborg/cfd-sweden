@@ -48,7 +48,7 @@ export function privateJson(data: unknown, status = 200) {
   });
 }
 export async function rateLimit(key: string, limit = 5, windowSeconds = 60) {
-  const secret = process.env.CFD_RATE_LIMIT_SECRET;
+  const secret = process.env.CfD_RATE_LIMIT_SECRET;
   if (!secret || secret.length < 32)
     throw new Error("Hastighetsbegränsning saknar konfiguration.");
   const digest = createHmac("sha256", secret).update(key).digest("hex");

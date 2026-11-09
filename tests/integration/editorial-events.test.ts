@@ -49,7 +49,7 @@ test("real PostgreSQL enforces editorial RLS and event capacity/waitlist atomica
     });
     const eventId = (
       await pool.query<{ id: string }>(
-        "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,created_by) values($1,'Integration event','Integration description',now()+interval '1 day','Stockholm','CFD',1,true,true,$2) returning id",
+        "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,created_by) values($1,'Integration event','Integration description',now()+interval '1 day','Stockholm','CfD',1,true,true,$2) returning id",
         [eventSlug, admin.id],
       )
     ).rows[0].id;
@@ -110,7 +110,7 @@ test("a free-event request needs one unexpired mailbox confirmation before consu
   try {
     const event = (
       await pool.query<{ id: string }>(
-        "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,created_by) values($1,'Confirmation event','Integration description',now()+interval '1 day','Stockholm','CFD',1,true,true,$2) returning id",
+        "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,created_by) values($1,'Confirmation event','Integration description',now()+interval '1 day','Stockholm','CfD',1,true,true,$2) returning id",
         [slug, admin.id],
       )
     ).rows[0];
@@ -225,7 +225,7 @@ test("event security functions reject invalid money, enforce capacity and check-
   try {
     const event = (
       await pool.query<{ id: string }>(
-        "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,price_ore,created_by) values($1,'Security event','Integration description',now()+interval '1 day','Stockholm','CFD',2,true,true,1000,$2) returning id",
+        "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,price_ore,created_by) values($1,'Security event','Integration description',now()+interval '1 day','Stockholm','CfD',2,true,true,1000,$2) returning id",
         [slug, admin.id],
       )
     ).rows[0];
@@ -289,7 +289,7 @@ test("event security functions reject invalid money, enforce capacity and check-
     await assert.rejects(
       pool
         .query(
-          "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,created_by) values($1,'Other','Description',now()+interval '1 day','Stockholm','CFD',1,true,true,$2) returning id",
+          "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,created_by) values($1,'Other','Description',now()+interval '1 day','Stockholm','CfD',1,true,true,$2) returning id",
           [`${slug}-other`, admin.id],
         )
         .then(async (result) =>
@@ -356,7 +356,7 @@ test("practical announcement snapshots recipients and queues atomically", async 
   try {
     const event = (
       await pool.query<{ id: string }>(
-        "insert into public.events(slug,title,description,starts_at,location,organiser,registration_open,published,created_by) values($1,'Announcement event','Integration description',now()+interval '1 day','Stockholm','CFD',true,true,$2) returning id",
+        "insert into public.events(slug,title,description,starts_at,location,organiser,registration_open,published,created_by) values($1,'Announcement event','Integration description',now()+interval '1 day','Stockholm','CfD',true,true,$2) returning id",
         [slug, admin.id],
       )
     ).rows[0];
@@ -477,7 +477,7 @@ test("paid reservations consume capacity until expiry and webhook processing is 
   try {
     const eventId = (
       await pool.query<{ id: string }>(
-        "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,price_ore,created_by) values($1,'Paid integration','Integration description',now()+interval '1 day','Stockholm','CFD',1,true,true,1000,$2) returning id",
+        "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,price_ore,created_by) values($1,'Paid integration','Integration description',now()+interval '1 day','Stockholm','CfD',1,true,true,1000,$2) returning id",
         [slug, admin.id],
       )
     ).rows[0].id;

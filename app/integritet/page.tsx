@@ -4,7 +4,7 @@ import { PageLayout } from "@/components/PageLayout";
 import { platformFeatures } from "@/lib/platform/config";
 
 export const metadata: Metadata = {
-  title: "Personuppgifter och integritet | CFD Sweden",
+  title: "Personuppgifter och integritet | CfD Sweden",
 };
 
 export default function PrivacyPage() {
@@ -21,7 +21,7 @@ export default function PrivacyPage() {
         <article className="large-copy">
           <h2>Vad du lämnar och varför</h2>
           <p>
-            CFD Sweden använder din e-postadress och de uppgifter du själv
+            CfD Sweden använder din e-postadress och de uppgifter du själv
             lämnar för att besvara ditt ärende eller följa upp ditt intresse för
             verksamheten. E-post är obligatoriskt i båda formulären.
             Kontaktformuläret kräver också ett meddelande. Övriga
@@ -45,7 +45,7 @@ export default function PrivacyPage() {
           ) : (
             <p>
               När du skickar formuläret lämnas uppgifterna till FormSubmit, som
-              förmedlar meddelandet till CFD Swedens e-postadress hos Proton.
+              förmedlar meddelandet till CfD Swedens e-postadress hos Proton.
               Formulären sparar inte förfrågningar i webbplatsens databas.
               Uppgifterna finns däremot i e-posthanteringen och behandlas av de
               leverantörer som medverkar i överföringen.
@@ -76,7 +76,7 @@ export default function PrivacyPage() {
           )}
           <h2>Frågor, rättelse och radering</h2>
           <p>
-            Du kan kontakta CFD Sweden för att begära information om dina
+            Du kan kontakta CfD Sweden för att begära information om dina
             uppgifter, rättelse eller radering. Använd{" "}
             <Link className="text-link" href="/kontakta-oss#kontaktformular">
               kontaktformuläret

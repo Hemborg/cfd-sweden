@@ -12,7 +12,7 @@ const ticket = (prefix: string) => `${prefix}${run}`.slice(0, 12).toUpperCase();
 async function createEvent(pool: pg.Pool, slug: string, capacity = 3) {
   return (
     await pool.query<{ id: string }>(
-      "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,price_ore,currency,created_by) values($1,'Payment replay','Integration event',clock_timestamp()+interval '1 day','Stockholm','CFD',$2,true,true,1000,'sek',$3) returning id",
+      "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,price_ore,currency,created_by) values($1,'Payment replay','Integration event',clock_timestamp()+interval '1 day','Stockholm','CfD',$2,true,true,1000,'sek',$3) returning id",
       [slug, capacity, admin.id],
     )
   ).rows[0].id;
@@ -326,7 +326,7 @@ test("free cancellation promotes the oldest waitlisted member", async () => {
   try {
     const eventId = (
       await pool.query<{ id: string }>(
-        "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,price_ore,created_by) values($1,'Free replay','Integration event',clock_timestamp()+interval '1 day','Stockholm','CFD',1,true,true,0,$2) returning id",
+        "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,price_ore,created_by) values($1,'Free replay','Integration event',clock_timestamp()+interval '1 day','Stockholm','CfD',1,true,true,0,$2) returning id",
         [slug, admin.id],
       )
     ).rows[0].id;

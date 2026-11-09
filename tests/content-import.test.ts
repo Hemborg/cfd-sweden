@@ -34,7 +34,7 @@ const events: Event[] = [{
   title: "Framtida träff",
   date: "2031-06-01T18:30:00+02:00",
   location: "Stockholm",
-  organiser: "CFD Sweden",
+  organiser: "CfD Sweden",
   description: "Evenemang med tidszon.",
   externalUrl: "https://example.test/anmalan",
   registrationOpen: false,

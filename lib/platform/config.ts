@@ -1,22 +1,22 @@
 export function platformEnabled() {
-  return process.env.CFD_PLATFORM_ENABLED === "true";
+  return process.env.CfD_PLATFORM_ENABLED === "true";
 }
 
 /** Database/Auth are the launch foundation. Optional workflows fail closed. */
 export function platformFeatures() {
   const database = platformEnabled();
-  const email = database && process.env.CFD_MAIL_ENABLED === "true" &&
-    ["smtp", "resend"].includes(process.env.CFD_MAIL_TRANSPORT ?? "disabled");
-  const eventRegistration = email && process.env.CFD_EVENT_REGISTRATION_ENABLED === "true";
+  const email = database && process.env.CfD_MAIL_ENABLED === "true" &&
+    ["smtp", "resend"].includes(process.env.CfD_MAIL_TRANSPORT ?? "disabled");
+  const eventRegistration = email && process.env.CfD_EVENT_REGISTRATION_ENABLED === "true";
   return {
     database,
     administration: database,
     email,
-    newsletters: email && process.env.CFD_NEWSLETTER_ENABLED === "true",
+    newsletters: email && process.env.CfD_NEWSLETTER_ENABLED === "true",
     eventRegistration,
-    payments: eventRegistration && process.env.CFD_STRIPE_ENABLED === "true",
-    comments: database && process.env.CFD_COMMENTS_ENABLED === "true",
-    contactDatabase: email && process.env.CFD_CONTACT_BACKEND === "database",
+    payments: eventRegistration && process.env.CfD_STRIPE_ENABLED === "true",
+    comments: database && process.env.CfD_COMMENTS_ENABLED === "true",
+    contactDatabase: email && process.env.CfD_CONTACT_BACKEND === "database",
     publicSignup: false,
   } as const;
 }
@@ -31,7 +31,7 @@ export function platformConfig() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const siteUrl = process.env.CFD_SITE_URL;
+  const siteUrl = process.env.CfD_SITE_URL;
   if (!url || !anonKey || !serviceKey || !siteUrl)
     throw new Error("Plattformens konfiguration saknas.");
   const dbUrl = new URL(url);
@@ -49,7 +49,7 @@ export function platformConfig() {
   if (!["http:", "https:"].includes(appUrl.protocol))
     throw new Error("Ogiltig webbplatsadress.");
   if (
-    (!local && process.env.CFD_EXTERNAL_SERVICES_APPROVED !== "true") ||
+    (!local && process.env.CfD_EXTERNAL_SERVICES_APPROVED !== "true") ||
     (!local && dbUrl.protocol !== "https:") ||
     appUrl.username ||
     appUrl.password ||

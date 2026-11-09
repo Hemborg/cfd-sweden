@@ -16,22 +16,22 @@ import { dispatchDueCampaigns } from "./campaigns";
 import { platformFeatures } from "@/lib/platform/config";
 
 function transport() {
-  return process.env.CFD_MAIL_TRANSPORT ?? "disabled";
+  return process.env.CfD_MAIL_TRANSPORT ?? "disabled";
 }
 function localHost(host: string) {
   return ["localhost", "127.0.0.1", "::1"].includes(host);
 }
 function approvedResendRecipient(email: string) {
-  const mode = process.env.CFD_MAIL_MODE ?? "test";
+  const mode = process.env.CfD_MAIL_MODE ?? "test";
   if (mode === "live")
     return (
-      process.env.CFD_EXTERNAL_SERVICES_APPROVED === "true" &&
-      process.env.CFD_RESEND_LIVE_APPROVED === "true" &&
-      process.env.CFD_MAIL_LEGAL_APPROVED === "true"
+      process.env.CfD_EXTERNAL_SERVICES_APPROVED === "true" &&
+      process.env.CfD_RESEND_LIVE_APPROVED === "true" &&
+      process.env.CfD_MAIL_LEGAL_APPROVED === "true"
     );
   return (
     mode === "test" &&
-    (process.env.CFD_RESEND_TEST_RECIPIENTS ?? "")
+    (process.env.CfD_RESEND_TEST_RECIPIENTS ?? "")
       .split(",")
       .map((value) => value.trim().toLowerCase())
       .filter(Boolean)
@@ -75,7 +75,7 @@ async function send(item: ClaimedMail) {
     };
   if (transport() === "smtp") {
     await markQueuedMailTransport(item.key, item.lease, "smtp");
-    const host = process.env.CFD_SMTP_HOST ?? "";
+    const host = process.env.CfD_SMTP_HOST ?? "";
     if (!localHost(host) || !item.recipient.endsWith("@example.test"))
       return {
         state: "failed" as const,
@@ -83,17 +83,17 @@ async function send(item: ClaimedMail) {
       };
     const client = nodemailer.createTransport({
       host,
-      port: Number(process.env.CFD_SMTP_PORT ?? 1025),
+      port: Number(process.env.CfD_SMTP_PORT ?? 1025),
       secure: false,
     });
     try {
       const result = await client.sendMail({
-        from: process.env.CFD_MAIL_FROM ?? "CFD Sweden <noreply@example.test>",
+        from: process.env.CfD_MAIL_FROM ?? "CfD Sweden <noreply@example.test>",
         to: item.recipient,
         subject: message.subject,
         text: message.text,
         html: message.html,
-        headers: { "X-CFD-Queue-Key": item.key },
+        headers: { "X-CfD-Queue-Key": item.key },
       });
       return { state: "sent" as const, providerId: result.messageId };
     } catch {
@@ -105,7 +105,7 @@ async function send(item: ClaimedMail) {
   }
   if (
     transport() !== "resend" ||
-    process.env.CFD_RESEND_ENABLED !== "true" ||
+    process.env.CfD_RESEND_ENABLED !== "true" ||
     !approvedResendRecipient(item.recipient)
   )
     return {
@@ -114,7 +114,7 @@ async function send(item: ClaimedMail) {
         "Extern e-post är inte uttryckligen aktiverad för denna mottagare.",
     };
   const key = process.env.RESEND_API_KEY;
-  const from = process.env.CFD_MAIL_FROM;
+  const from = process.env.CfD_MAIL_FROM;
   if (!key || !from)
     return {
       state: "failed" as const,

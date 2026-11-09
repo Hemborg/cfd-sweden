@@ -60,8 +60,8 @@ test("samtidiga kontaktretries sparar en post; ändrat namn med samma nyckel nek
 });
 
 test("localhost-guard hanterar intern Next-URL, IPv6 och exakt origin", () => {
-  const before = process.env.CFD_FORM_DEMO_ENABLED;
-  process.env.CFD_FORM_DEMO_ENABLED = "true";
+  const before = process.env.CfD_FORM_DEMO_ENABLED;
+  process.env.CfD_FORM_DEMO_ENABLED = "true";
   try {
     const request = (host: string, origin: string) => new Request("http://localhost:3400/api/demo/contact", { headers: { host, origin } });
     assert.equal(demoIsEnabled(request("127.0.0.1:3400", "http://127.0.0.1:3400")), true);
@@ -69,8 +69,8 @@ test("localhost-guard hanterar intern Next-URL, IPv6 och exakt origin", () => {
     assert.equal(demoIsEnabled(request("127.0.0.1:3400", "http://127.0.0.1:9999")), false);
     assert.equal(demoIsEnabled(request("127.0.0.1:3400", "https://127.0.0.1:3400")), false);
   } finally {
-    if (before === undefined) delete process.env.CFD_FORM_DEMO_ENABLED;
-    else process.env.CFD_FORM_DEMO_ENABLED = before;
+    if (before === undefined) delete process.env.CfD_FORM_DEMO_ENABLED;
+    else process.env.CfD_FORM_DEMO_ENABLED = before;
   }
 });
 

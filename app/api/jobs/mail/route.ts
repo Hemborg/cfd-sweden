@@ -5,7 +5,7 @@ import { runMailWorker } from "@/lib/communications/dispatch";
 import { createServiceClient } from "@/lib/platform/db";
 
 function authorised(request: Request) {
-  const secret = process.env.CFD_JOB_SECRET;
+  const secret = process.env.CfD_JOB_SECRET;
   const supplied = request.headers
     .get("authorization")
     ?.replace(/^Bearer\s+/i, "");

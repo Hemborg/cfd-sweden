@@ -15,7 +15,7 @@ export function isEncryptedPayload(value: unknown): value is Envelope {
 }
 
 function encryptionKey() {
-  const source = process.env.CFD_MAIL_ENCRYPTION_KEY;
+  const source = process.env.CfD_MAIL_ENCRYPTION_KEY;
   if (!source)
     throw new Error("Kommunikationskryptering saknar konfiguration.");
   const key = Buffer.from(source, "base64");

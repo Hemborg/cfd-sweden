@@ -38,7 +38,7 @@ export function NewsletterForm() {
       </label>
       <label className="portal-check">
         <input name="consent" type="checkbox" required /> Jag vill få nyhetsbrev
-        från CFD Sweden.
+        från CfD Sweden.
       </label>
       <button disabled={state === "sending"}>
         {state === "sending" ? "Skickar…" : "Prenumerera"}

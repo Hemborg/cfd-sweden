@@ -10,9 +10,9 @@ test("Stripe SDK verifies raw signatures, mode and money before atomic ticket cr
     id = randomUUID(),
     slug = `stripe-${id}`;
   const settings = {
-    CFD_STRIPE_ENABLED: "true",
-    CFD_STRIPE_MODE: "test",
-    CFD_EXTERNAL_SERVICES_APPROVED: "true",
+    CfD_STRIPE_ENABLED: "true",
+    CfD_STRIPE_MODE: "test",
+    CfD_EXTERNAL_SERVICES_APPROVED: "true",
     STRIPE_SECRET_KEY: "sk_test_local_synthetic",
     STRIPE_WEBHOOK_SECRET: `whsec_${id}`,
   };
@@ -24,7 +24,7 @@ test("Stripe SDK verifies raw signatures, mode and money before atomic ticket cr
   let registrationId: string | undefined;
   try {
     await pool.query(
-      "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,price_ore,created_by) values($1,'Signed webhook','Synthetic integration',now()+interval '1 day','Stockholm','CFD',1,true,true,1200,$2)",
+      "insert into public.events(slug,title,description,starts_at,location,organiser,capacity,registration_open,published,price_ore,created_by) values($1,'Signed webhook','Synthetic integration',now()+interval '1 day','Stockholm','CfD',1,true,true,1200,$2)",
       [slug, seedAccount("administrator").id],
     );
     const registration = (

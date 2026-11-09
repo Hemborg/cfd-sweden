@@ -36,7 +36,7 @@ test("core launch: event information remains available without registration or p
   const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY!, { auth: { persistSession: false } });
   const slug = `core-event-${randomUUID().slice(0, 8)}`;
   try {
-    const saved = await db.from("events").insert({ slug, title: "Lokal öppen aktivitet", description: "Information utan anmälan.", starts_at: "2030-01-01T12:00:00Z", location: "Stockholm", organiser: "CFD Sweden", registration_open: true, published: true, price_ore: 0, created_by: account("editor").id });
+    const saved = await db.from("events").insert({ slug, title: "Lokal öppen aktivitet", description: "Information utan anmälan.", starts_at: "2030-01-01T12:00:00Z", location: "Stockholm", organiser: "CfD Sweden", registration_open: true, published: true, price_ore: 0, created_by: account("editor").id });
     if (saved.error) throw saved.error;
     for (const price of [0, 10000]) {
       const updated = await db.from("events").update({ price_ore: price }).eq("slug", slug);

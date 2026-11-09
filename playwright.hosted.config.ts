@@ -7,19 +7,19 @@ hostedStagingRuntime(process.env, ["--allow-staging-write"]);
 
 const baseURL = "http://127.0.0.1:3404";
 const launch = {
-  CFD_PLATFORM_ENABLED: "true",
-  CFD_CONTACT_BACKEND: "formsubmit",
-  CFD_SITE_URL: baseURL,
-  CFD_STAGING_PROJECT_REF: stagingProjectRef,
+  CfD_PLATFORM_ENABLED: "true",
+  CfD_CONTACT_BACKEND: "formsubmit",
+  CfD_SITE_URL: baseURL,
+  CfD_STAGING_PROJECT_REF: stagingProjectRef,
   NEXT_PUBLIC_SUPABASE_URL: stagingUrl,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  CFD_MAIL_ENABLED: "false",
-  CFD_MAIL_TRANSPORT: "disabled",
-  CFD_NEWSLETTER_ENABLED: "false",
-  CFD_EVENT_REGISTRATION_ENABLED: "false",
-  CFD_STRIPE_ENABLED: "false",
-  CFD_COMMENTS_ENABLED: "false",
+  CfD_MAIL_ENABLED: "false",
+  CfD_MAIL_TRANSPORT: "disabled",
+  CfD_NEWSLETTER_ENABLED: "false",
+  CfD_EVENT_REGISTRATION_ENABLED: "false",
+  CfD_STRIPE_ENABLED: "false",
+  CfD_COMMENTS_ENABLED: "false",
   NEXT_TELEMETRY_DISABLED: "1",
 };
 

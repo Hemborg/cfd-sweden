@@ -14,7 +14,7 @@ import ContactPage from "../app/kontakta-oss/page";
 import TackPage from "../app/tack/page";
 
 test("det publicerade startsideinnehållet och FormSubmit-kontraktet bevaras", () => {
-  for (const text of ["Gå med i Citizens for Disclosure", "Varför CFD Sweden?", "Arrangera lokala samtal och visningar"]) assert.ok(JSON.stringify(homeContent).includes(text));
+  for (const text of ["Gå med i Citizens for Disclosure", "Varför CfD Sweden?", "Arrangera lokala samtal och visningar"]) assert.ok(JSON.stringify(homeContent).includes(text));
   assert.equal(site.form.action, "https://formsubmit.co/cfdsweden@proton.me");
   assert.equal(site.form.redirectUrl, "https://cfdsweden.se/tack");
 });

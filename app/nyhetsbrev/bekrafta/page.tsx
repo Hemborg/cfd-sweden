@@ -3,7 +3,7 @@ import { confirmNewsletterAction } from "../actions";
 import { platformFeatures } from "@/lib/platform/config";
 type Props = { searchParams: Promise<{ token?: string; status?: string }> };
 export const metadata = {
-  title: "Bekräfta prenumeration | CFD Sweden",
+  title: "Bekräfta prenumeration | CfD Sweden",
   robots: { index: false, follow: false },
 };
 export default async function ConfirmNewsletterPage({ searchParams }: Props) {
@@ -30,7 +30,7 @@ export default async function ConfirmNewsletterPage({ searchParams }: Props) {
     );
   return (
     <NewsletterLayout title="Bekräfta prenumeration">
-      <p>Bekräfta att du vill få nyhetsbrev från CFD Sweden.</p>
+      <p>Bekräfta att du vill få nyhetsbrev från CfD Sweden.</p>
       {status === "invalid" && (
         <p role="alert">Länken är ogiltig eller har redan använts.</p>
       )}

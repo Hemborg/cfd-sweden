@@ -4,7 +4,7 @@ import { platformEnabled, platformFeatures } from "@/lib/platform/config";
 import { login, requestRecovery } from "./actions";
 
 export const metadata = {
-  title: "Logga in | CFD Sweden",
+  title: "Logga in | CfD Sweden",
   robots: { index: false, follow: false },
 };
 export default async function LoginPage({

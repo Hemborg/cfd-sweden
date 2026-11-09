@@ -10,7 +10,7 @@ export function demoIsEnabled(request: Request) {
   let hostname: string;
   try { hostname = new URL(`http://${host}`).hostname; } catch { return false; }
   const local = hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]";
-  if (!local || process.env.CFD_FORM_DEMO_ENABLED !== "true" || process.env.VERCEL) return false;
+  if (!local || process.env.CfD_FORM_DEMO_ENABLED !== "true" || process.env.VERCEL) return false;
   if (!origin) return true;
   try { return new URL(origin).origin === `http://${host}`; } catch { return false; }
 }

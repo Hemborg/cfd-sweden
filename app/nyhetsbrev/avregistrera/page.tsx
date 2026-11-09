@@ -3,7 +3,7 @@ import { unsubscribeNewsletterAction } from "../actions";
 import { platformFeatures } from "@/lib/platform/config";
 type Props = { searchParams: Promise<{ token?: string; status?: string }> };
 export const metadata = {
-  title: "Avregistrera nyhetsbrev | CFD Sweden",
+  title: "Avregistrera nyhetsbrev | CfD Sweden",
   robots: { index: false, follow: false },
 };
 export default async function UnsubscribeNewsletterPage({
@@ -19,7 +19,7 @@ export default async function UnsubscribeNewsletterPage({
   if (status === "withdrawn")
     return (
       <NewsletterLayout title="Du är avregistrerad">
-        <p>Du kommer inte längre att få nyhetsbrev från CFD Sweden.</p>
+        <p>Du kommer inte längre att få nyhetsbrev från CfD Sweden.</p>
       </NewsletterLayout>
     );
   if (!token)
@@ -30,7 +30,7 @@ export default async function UnsubscribeNewsletterPage({
     );
   return (
     <NewsletterLayout title="Avregistrera nyhetsbrev">
-      <p>Vill du avregistrera dig från CFD Swedens nyhetsbrev?</p>
+      <p>Vill du avregistrera dig från CfD Swedens nyhetsbrev?</p>
       {status === "invalid" && (
         <p role="alert">Länken är ogiltig eller har redan använts.</p>
       )}

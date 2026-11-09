@@ -90,7 +90,7 @@ export async function POST(request: Request) {
           {
             price_data: {
               currency: registration.booking_currency,
-              product_data: { name: "CFD Sweden evenemangsbiljett" },
+              product_data: { name: "CfD Sweden evenemangsbiljett" },
               unit_amount: registration.booking_price_ore,
             },
             quantity: 1,

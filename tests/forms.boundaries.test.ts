@@ -12,8 +12,8 @@ test("validation normalizes email and rejects bots or unchecked consent", () => 
 });
 
 test("demo is disabled unless explicitly localhost, same-origin, and non-Vercel", () => {
-  const oldEnabled = process.env.CFD_FORM_DEMO_ENABLED; const oldVercel = process.env.VERCEL;
-  process.env.CFD_FORM_DEMO_ENABLED = "true"; process.env.VERCEL = "";
+  const oldEnabled = process.env.CfD_FORM_DEMO_ENABLED; const oldVercel = process.env.VERCEL;
+  process.env.CfD_FORM_DEMO_ENABLED = "true"; process.env.VERCEL = "";
   assert.equal(demoIsEnabled(new Request("http://localhost:3000/api/demo/contact", { method: "POST", headers: { host: "localhost:3000", origin: "http://localhost:3000" } })), true);
   // Next may report an internal localhost Request.url while preserving the incoming 127.0.0.1 Host.
   assert.equal(demoIsEnabled(new Request("http://localhost:3000/api/demo/contact", { method: "POST", headers: { host: "127.0.0.1:3400", origin: "http://127.0.0.1:3400" } })), true);
@@ -22,7 +22,7 @@ test("demo is disabled unless explicitly localhost, same-origin, and non-Vercel"
   assert.equal(demoIsEnabled(new Request("https://cfdsweden.se/api/demo/contact", { method: "POST", headers: { host: "cfdsweden.se" } })), false);
   process.env.VERCEL = "1";
   assert.equal(demoIsEnabled(new Request("http://localhost:3000/api/demo/contact", { method: "POST", headers: { host: "localhost:3000" } })), false);
-  if (oldEnabled === undefined) delete process.env.CFD_FORM_DEMO_ENABLED; else process.env.CFD_FORM_DEMO_ENABLED = oldEnabled;
+  if (oldEnabled === undefined) delete process.env.CfD_FORM_DEMO_ENABLED; else process.env.CfD_FORM_DEMO_ENABLED = oldEnabled;
   if (oldVercel === undefined) delete process.env.VERCEL; else process.env.VERCEL = oldVercel;
 });
 

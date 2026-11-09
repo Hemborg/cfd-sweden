@@ -9,7 +9,7 @@ export async function GET() {
     title: article.title,
     date: (article.publishedAt ?? article.createdAt).slice(0, 10),
     excerpt: article.excerpt,
-    author: article.authorName ?? "CFD Sweden",
+    author: article.authorName ?? "CfD Sweden",
     tags: article.tags,
     published: true,
     content: "",

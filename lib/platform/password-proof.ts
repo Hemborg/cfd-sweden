@@ -2,7 +2,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 
 export const passwordProofCookie = "cfd-password-setup";
 function signature(value: string) {
-  const secret = process.env.CFD_RATE_LIMIT_SECRET;
+  const secret = process.env.CfD_RATE_LIMIT_SECRET;
   if (!secret || secret.length < 32)
     throw new Error("Kontosäkerhet saknar konfiguration.");
   return createHmac("sha256", secret)

@@ -54,7 +54,7 @@ export async function resetTestMfa(role: string) {
     `mfa:${user.id}`,
     `login:${user.email}`,
   ].map((value) =>
-    createHmac("sha256", process.env.CFD_RATE_LIMIT_SECRET!)
+    createHmac("sha256", process.env.CfD_RATE_LIMIT_SECRET!)
       .update(value)
       .digest("hex"),
   );

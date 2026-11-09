@@ -4,8 +4,8 @@ import { platformEnabled } from "@/lib/platform/config";
 import { createPublicClient } from "@/lib/platform/db";
 export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "Arbetsgrupper | CFD Sweden",
-  description: "Publika arbetsgrupper och kampanjer hos CFD Sweden.",
+  title: "Arbetsgrupper | CfD Sweden",
+  description: "Publika arbetsgrupper och kampanjer hos CfD Sweden.",
 };
 export default async function PublicGroups() {
   const groups = platformEnabled()

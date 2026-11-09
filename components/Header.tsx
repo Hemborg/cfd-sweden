@@ -15,7 +15,7 @@ export function Header({ current = "home" }: HeaderProps) {
       className={`site-header${current === "home" ? " site-header-home" : ""}`}
     >
       <div className="header-inner">
-        <Link className="brand" href="/" aria-label="CFD Sweden">
+        <Link className="brand" href="/" aria-label="CfD Sweden">
           <BrandLogo decorative tone="white" />
         </Link>
 

@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   if (
     !platformFeatures().email ||
     !secret ||
-    process.env.CFD_RESEND_ENABLED !== "true"
+    process.env.CfD_RESEND_ENABLED !== "true"
   )
     return new Response(null, { status: 404 });
   const id = request.headers.get("svix-id");

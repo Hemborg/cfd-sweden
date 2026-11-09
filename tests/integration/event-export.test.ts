@@ -18,7 +18,7 @@ test("event exports cross PostgREST row limits and editors never read attendees 
   try {
     const event = (
       await pool.query(
-        "insert into public.events(slug,title,description,starts_at,location,organiser,published,created_by) values($1,'Export test','Synthetic',now()+interval '1 day','Test','CFD',true,$2) returning id",
+        "insert into public.events(slug,title,description,starts_at,location,organiser,published,created_by) values($1,'Export test','Synthetic',now()+interval '1 day','Test','CfD',true,$2) returning id",
         [slug, seedAccount("administrator").id],
       )
     ).rows[0];
