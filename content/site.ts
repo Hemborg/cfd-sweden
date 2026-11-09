@@ -33,7 +33,7 @@ export const navigation: NavItem[] = [
 export const homeContent = {
   title: "Intresseanmälan",
   lead:
-    "Genom att utbilda och mobilisera oss kan vi driva på för öppenhet kring UFO/UAP-frågan och säkerställa att våra institutioner arbetar i allmänhetens intresse. Vi medborgare behöver kräva insyn, ansvar och transparens.",
+    "Genom att utbilda och mobilisera oss kan vi driva på för öppenhet kring ufo/UAP-frågan och säkerställa att våra institutioner arbetar i allmänhetens intresse. Vi medborgare behöver kräva insyn, ansvar och transparens.",
   video: {
     href: "https://www.youtube.com/watch?v=SIxt4mtGk-s",
     title: "Citizens for Disclosure · kort introduktionsfilm",
