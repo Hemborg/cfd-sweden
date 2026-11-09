@@ -87,8 +87,10 @@ export default function StadgarPage() {
             <li>Val av ordförande (1 år), övriga styrelseledamöter (2 år), revisor (1 år) och valberedning (1 år)</li>
             <li>Övriga i kallelsen angivna ärenden</li>
           </ol>
+          <br />
 
           <h3>19 § Extra årsmöte</h3>
+          <br />
           <p>Styrelsen kan kalla till extra årsmöte och är skyldig att göra det om revisorn eller minst 10 % av de röstberättigade medlemmarna skriftligen begär det. Kallelse ska ske senast sju dagar före mötet. Endast det som föranlett mötet får behandlas.</p>
 
           <h2>Valberedning och revision</h2>
