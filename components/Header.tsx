@@ -23,7 +23,7 @@ export function Header({ current = "home" }: HeaderProps) {
           <nav className="main-nav" aria-label="Huvudnavigering">
             {navigation
               .filter((item) =>
-                ["about", "action", "learn", "gear"].includes(item.key),
+                ["learn", "gear"].includes(item.key),
               )
               .map((item) => (
                 <Link
@@ -32,7 +32,7 @@ export function Header({ current = "home" }: HeaderProps) {
                   href={item.href}
                   key={item.href}
                 >
-                  {item.key === "action" ? "Engagera dig" : item.label}
+                  {item.label}
                 </Link>
               ))}
           </nav>
