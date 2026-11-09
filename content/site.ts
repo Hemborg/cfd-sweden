@@ -10,7 +10,7 @@ export const site = {
   title: "CFD Sweden | Citizens for Disclosure",
   socialDescription: "Den svenska grenen av Citizens for Disclosure, inom New Paradigm Institute.",
   description:
-    "CFD Sweden organiserar svenskar för ansvarsfull transparens kring UFO/UAP-frågan.",
+    "En svensk förening för transparens, kunskapande och informationsspridning kring existensen av utomjordisk närvaro och verksamhet på jorden.",
   contactEmail: "cfdsweden@proton.me",
   form: {
     action: "https://formsubmit.co/cfdsweden@proton.me",
@@ -28,11 +28,10 @@ export const navigation: NavItem[] = [
   { href: "/kontakta-oss", label: "Kontakta oss", key: "contact" },
   { href: "/nyheter", label: "Nyheter", key: "news" },
   { href: "/evenemang", label: "Evenemang", key: "events" },
-  { href: "/cfd-gear", label: "CfD Gear", key: "gear" },
 ];
 
 export const homeContent = {
-  title: "Gå med i Citizens for Disclosure",
+  title: "Intresseanmälan",
   lead:
     "Genom att utbilda och mobilisera oss kan vi driva på för öppenhet kring UFO/UAP-frågan och säkerställa att våra institutioner arbetar i allmänhetens intresse. Vi medborgare behöver kräva insyn, ansvar och transparens.",
   video: {
@@ -52,7 +51,7 @@ export const homeContent = {
   ],
   why: {
     title: "Varför CFD Sweden?",
-    text: "När frågor om UAP, säkerhet och offentlig insyn hanteras utan transparens förlorar medborgarna möjlighet att förstå, granska och delta. CFD Sweden samlar människor som vill arbeta sakligt, demokratiskt och långsiktigt för ansvarsfull disclosure.",
+    text: "När frågor om ufo/UAP och offentlig insyn hanteras utan transparens förlorar medborgarna möjlighet att förstå, granska och delta. CFD Sweden samlar människor som vill arbeta sakligt, demokratiskt och långsiktigt för ansvarsfull insyn.",
   },
   actionHeading: "Du kan bidra genom att",
   actions: [
@@ -74,7 +73,7 @@ export const formContent = {
 } as const;
 
 export const pageContent = {
-  about: { eyebrow: "Om oss", title: "En svensk gren av Citizens for Disclosure.", intro: "CFD Sweden är ett civilsamhällesinitiativ för full och ansvarsfull transparens kring UFO/UAP-frågan, inspirerat av New Paradigm Institutes internationella arbete.", mission: { heading: "Vårt uppdrag", body: "Vi vill bidra till att frågor om UAP, icke-mänsklig intelligens, säkerhet och offentlig insyn behandlas öppet, sakligt och demokratiskt. Målet är inte spekulation för spekulationens skull, utan en mognare offentlig process där fakta kan granskas och ansvar kan utkrävas." }, role: { heading: "Vår roll", body: "Den svenska rörelsen behöver översätta ett internationellt samtal till svensk kontext: riksdag, myndigheter, media, universitet, föreningsliv och lokala medborgare." }, workEyebrow: "Vad vi gör", workHeading: "Vi bygger kapacitet för ansvarsfull disclosure." },
+  about: { eyebrow: "Om oss", title: "En svensk gren av Citizens for Disclosure.", intro: "CFD Sweden är ett gräsrotsinitiativ för full och ansvarsfull transparens kring ufo/UAP-frågan, inspirerat av New Paradigm Institutes internationella arbete.", mission: { heading: "Vårt uppdrag", body: "Vi vill bidra till att frågor om UAP, icke-mänsklig intelligens, säkerhet och offentlig insyn behandlas öppet, sakligt och demokratiskt. Målet är inte spekulation för spekulationens skull, utan en mognare offentlig process där fakta kan granskas och ansvar kan utkrävas." }, role: { heading: "Vår roll", body: "Den svenska rörelsen behöver översätta ett internationellt samtal till svensk kontext: riksdag, myndigheter, media, universitet, föreningsliv och lokala medborgare." }, workEyebrow: "Vad vi gör", workHeading: "Vi bygger kapacitet för ansvarsfull disclosure." },
   events: { eyebrow: "Evenemang", title: "Kommande samtal och aktiviteter.", intro: "Här visas bara bekräftade aktiviteter från CFD Sweden.", empty: "Inga bekräftade evenemang är publicerade just nu.", link: "Läs mer" },
   work: { eyebrow: "Vårt arbete", title: "Flera spår, ett mål: ansvarsfull transparens.", intro: "Vi förenar lokal organisering, research, folkbildning och saklig påverkan. Här kan du hitta ett sätt att bidra till öppenhet kring UAP-frågan i Sverige." },
   paradigm: { eyebrow: "New Paradigm Institute", title: "Den internationella rörelsen bakom Citizens for Disclosure.", intro: "New Paradigm Institute är ett amerikanskt lag- och policyinitiativ som arbetar för full och ansvarsfull UAP-disclosure genom forskning, opinionsbildning, juridik och medborgarorganisering.", background: { heading: "Bakgrund", body: "New Paradigm Institute är kopplat till Romero Institute och bygger vidare på en lång tradition av juridiskt och medborgerligt arbete för transparens och ansvar. Citizens for Disclosure är deras gräsrotsnätverk för personer som vill bidra praktiskt." }, relationship: { heading: "Vår relation", body: "CFD Sweden är en svensk systergren som följer samma grundidé: medborgare ska kunna organisera sig fredligt, sakligt och effektivt för offentlig insyn i UAP-frågan." }, cta: { eyebrow: "Originalorganisation", title: "Läs mer hos New Paradigm Institute.", link: "Besök NPI ↗", href: "https://newparadigminstitute.org/" } },
