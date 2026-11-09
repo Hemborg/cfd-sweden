@@ -1,7 +1,7 @@
 export type NavItem = {
   href: string;
   label: string;
-  key: "about" | "work" | "paradigm" | "learn" | "action" | "contact" | "news" | "events" | "gear";
+  key: "about" | "work" | "paradigm" | "learn" | "action" | "contact" | "news" | "events" | "gear" | "bylaws";
 };
 
 export const site = {
@@ -26,6 +26,7 @@ export const navigation: NavItem[] = [
   // { href: "/lar-dig-mer", label: "Lär dig mer", key: "learn" },
   { href: "/take-action", label: "Take action", key: "action" },
   { href: "/kontakta-oss", label: "Kontakta oss", key: "contact" },
+  { href: "/stadgar", label: "Stadgar", key: "bylaws" },
   // { href: "/nyheter", label: "Nyheter", key: "news" },
   // { href: "/evenemang", label: "Evenemang", key: "events" },
 ];
