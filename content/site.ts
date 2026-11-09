@@ -160,7 +160,7 @@ export const workGroups: WorkGroup[] = [
 
 export const campaigns: Campaign[] = [
   { title: "Gå med i CFD Sweden", text: "Anmäl intresse, berätta var du finns och hur du kan bidra till den svenska organiseringen." },
-  { title: "Starta en lokal grupp", text: "Samla människor i din stad för samtal, källgenomgångar, visningar och lokala aktiviteter." },
+  { title: "Starta en lokal grupp", text: "Samla människor i din stad för t.ex. samtal, källgenomgångar, visningar och lokala aktiviteter." },
   { title: "Kontakta beslutsfattare", text: "Hjälp oss formulera sakliga frågor till politiker, myndigheter och institutioner i Sverige." },
   { title: "Sprid kunskap", text: "Dela material, översätt resurser och bidra till att frågan behandlas seriöst i offentligheten." },
 ] as const;
