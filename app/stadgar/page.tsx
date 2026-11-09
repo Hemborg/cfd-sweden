@@ -6,7 +6,7 @@ export default function StadgarPage() {
       current="bylaws"
       eyebrow="Stadgar"
       title="Stadgar för Citizens for Disclosure Sweden"
-      intro="Bildad: 2027-01-14. Dessa stadgar är ett utkast inför föreningens planerade bildande."
+      intro="Dessa stadgar är ett utkast inför föreningens planerade bildande 2027-01-14"
     >
       <section className="subpage-section">
         <article className="large-copy bylaws">
@@ -110,7 +110,7 @@ export default function StadgarPage() {
           <h3>24 § Sammanträden</h3>
           <p>Styrelsen sammanträder på kallelse av ordföranden eller om minst halva antalet ledamöter begär det. Styrelsen är beslutsmässig när samtliga kallats och minst hälften är närvarande. Vid lika röstetal har ordföranden utslagsröst. Protokoll ska föras och justeras.</p>
 
-          <p className="bylaws-footer">Stadgarna antagna vid konstituerande möte 2027-01-14.</p>
+          <p className="bylaws-footer">Stadgarna planeras att antas vid konstituerande möte 2027-01-14.</p>
 
         </article>
       </section>
