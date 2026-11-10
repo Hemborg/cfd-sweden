@@ -75,7 +75,7 @@ test("nya Gå med-flödet stannar på den svenska sajten och Gear visar kommer s
     await page.goto("/");
     await page.locator(".header-join").click();
     await expect(page).toHaveURL(/\/ga-med$/);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Engagera dig i vår rörelse.");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Gå med i vår rörelse");
     await expect(page.locator("form")).toHaveAttribute("action", "https://formsubmit.co/cfdsweden@proton.me");
     await expect(page.getByLabel("E-post", { exact: true })).toBeVisible();
     await expect(page.locator('a[href*="join-citizens-for-disclosure"]')).toHaveCount(0);

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { MobileNav } from "@/components/MobileNav";
 import { BrandLogo } from "@/components/BrandLogo";
 import type { NavItem } from "@/content/site";
@@ -40,7 +41,7 @@ export function Header({ current = "home", nav, headerContent, altLangHref }: He
                   href={item.href}
                   key={item.href}
                 >
-                  {!nav && item.key === "action" ? "Engagera dig" : item.label}
+                  {!nav && item.key === "action" ? "Gå med" : item.label}
                 </Link>
               ))}
           </nav>
@@ -56,7 +57,12 @@ export function Header({ current = "home", nav, headerContent, altLangHref }: He
               className="lang-switcher"
               aria-label={altLangHref.startsWith("/en") ? "In English" : "På svenska"}
             >
-              {altLangHref.startsWith("/en") ? "🇬🇧 EN" : "🇸🇪 SV"}
+              <Image
+                src={altLangHref.startsWith("/en") ? "/icons/flag-gb.svg" : "/icons/flag-se.svg"}
+                alt=""
+                width={22}
+                height={14}
+              />
             </Link>
           )}
           {/* <Link

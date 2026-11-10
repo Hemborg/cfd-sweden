@@ -41,7 +41,7 @@ export const homeContent = {
     caption: "Se introduktionsfilmen",
     accessibleLabel: "Se Citizens for Disclosure-filmen",
   },
-  formHeading: { firstLine: "Engagera dig i", secondLine: "vår rörelse" },
+  formHeading: { firstLine: "Gå med i", secondLine: "vår rörelse" },
   fields: [
     { label: "Förnamn", name: "firstName", type: "text" },
     { label: "Efternamn", name: "lastName", type: "text" },

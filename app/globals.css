@@ -91,8 +91,9 @@ p { margin: 0 0 1.1em; }
 .main-nav { display: flex; align-items: center; gap: 26px; font-size: .93rem; font-weight: 600; }
 .main-nav a { white-space: nowrap; }
 .main-nav a:hover, .main-nav .current { text-decoration: underline; text-decoration-color: var(--amber); text-decoration-thickness: 2px; }
-.lang-switcher { font-size: .82rem; font-weight: 600; letter-spacing: .03em; white-space: nowrap; }
-.lang-switcher:hover { opacity: .75; }
+.lang-switcher { display: flex; align-items: center; }
+.lang-switcher:hover { opacity: .65; }
+.lang-switcher img { display: block; border-radius: 2px; box-shadow: 0 0 0 1px rgba(255,255,255,.25); }
 .header-join { min-height: 42px; padding: 13px 20px 10px; font-size: .8rem; white-space: nowrap; }
 .mobile-nav { position: relative; display: none; }
 .menu-button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; border: 1px solid #ffffff55; border-radius: 999px; padding: 9px 15px; background: transparent; color: var(--white); font-size: .85rem; font-weight: 600; }

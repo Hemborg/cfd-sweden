@@ -48,7 +48,7 @@ export const homeContentEn = {
 export const pageContentEn = {
   about: {
     eyebrow: "About us",
-    title: "A Swedish chapter of Citizens for Disclosure.",
+    title: "A Swedish chapter of Citizens for Disclosure",
     intro: "CFD Sweden is a civil society initiative for full and responsible transparency on the UFO/UAP question, inspired by New Paradigm Institute's international work.",
     mission: {
       heading: "Our mission",
@@ -59,16 +59,16 @@ export const pageContentEn = {
       body: "The Swedish movement needs to translate an international conversation into a Swedish context: parliament, authorities, media, universities, civil society, and local citizens.",
     },
     workEyebrow: "What we do",
-    workHeading: "We build capacity for responsible disclosure.",
+    workHeading: "We build capacity for responsible disclosure",
   },
   work: {
     eyebrow: "Our work",
-    title: "Multiple tracks, one goal: responsible transparency.",
+    title: "Multiple tracks, one goal: responsible transparency",
     intro: "We combine local organising, research, public education, and factual advocacy. Here you can find a way to contribute to openness on the UAP question in Sweden.",
   },
   paradigm: {
     eyebrow: "New Paradigm Institute",
-    title: "The international movement behind Citizens for Disclosure.",
+    title: "The international movement behind Citizens for Disclosure",
     intro: "New Paradigm Institute is an American legal and policy initiative working for full and responsible UAP disclosure through research, advocacy, law, and citizen organising.",
     background: {
       heading: "Background",
@@ -80,30 +80,30 @@ export const pageContentEn = {
     },
     cta: {
       eyebrow: "Original organisation",
-      title: "Learn more at New Paradigm Institute.",
+      title: "Learn more at New Paradigm Institute",
       link: "Visit NPI \u2197",
       href: "https://newparadigminstitute.org/",
     },
   },
   learn: {
     eyebrow: "Learn more",
-    title: "A library for UAP disclosure.",
+    title: "A library for UAP disclosure",
     intro: "Explore the UAP question through introductions, public sources, and Swedish perspectives. Filter by topic, type, or collection to find your way forward.",
   },
   action: {
     eyebrow: "Take Action",
-    title: "This is the movement's practical hub.",
+    title: "This is the movement's practical hub",
     intro: "From a first conversation to a local group: there are many ways to contribute. Find an area that suits you and help us build the Swedish movement.",
     heroEyebrow: "Priority action",
-    heroTitle: "Build the Swedish Citizens for Disclosure network.",
+    heroTitle: "Build the Swedish Citizens for Disclosure network",
     heroBody: "We need people who can organise, write, translate, contact media, arrange local meetings, and build trust for a factual Swedish disclosure movement.",
     heroLink: "Sign up ↗",
     sectionEyebrow: "Active tracks",
-    sectionTitle: "Choose a path in.",
+    sectionTitle: "Choose a path in",
   },
   contact: {
     eyebrow: "Contact",
-    title: "Contact CFD Sweden.",
+    title: "Contact CFD Sweden",
     intro: "Want to get involved, ask a question, tip us off about a source, or discuss collaboration? Reach out and we will get back to you.",
     email: {
       heading: "Email",
@@ -116,7 +116,7 @@ export const pageContentEn = {
   },
   thanks: {
     eyebrow: "Thank you!",
-    title: "We will be in touch.",
+    title: "We will be in touch",
     intro: "Your expression of interest has been received. We will get back to you as soon as we can.",
     body: "Welcome to the movement.",
     link: "Return to the home page",
