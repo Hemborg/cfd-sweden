@@ -36,6 +36,16 @@ Karl godkände att just detta repo och dess historik görs publika, så att sama
 
 Verifierat före denna dokumentationsändring: repot är publikt. Direktpublicering från Fredriks nästa commit efter bytet återstår att verifiera; lova inte att en framtida publicering lyckats utan att kontrollera statusen.
 
+## Engelska sidor + språkväxlare 2026-11-10
+
+Engelsk version av hela sajten lades till under `/en/` med undersidor `about`, `our-work`, `new-paradigm`, `learn`, `take-action` och `contact`. Innehåll i `content/site.en.ts`, layout i `components/en/EnPageLayout.tsx`, footer i `components/en/EnSiteFooter.tsx`.
+
+Commits `5fe6939` och `31dbf3a` på `main` lägger till:
+
+- **Språkflaggväxlare** — nytt valfritt prop `altLangHref` i `Header`. Svenska undersidor pekar via `PageLayout` på `/en/*` (🇬🇧), engelska via `EnPageLayout` på de svenska URL:erna (🇸🇪). Flaggikonerna är SVG-filer i `public/icons/flag-se.svg` och `flag-gb.svg`. Sidor utan engelsk version (stadgar, nyheter, evenemang, ga-med) visar ingen flagg.
+- **Rubrikkpunkter borttagna** — 11 `title`/`heading`-fält på h1/h2-nivå i `site.en.ts` fick sina avslutande punkter borttagna.
+- **"Engagera dig" → "Gå med"** — hero-knapp, section-eyebrow, `ga-med`-sidans h1, nav-label i `Header.tsx` och `formHeading` i `site.ts`. E2e-tester och fixtures uppdaterade.
+
 ## Genomförda ändringar
 
 - [PR #1](https://github.com/Hemborg/cfd-sweden/pull/1): intresseformuläret skickar via FormSubmit till `cfdsweden@proton.me`; kontaktsidan använder samma adress. Mottagaren har bekräftat aktiveringslänken.
