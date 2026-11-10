@@ -3,15 +3,25 @@ import { NextResponse, type NextRequest } from "next/server";
 import { platformConfig, platformEnabled } from "@/lib/platform/config";
 
 export async function proxy(request: NextRequest) {
-  if (!platformEnabled()) return NextResponse.next();
+  const { pathname } = request.nextUrl;
+
+  if (!platformEnabled()) {
+    const response = NextResponse.next();
+    response.headers.set("x-pathname", pathname);
+    return response;
+  }
+
   const config = platformConfig();
   let response = NextResponse.next({ request });
+  response.headers.set("x-pathname", pathname);
+
   const client = createServerClient(config.url, config.anonKey, {
     cookies: {
       getAll: () => request.cookies.getAll(),
       setAll(items) {
         for (const item of items) request.cookies.set(item.name, item.value);
         response = NextResponse.next({ request });
+        response.headers.set("x-pathname", pathname);
         for (const item of items)
           response.cookies.set(item.name, item.value, item.options);
       },
@@ -22,12 +32,7 @@ export async function proxy(request: NextRequest) {
   response.headers.set("Referrer-Policy", "same-origin");
   return response;
 }
+
 export const config = {
-  matcher: [
-    "/admin/:path*",
-    "/medlem/:path*",
-    "/konto/:path*",
-    "/logga-in",
-    "/auth/:path*",
-  ],
+  matcher: ["/((?!_next|api|images|icons|fonts).*)"],
 };

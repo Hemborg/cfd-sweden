@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
+import { Analytics } from "@vercel/analytics/next";
 import { Manrope, Martian_Mono, Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import { site } from "@/content/site";
-import { Analytics } from "@vercel/analytics/next";
 
 const bodyFont = Manrope({
   variable: "--font-body",
@@ -36,14 +37,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const h = await headers();
+  const lang = (h.get("x-pathname") ?? "").startsWith("/en") ? "en" : "sv";
   return (
     <html
-      lang="sv"
+      lang={lang}
       className={`${bodyFont.variable} ${monoFont.variable} ${logoFont.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}<Analytics /></body>
