@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Martian_Mono, Josefin_Sans } from "next/font/google";
 import "./globals.css";
 import { site } from "@/content/site";
+import { Analytics } from "@vercel/analytics/next";
 
 const bodyFont = Manrope({
   variable: "--font-body",
@@ -45,7 +46,7 @@ export default function RootLayout({
       lang="sv"
       className={`${bodyFont.variable} ${monoFont.variable} ${logoFont.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">{children}<Analytics /></body>
     </html>
   );
 }
