@@ -24,7 +24,7 @@ const involvementIcons = ["grassroots", "right-to-know", "policy", "whistleblowe
 export default function HomeEn() {
   return (
     <main>
-      <Header current="home" nav={enNavigation} headerContent={enHeaderContent} />
+      <Header current="home" nav={enNavigation} headerContent={enHeaderContent} altLangHref="/" />
       <section id="top" className="mother-hero">
         <div className="hero-backdrop" aria-hidden="true">
           <Image src="/images/cfd-hero.webp" alt="" fill priority sizes="100vw" />

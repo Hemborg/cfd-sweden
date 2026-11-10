@@ -12,6 +12,15 @@ type PageLayoutProps = {
   children: ReactNode;
 };
 
+const svToEn: Partial<Record<string, string>> = {
+  about: "/en/about",
+  work: "/en/our-work",
+  paradigm: "/en/new-paradigm",
+  learn: "/en/learn",
+  action: "/en/take-action",
+  contact: "/en/contact",
+};
+
 export function PageLayout({
   current,
   eyebrow,
@@ -19,9 +28,10 @@ export function PageLayout({
   intro,
   children,
 }: PageLayoutProps) {
+  const altLangHref = current ? svToEn[current] : undefined;
   return (
     <main className={`page-${current ?? "default"}`}>
-      <Header current={current} />
+      <Header current={current} altLangHref={altLangHref} />
       <section className="subpage-hero">
         <div className="subpage-hero-inner">
           <p className="subpage-eyebrow">{eyebrow}</p>

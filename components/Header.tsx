@@ -12,9 +12,10 @@ type HeaderProps = {
     "home" | "join" | "privacy" | "thanks" | (typeof navigation)[number]["key"];
   nav?: NavItem[];
   headerContent?: HeaderExtraContent;
+  altLangHref?: string;
 };
 
-export function Header({ current = "home", nav, headerContent }: HeaderProps) {
+export function Header({ current = "home", nav, headerContent, altLangHref }: HeaderProps) {
   const items = nav ?? navigation;
   const joinLabel = headerContent?.join ?? pageContent.header.join;
   const joinHref = headerContent?.joinHref ?? "/ga-med";
@@ -32,9 +33,6 @@ export function Header({ current = "home", nav, headerContent }: HeaderProps) {
         <div className="header-menus">
           <nav className="main-nav" aria-label="Huvudnavigering">
             {items
-              .filter((item) =>
-                ["about", "action", "learn", "gear"].includes(item.key),
-              )
               .map((item) => (
                 <Link
                   aria-current={current === item.key ? "page" : undefined}
@@ -52,13 +50,22 @@ export function Header({ current = "home", nav, headerContent }: HeaderProps) {
               Medlemsportal
             </Link>
           )}
-          <Link
+          {altLangHref && (
+            <Link
+              href={altLangHref}
+              className="lang-switcher"
+              aria-label={altLangHref.startsWith("/en") ? "In English" : "På svenska"}
+            >
+              {altLangHref.startsWith("/en") ? "🇬🇧 EN" : "🇸🇪 SV"}
+            </Link>
+          )}
+          {/* <Link
             className="button button-primary header-join"
             href={joinHref}
             aria-current={current === "join" ? "page" : undefined}
           >
             {joinLabel}
-          </Link>
+          </Link> */}
         </div>
       </div>
     </header>

@@ -15,7 +15,7 @@ const involvementDescriptions = [
 const involvementIcons = ["grassroots", "right-to-know", "policy", "whistleblower"];
 
 export default function Home() {
-  return <main><Header current="home" />
+  return <main><Header current="home" altLangHref="/en" />
     <section id="top" className="mother-hero">
       <div className="hero-backdrop" aria-hidden="true"><Image src="/images/cfd-hero.webp" alt="" fill priority sizes="100vw" /></div>
       <div className="hero-inner section-wrap"><p className="eyebrow">En del av New Paradigm Institute</p><h1>Citizens for Disclosure</h1><p className="hero-lead">En svensk förening för transparens, kunskapande och informationsspridning kring existensen av utomjordisk närvaro och verksamhet på jorden.</p><div className="button-row"><Link className="button button-primary" href="/ga-med">Engagera dig <ArrowIcon /></Link><Link className="button button-outline" href="/take-action">Se hur du kan bidra</Link></div></div>

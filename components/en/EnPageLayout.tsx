@@ -19,10 +19,20 @@ type EnPageLayoutProps = {
   children: ReactNode;
 };
 
+const enToSv: Partial<Record<string, string>> = {
+  about: "/om-oss",
+  work: "/vart-arbete",
+  paradigm: "/new-paradigm",
+  learn: "/lar-dig-mer",
+  action: "/take-action",
+  contact: "/kontakta-oss",
+};
+
 export function EnPageLayout({ current, eyebrow, title, intro, children }: EnPageLayoutProps) {
+  const altLangHref = current ? enToSv[current] : undefined;
   return (
     <main className={`page-${current ?? "default"}`}>
-      <Header current={current} nav={enNavigation} headerContent={enHeaderContent} />
+      <Header current={current} nav={enNavigation} headerContent={enHeaderContent} altLangHref={altLangHref} />
       <section className="subpage-hero">
         <div className="subpage-hero-inner">
           <p className="subpage-eyebrow">{eyebrow}</p>
