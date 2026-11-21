@@ -71,7 +71,7 @@ const PODCASTS: Podcast[] = [
   { kind: "podcast", category: "C", level: 2, swedish: false, show: "That UFO Podcast",             episode: "Hearings Reaction; Tim McMillan, The DeBrief", url: "https://audioboom.com/posts/8397495" },
   { kind: "podcast", category: "C", level: 3, swedish: false, show: "That UFO Podcast",             episode: "Jake Barber: Big UFO Claims, New Role, Unanswered Questions", url: "https://audioboom.com/posts/8978689" },
   { kind: "podcast", category: "C", level: 3, swedish: false, show: "That UFO Podcast",             episode: "Trump on UFOs, Jake Barber's Retrieval Claims & the Skywatcher Fallout", url: "https://audioboom.com/posts/8975283" },
-  { kind: "podcast", category: "C", level: 3, swedish: false, show: "Exopolitics Today",            episode: "JP's Handler Dies After TR-3B Revelations: Was He Silenced?" },
+  { kind: "podcast", category: "C", level: 3, swedish: false, show: "Exopolitics Today",            episode: "JP's Handler Dies After TR-3B Revelations: Was He Silenced?", url: "https://creators.spotify.com/pod/profile/michaelsalla/episodes/JPs-Handler-Dies-After-TR-3B-Revelations-Was-He-Silenced---Update-70-e3sgmmb" },
   { kind: "podcast", category: "C", level: 3, swedish: false, show: "Full Disclosure – Danny Sheehan", episode: "Election Day: What's at Stake for UFO Disclosure?", url: "https://pscrb.fm/rss/p/traffic.megaphone.fm/PHTE3964024354.mp3" },
   { kind: "podcast", category: "C", level: 3, swedish: false, show: "That UFO Podcast",             episode: "Jake Barber: Burlison's Next Move in UFO Disclosure?", url: "https://audioboom.com/posts/8969556" },
 ];
