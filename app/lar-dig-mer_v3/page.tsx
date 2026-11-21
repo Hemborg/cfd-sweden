@@ -17,9 +17,9 @@ type Podcast = {
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
-  A: "Kunskapsteori & epistemologi",
-  B: "Psykologi, healing & kanalisering",
-  C: "Militär, myndighet & mörkläggning",
+  A: "Kunskap",
+  B: "Personligt",
+  C: "Transparens",
 };
 
 const LEVEL_LABELS: Record<number, string> = {
@@ -146,7 +146,7 @@ export default function LearnV3() {
       current="learn"
       eyebrow={`Resurser & poddar · ${visibleResources.length + visiblePodcasts.length} visas`}
       title="Lär dig mer"
-      intro="Resurser och poddar om oidentifierade flygfenomen — filtrera efter ämne, nivå eller språk, eller sök fritt."
+      intro="Resurser och poddar om oidentifierade flygfenomen, organiserade i tre ämnesområden: Kunskap (historik, bevis och vetenskapliga perspektiv), Personligt (kontaktberättelser, medvetande, healing och kanalisering) och Transparens (militärvittnen, myndighetsrapporter och mörkläggning). Filtrera med rullgardinsmenyerna, välj språk — eller skriv ett ord i sökrutan för att hitta direkt."
     >
       <section className="subpage-section">
 
@@ -154,9 +154,18 @@ export default function LearnV3() {
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
 
           <button
-            className={!hasFilter ? "selected" : undefined}
             type="button"
             onClick={resetAll}
+            style={{
+              padding: "0.35rem 0.9rem",
+              borderRadius: "var(--radius-sm, 6px)",
+              fontSize: "0.875rem",
+              fontWeight: 600,
+              background: !hasFilter ? "var(--color-fg, #fff)" : "var(--color-surface-raised, rgba(255,255,255,0.08))",
+              color: !hasFilter ? "var(--color-bg, #0a0a0a)" : "inherit",
+              border: "1px solid var(--color-border, rgba(255,255,255,0.15))",
+              cursor: "pointer",
+            }}
           >
             Alla
           </button>
@@ -165,7 +174,7 @@ export default function LearnV3() {
           <label className="filter-select">
             Typer
             <select value={filterFormat} onChange={(e) => { setFilterFormat(e.target.value); setFilterCollection(""); }}>
-              <option value="">Typer</option>
+              <option value="">Alla</option>
               {formats.map((v) => <option key={v} value={v}>{v}</option>)}
             </select>
           </label>
@@ -174,7 +183,7 @@ export default function LearnV3() {
           <label className="filter-select">
             Samlingar
             <select value={filterCollection} onChange={(e) => { setFilterCollection(e.target.value); setFilterFormat(""); }}>
-              <option value="">Samlingar</option>
+              <option value="">Alla</option>
               {collections.map((v) => <option key={v} value={v}>{v}</option>)}
             </select>
           </label>
@@ -183,7 +192,7 @@ export default function LearnV3() {
           <label className="filter-select">
             Ämnen
             <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
-              <option value="">Ämnen</option>
+              <option value="">Alla</option>
               {(["A", "B", "C"] as const).map((c) => (
                 <option key={c} value={c}>{CATEGORY_LABELS[c]}</option>
               ))}
@@ -194,7 +203,7 @@ export default function LearnV3() {
           <label className="filter-select">
             Nivåer
             <select value={filterLevel || ""} onChange={(e) => setFilterLevel(Number(e.target.value))}>
-              <option value="">Nivåer</option>
+              <option value="">Alla</option>
               {([1, 2, 3] as const).map((l) => (
                 <option key={l} value={l}>{LEVEL_LABELS[l]}</option>
               ))}
@@ -205,7 +214,7 @@ export default function LearnV3() {
           <label className="filter-select">
             Språk
             <select value={filterLang} onChange={(e) => setFilterLang(e.target.value)}>
-              <option value="">Språk</option>
+              <option value="">Alla</option>
               <option value="svenska">Svenska</option>
               <option value="engelska">Engelska</option>
             </select>
@@ -220,12 +229,13 @@ export default function LearnV3() {
             aria-label="Sök i resurser och poddar"
             style={{
               padding: "0.35rem 0.75rem",
-              border: "1px solid var(--color-border, rgba(255,255,255,0.15))",
+              border: "2px solid var(--color-border, rgba(255,255,255,0.3))",
               borderRadius: "var(--radius-sm, 6px)",
               background: "var(--color-surface, transparent)",
               color: "inherit",
               fontSize: "0.875rem",
               minWidth: "160px",
+              outline: "none",
             }}
           />
         </div>
