@@ -14,7 +14,7 @@ export default function StadgarPage() {
           <h2>Allmänna bestämmelser</h2>
 
           <h3>1 § Ändamål</h3>
-          <p>Föreningens namn är Citizens for Disclosure Sweden.</p>
+          <p>Föreningens namn kommer att bestämmas vid bildandet.</p>
           <p>Föreningen ska verka för transparens, kunskapande och informationsspridning kring existensen av utomjordisk närvaro och verksamhet på jorden.</p>
           <p>Föreningen vänder sig till alla oavsett ålder och bakgrund, och ska aktivt motverka diskriminering.</p>
 
