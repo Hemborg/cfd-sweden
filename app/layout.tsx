@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { headers } from "next/headers";
 import { Analytics } from "@vercel/analytics/next";
 import { Manrope, Martian_Mono, Josefin_Sans } from "next/font/google";
@@ -49,7 +50,17 @@ export default async function RootLayout({
       lang={lang}
       className={`${bodyFont.variable} ${monoFont.variable} ${logoFont.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}<Analytics /></body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Analytics />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-GDBWTETBZM" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-GDBWTETBZM');
+        `}</Script>
+      </body>
     </html>
   );
 }
