@@ -106,25 +106,28 @@ export default function LearnPage() {
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
 
-          <button
-            type="button"
-            aria-pressed={!hasFilter}
-            onClick={resetAll}
-            style={{
-              padding: "0.35rem 0.75rem",
-              borderRadius: "var(--radius-sm, 6px)",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "0.875rem",
-              fontWeight: 600,
-              background: !hasFilter ? "var(--color-fg, #1a2744)" : "transparent",
-              color: !hasFilter ? "var(--color-bg, #fff)" : "var(--color-fg, #1a2744)",
-              outline: !hasFilter ? "none" : "2px solid var(--color-fg, #1a2744)",
-              outlineOffset: "-2px",
-            }}
-          >
-            Alla
-          </button>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem", alignItems: "flex-start" }}>
+            <span style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", opacity: 0.6 }}>Välj</span>
+            <button
+              type="button"
+              aria-pressed={!hasFilter}
+              onClick={resetAll}
+              style={{
+                padding: "0.35rem 0.75rem",
+                borderRadius: "var(--radius-sm, 6px)",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                background: !hasFilter ? "var(--color-fg, #1a2744)" : "transparent",
+                color: !hasFilter ? "var(--color-bg, #fff)" : "var(--color-fg, #1a2744)",
+                outline: !hasFilter ? "none" : "2px solid var(--color-fg, #1a2744)",
+                outlineOffset: "-2px",
+              }}
+            >
+              Alla
+            </button>
+          </div>
 
           <label className="filter-select">
             Ämnen
@@ -155,23 +158,26 @@ export default function LearnPage() {
             </select>
           </label>
 
-          <input
-            type="search"
-            placeholder="Sök…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            aria-label="Sök i poddar"
-            style={{
-              padding: "0.35rem 0.65rem",
-              border: "2px solid var(--color-fg, #1a2744)",
-              borderRadius: "var(--radius-sm, 6px)",
-              background: "#fff",
-              color: "#111",
-              fontSize: "0.875rem",
-              width: "120px",
-              outline: "none",
-            }}
-          />
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+            <span style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", opacity: 0.6 }}>Sök</span>
+            <input
+              type="search"
+              placeholder="Sök…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              aria-label="Sök i poddar"
+              style={{
+                padding: "0.35rem 0.65rem",
+                border: "2px solid var(--color-fg, #1a2744)",
+                borderRadius: "var(--radius-sm, 6px)",
+                background: "#fff",
+                color: "#111",
+                fontSize: "0.875rem",
+                width: "240px",
+                outline: "none",
+              }}
+            />
+          </div>
         </div>
 
         <div className="resource-grid" aria-live="polite" style={{ marginTop: "2rem" }}>
