@@ -79,7 +79,7 @@ const RESOURCES: Resource[] = [
   // Kunskap – Introduktion
   { mediatype: "Bok",      category: "A", level: 1, lang: "sv", title: "Vetenskapsteori för nybörjare (3 uppl.)", author: "Torsten Thurén", year: 2019,  url: "https://libris.kb.se/bib/14661305" },
   { mediatype: "Bok",      category: "A", level: 1, lang: "en", title: "The Little Book of Aliens",               author: "Adam Frank",       year: 2023 },
-  { mediatype: "Kurs",     category: "A", level: 1, lang: "sv", title: "UFO: från foliehatt till forskningsämne (912G35, 7,5 hp)", author: "Linköpings universitet", year: 2025, url: "https://studieinfo.liu.se/en/kurs/912G35" },
+  { mediatype: "Kurs",     category: "A", level: 1, lang: "sv", title: "UFO: från foliehatt till forskningsämne (912G35, 7,5 hp)", author: "Linköpings universitet", year: 2025, url: "https://studieinfo.liu.se/kurs/912G35" },
 
   // Kunskap – Medel
   { mediatype: "Bok",      category: "A", level: 2, lang: "en", title: "After the Flying Saucers Came: A Global History of the UFO Phenomenon", author: "Greg Eghigian",        year: 2024 },
