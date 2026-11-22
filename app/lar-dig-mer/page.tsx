@@ -159,10 +159,9 @@ export default function LearnPage() {
     >
       <section className="subpage-section">
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "flex-end" }}>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem", alignItems: "flex-start" }}>
-            <span style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", opacity: 0.6 }}>Välj</span>
+          <div>
             <button
               type="button"
               aria-pressed={!hasFilter}
@@ -185,7 +184,7 @@ export default function LearnPage() {
           </div>
 
           <label className="filter-select">
-            Mediatyp
+            Typ
             <select value={filterMediatype} onChange={(e) => setFilterMediatype(e.target.value)}>
               <option value="">Alla</option>
               {MEDIATYPES.map((m) => <option key={m} value={m}>{m}</option>)}
@@ -261,13 +260,13 @@ export default function LearnPage() {
                 <h2 style={{ fontSize: "0.95rem", marginBottom: "0.25rem" }}>
                   {r.show ? r.show : r.title}
                 </h2>
-                <p style={{ fontSize: "0.85rem", opacity: 0.75 }}>
+                <p style={{ fontSize: "0.85rem", opacity: 0.9 }}>
                   {r.show ? r.title : r.author}
                 </p>
                 {r.year && (
-                  <p style={{ fontSize: "0.75rem", opacity: 0.5, marginTop: "0.2rem" }}>{r.year}</p>
+                  <p style={{ fontSize: "0.75rem", opacity: 0.7, marginTop: "0.2rem" }}>{r.year}</p>
                 )}
-                {r.url && <p style={{ marginTop: "0.6rem", fontSize: "0.75rem", opacity: 0.5 }}>
+                {r.url && <p style={{ marginTop: "0.6rem", fontSize: "0.75rem", opacity: 0.7 }}>
                   {r.mediatype === "Podd" ? "Lyssna →" : r.mediatype === "Film" ? "Se mer →" : "Läs mer →"}
                 </p>}
               </>
