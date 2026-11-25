@@ -11,7 +11,7 @@ export const metadata = {
 export default function TestversionLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Header />
+      <Header current="learn" />
       {children}
       <SiteFooter />
     </>

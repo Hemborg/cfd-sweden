@@ -25,11 +25,13 @@ export default function Steg2Page() {
   return (
     <div className="tv-page">
       <nav className="step-bar" aria-label="Steg i guiden">
-        <Link href="/testversion">Introduktion &amp; steg 1</Link>
-        <span className="sep">›</span>
-        <a className="active">2. Vad spelar det för roll?</a>
-        <span className="sep">›</span>
-        <Link href="/testversion/steg-3">3. Myndigheter &amp; omvärld</Link>
+        <Link href="/lar-dig-mer" className="parent-link">Lär dig mer</Link>
+        <span className="sep">/</span>
+        <Link href="/testversion">Steg 1: Hur vet jag?</Link>
+        <span className="sep">·</span>
+        <a className="active">Steg 2: Vad spelar det för roll?</a>
+        <span className="sep">·</span>
+        <Link href="/testversion/steg-3">Steg 3: Myndigheter &amp; omvärld</Link>
       </nav>
 
       <div className="container">

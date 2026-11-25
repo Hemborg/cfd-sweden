@@ -10,20 +10,21 @@ export default function TestversionPage() {
 
   return (
     <div className="tv-page">
-      {/* Step navigation */}
+      {/* Step navigation — sub-nav under Lär dig mer */}
       <nav className="step-bar" aria-label="Steg i guiden">
-        <a href="#intro" className="active">Introduktion &amp; steg 1</a>
-        <span className="sep">›</span>
-        <Link href="/testversion/steg-2">2. Vad spelar det för roll?</Link>
-        <span className="sep">›</span>
-        <Link href="/testversion/steg-3">3. Myndigheter &amp; omvärld</Link>
+        <Link href="/lar-dig-mer" className="parent-link">Lär dig mer</Link>
+        <span className="sep">/</span>
+        <a className="active">Steg 1: Hur vet jag?</a>
+        <span className="sep">·</span>
+        <Link href="/testversion/steg-2">Steg 2: Vad spelar det för roll?</Link>
+        <span className="sep">·</span>
+        <Link href="/testversion/steg-3">Steg 3: Myndigheter &amp; omvärld</Link>
       </nav>
 
       {/* Hero */}
       <section className="hero" id="intro">
         <div className="hero-inner">
           <div>
-            <span className="badge">Förening för folkbildning om ufo i Sverige</span>
             <h1>Tre steg för att utforska ufoområdet</h1>
             <p>Vi skapar utrymme för sakliga, utforskande och existentiella samtal om vår plats i ett universum där vi undersöker evidens för om vi verkligen är ensamma.</p>
             <div className="definition-box">

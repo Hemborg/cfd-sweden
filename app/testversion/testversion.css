@@ -26,32 +26,41 @@
   padding: 2.5rem 1.5rem;
 }
 
-/* Step navigation bar */
+/* Step navigation bar — sub-nav under "Lär dig mer" */
 .tv-page .step-bar {
-  background: #fff;
-  border-bottom: 1px solid var(--bg-tint);
-  padding: .6rem 1.5rem;
+  background: #f4f6fa;
+  border-bottom: 1px solid #d8deea;
+  padding: .4rem 1.5rem;
   display: flex;
-  gap: .5rem;
+  gap: .25rem;
   flex-wrap: wrap;
   align-items: center;
-  font-size: .88rem;
+  font-size: .82rem;
 }
+.tv-page .step-bar .parent-link {
+  color: #4a5468;
+  font-weight: 600;
+  text-decoration: none;
+}
+.tv-page .step-bar .parent-link:hover { text-decoration: underline; }
 .tv-page .step-bar a {
   font-weight: 600;
-  color: var(--text-muted);
+  color: #4a5468;
   text-decoration: none;
-  padding: .3rem .7rem;
-  border-radius: 6px;
+  padding: .25rem .6rem;
+  border-radius: 5px;
   transition: background .15s;
 }
-.tv-page .step-bar a:hover { background: var(--bg-tint); color: var(--text-main); }
-.tv-page .step-bar a.active { background: var(--accent-blue); color: #fff; }
-.tv-page .step-bar .sep { color: var(--border-light); user-select: none; }
+.tv-page .step-bar a:hover { background: #e2e8f0; color: #0f172a; }
+.tv-page .step-bar a.active {
+  background: #2c4459;
+  color: #fff;
+}
+.tv-page .step-bar .sep { color: #cbd5e1; user-select: none; padding: 0 .1rem; }
 
 /* Hero */
 .tv-page .hero {
-  background: linear-gradient(135deg,#0f172a 0%,#1e293b 65%,#2c4459 100%);
+  background: linear-gradient(135deg,#161c42 0%,#1e293b 55%,#2c4459 100%);
   color: var(--text-light);
   padding: 4rem 1.5rem 4.5rem;
   border-bottom: 4px solid var(--accent-sky);
@@ -84,6 +93,7 @@
   line-height: 1.18;
   font-weight: 800;
   margin-bottom: 1.2rem;
+  color: #f8fafc;
 }
 .tv-page .hero p {
   font-size: 1.12rem;
